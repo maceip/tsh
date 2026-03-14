@@ -11,7 +11,7 @@ env:
 
 jobs:
   # -----------------------------------------------------------------------
-  # Linux: full test suite including POSIX bash integration tests
+  # Linux: full CI via xtask (fmt + clippy + tests + shell harness + binary)
   # -----------------------------------------------------------------------
   test-linux:
     runs-on: ubuntu-latest
@@ -20,18 +20,11 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
 
-      - name: Run all tests
-        run: cargo test --workspace
-
-      - name: Check formatting
-        run: cargo fmt --all -- --check
-
-      - name: Run clippy
-        run: cargo clippy --workspace -- -D warnings
+      - name: Run full CI suite via xtask
+        run: cargo run -p xtask -- ci
 
   # -----------------------------------------------------------------------
-  # Windows: unit + lib tests only (POSIX integration tests are skipped
-  # via #[cfg(unix)] on the bash_commands_test)
+  # Windows: CI via xtask (fmt + clippy + lib tests, POSIX tests skipped)
   # -----------------------------------------------------------------------
   test-windows:
     runs-on: windows-latest
@@ -40,8 +33,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
 
-      - name: Run library and unit tests
-        run: cargo test --workspace --lib
+      - name: Run Windows CI suite via xtask
+        run: cargo run -p xtask -- ci
 
   # -----------------------------------------------------------------------
   # Docker: build the multi-stage image to verify it compiles cleanly
