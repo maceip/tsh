@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Linux: full test suite including POSIX bash integration tests
+  # -----------------------------------------------------------------------
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run all tests
+        run: cargo test --workspace
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run clippy
+        run: cargo clippy --workspace -- -D warnings
+
+  # -----------------------------------------------------------------------
+  # Windows: unit + lib tests only (POSIX integration tests are skipped
+  # via #[cfg(unix)] on the bash_commands_test)
+  # -----------------------------------------------------------------------
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run library and unit tests
+        run: cargo test --workspace --lib
+
+  # -----------------------------------------------------------------------
+  # Docker: build the multi-stage image to verify it compiles cleanly
+  # -----------------------------------------------------------------------
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: tsh:ci-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

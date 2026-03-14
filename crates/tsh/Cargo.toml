@@ -1,0 +1,17 @@
+[package]
+name = "tsh"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+tokio.workspace = true
+anyhow.workspace = true
+rustyline = "14.0"
+shell-words = "1.1"
+serde_json.workspace = true
+encoding_rs = "0.8"
+langextract-host = { path = "../langextract-host" }
+
+[dev-dependencies]
+xshell.workspace = true

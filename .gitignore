@@ -1,0 +1,17 @@
+# Rust
+target/
+Cargo.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+
+# POC Testing Sandbox
+test_sandbox/
+mock_bin/
+
+# Work
+work

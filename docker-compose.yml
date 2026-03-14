@@ -1,0 +1,25 @@
+services:
+  # Local LLM inference server
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # Pull the model on first run:
+    #   docker compose exec ollama ollama pull llama3
+
+  # Token Shell + Python compliance shim
+  tsh:
+    build: .
+    depends_on:
+      - ollama
+    environment:
+      - OPENAI_API_BASE=http://ollama:11434/v1
+      - OPENAI_API_KEY=local-poc-key
+      - LLM_MODEL_ID=llama3
+    stdin_open: true
+    tty: true
+
+volumes:
+  ollama_data:

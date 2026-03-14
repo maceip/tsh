@@ -1,0 +1,16 @@
+[package]
+name = "tsh-model-manager"
+version.workspace = true
+edition.workspace = true
+description = "Model download, caching, and verification for tsh"
+
+[dependencies]
+anyhow.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+reqwest = { version = "0.12", features = ["stream"] }
+sha2 = "0.10"
+dirs = "6.0"
+tokio-util = { version = "0.7", features = ["io"] }
+futures-util = "0.3"
