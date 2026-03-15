@@ -1,0 +1,2000 @@
+2025-11-15 00:00:00.890 [INFO] user-service: Incoming request: GET /api/v1/users/1555
+2025-11-15 00:00:03.252 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:00:05.710 [INFO] search-service: Log rotation completed, archived server.log.2139.gz
+2025-11-15 00:00:06.256 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:00:08.454 [INFO] billing-service: Cache miss for key product_catalog_3187
+2025-11-15 00:00:10.405 [INFO] api-gateway: Static file served from CDN cache
+2025-11-15 00:00:12.478 [INFO] scheduler: Middleware chain completed in 109ms
+2025-11-15 00:00:15.104 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:00:17.309 [INFO] user-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:00:18.534 [INFO] search-service: Rate limit check passed for tenant t_7050
+2025-11-15 00:00:20.571 [INFO] notification-service: Database query completed in 12ms
+2025-11-15 00:00:23.968 [INFO] user-service: Upstream response from backend-3: 200 (55ms)
+2025-11-15 00:00:24.425 [INFO] export-service: Worker thread pool utilization: 31%
+2025-11-15 00:00:26.993 [INFO] export-service: TLS handshake completed with client 10.0.180.3
+2025-11-15 00:00:29.865 [INFO] billing-service: Redis PING response time: 128ms
+2025-11-15 00:00:30.926 [INFO] notification-service: Incoming request: GET /api/v1/products?page=44
+2025-11-15 00:00:32.488 [INFO] scheduler: Redis PING response time: 197ms
+2025-11-15 00:00:35.216 [INFO] search-service: Cache miss for key product_catalog_5213
+2025-11-15 00:00:37.890 [INFO] export-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:00:39.824 [INFO] scheduler: Session created for user u_7183
+2025-11-15 00:00:41.268 [INFO] api-gateway: Metrics flushed: 247 datapoints
+2025-11-15 00:00:43.804 [INFO] auth-service: Background job enqueued: generate_invoice_7964
+2025-11-15 00:00:45.440 [INFO] search-service: Serving static asset /assets/app.7230.js
+2025-11-15 00:00:47.194 [INFO] user-service: Upstream response from backend-2: 200 (160ms)
+2025-11-15 00:00:49.705 [INFO] api-gateway: Rate limit check passed for tenant t_8941
+2025-11-15 00:00:51.867 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:00:52.705 [INFO] api-gateway: Health check passed
+2025-11-15 00:00:55.194 [INFO] billing-service: Request processed successfully
+2025-11-15 00:00:57.113 [INFO] auth-service: Health check passed
+2025-11-15 00:00:58.198 [INFO] export-service: Health check passed
+2025-11-15 00:01:01.990 [INFO] export-service: Serving static asset /assets/app.6920.js
+2025-11-15 00:01:02.419 [INFO] notification-service: Log rotation completed, archived server.log.8836.gz
+2025-11-15 00:01:05.649 [INFO] auth-service: Worker thread pool utilization: 61%
+2025-11-15 00:01:07.252 [INFO] export-service: JWT token validated for user u_7751
+2025-11-15 00:01:08.213 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 00:01:10.580 [INFO] user-service: Background job enqueued: generate_invoice_7567
+2025-11-15 00:01:12.311 [INFO] scheduler: JWT token validated for user u_5020
+2025-11-15 00:01:15.692 [INFO] scheduler: Session created for user u_1132
+2025-11-15 00:01:16.907 [INFO] search-service: Gzip compression applied, ratio: 0.27
+2025-11-15 00:01:19.982 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:01:20.509 [INFO] auth-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:01:23.441 [INFO] billing-service: Redis PING response time: 192ms
+2025-11-15 00:01:24.246 [INFO] notification-service: Redis PING response time: 59ms
+2025-11-15 00:01:27.674 [INFO] search-service: Session created for user u_3237
+2025-11-15 00:01:28.307 [INFO] notification-service: JWT token validated for user u_1126
+2025-11-15 00:01:30.818 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:01:32.346 [INFO] billing-service: Incoming request: GET /api/v1/products?page=49
+2025-11-15 00:01:35.165 [INFO] search-service: Response sent: 201 Created (16ms)
+2025-11-15 00:01:37.286 [INFO] notification-service: Cache miss for key product_catalog_7489
+2025-11-15 00:01:38.400 [INFO] api-gateway: Session created for user u_4242
+2025-11-15 00:01:40.917 [INFO] search-service: Response sent: 200 OK (160ms)
+2025-11-15 00:01:43.288 [INFO] billing-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:01:44.946 [INFO] notification-service: JWT token validated for user u_6505
+2025-11-15 00:01:47.145 [INFO] api-gateway: Static file served from CDN cache
+2025-11-15 00:01:48.394 [INFO] export-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:01:51.138 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:01:52.215 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:01:54.557 [INFO] notification-service: Gzip compression applied, ratio: 0.71
+2025-11-15 00:01:56.282 [INFO] user-service: TLS handshake completed with client 10.0.36.86
+2025-11-15 00:01:58.159 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:02:01.308 [INFO] user-service: Serving static asset /assets/app.4709.js
+2025-11-15 00:02:02.782 [INFO] notification-service: Kafka consumer lag: partition 3 lag=287
+2025-11-15 00:02:04.776 [INFO] notification-service: Middleware chain completed in 165ms
+2025-11-15 00:02:06.710 [INFO] auth-service: Database query completed in 10ms
+2025-11-15 00:02:09.301 [INFO] export-service: Middleware chain completed in 92ms
+2025-11-15 00:02:10.907 [INFO] search-service: Log rotation completed, archived server.log.8624.gz
+2025-11-15 00:02:12.158 [INFO] api-gateway: Background job enqueued: generate_invoice_9419
+2025-11-15 00:02:14.947 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:02:17.180 [INFO] notification-service: Incoming request: GET /api/v1/products?page=48
+2025-11-15 00:02:18.716 [INFO] api-gateway: TLS handshake completed with client 10.0.123.235
+2025-11-15 00:02:21.821 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:02:23.402 [INFO] billing-service: Log rotation completed, archived server.log.1152.gz
+2025-11-15 00:02:24.820 [INFO] auth-service: Incoming request: GET /api/v1/products?page=19
+2025-11-15 00:02:27.757 [INFO] auth-service: Middleware chain completed in 71ms
+2025-11-15 00:02:28.428 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:02:30.322 [INFO] scheduler: Response sent: 201 Created (90ms)
+2025-11-15 00:02:33.252 [INFO] billing-service: Request processed successfully
+2025-11-15 00:02:34.514 [INFO] notification-service: Kafka message published to acme.events.production (partition 7)
+2025-11-15 00:02:36.597 [INFO] scheduler: Response sent: 201 Created (48ms)
+2025-11-15 00:02:39.882 [INFO] api-gateway: Rate limit check passed for tenant t_2197
+2025-11-15 00:02:41.640 [INFO] api-gateway: Redis PING response time: 149ms
+2025-11-15 00:02:42.736 [INFO] user-service: Database query completed in 17ms
+2025-11-15 00:02:44.755 [INFO] scheduler: Redis PING response time: 44ms
+2025-11-15 00:02:47.162 [INFO] billing-service: Serving static asset /assets/app.8472.js
+2025-11-15 00:02:48.674 [INFO] scheduler: JWT token validated for user u_2663
+2025-11-15 00:02:50.666 [INFO] auth-service: Redis PING response time: 11ms
+2025-11-15 00:02:53.315 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:02:55.106 [INFO] user-service: Gzip compression applied, ratio: 0.85
+2025-11-15 00:02:56.857 [INFO] billing-service: Redis PING response time: 104ms
+2025-11-15 00:02:59.240 [INFO] scheduler: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:03:00.903 [INFO] billing-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:03:03.674 [INFO] scheduler: Session created for user u_3754
+2025-11-15 00:03:04.725 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:03:06.915 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:03:09.478 [INFO] billing-service: Middleware chain completed in 43ms
+2025-11-15 00:03:10.249 [INFO] export-service: Log rotation completed, archived server.log.4138.gz
+2025-11-15 00:03:13.975 [INFO] billing-service: Database query completed in 31ms
+2025-11-15 00:03:15.849 [INFO] billing-service: Health check passed
+2025-11-15 00:03:17.993 [INFO] api-gateway: Kafka consumer lag: partition 6 lag=363
+2025-11-15 00:03:18.727 [INFO] search-service: Gzip compression applied, ratio: 0.39
+2025-11-15 00:03:20.508 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:03:22.700 [INFO] export-service: Gzip compression applied, ratio: 0.65
+2025-11-15 00:03:24.280 [INFO] billing-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:03:26.114 [INFO] export-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:03:29.366 [INFO] billing-service: JWT token validated for user u_7606
+2025-11-15 00:03:30.971 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:03:33.451 [INFO] user-service: Cache hit for key user_session_5802
+2025-11-15 00:03:34.691 [INFO] search-service: Kafka message published to acme.events.production (partition 7)
+2025-11-15 00:03:37.187 [INFO] scheduler: Request processed successfully
+2025-11-15 00:03:38.848 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:03:41.355 [INFO] notification-service: Incoming request: GET /api/v1/products?page=48
+2025-11-15 00:03:42.836 [INFO] search-service: JWT token validated for user u_5296
+2025-11-15 00:03:44.813 [INFO] notification-service: Response sent: 200 OK (109ms)
+2025-11-15 00:03:46.444 [INFO] search-service: JWT token validated for user u_5478
+2025-11-15 00:03:49.189 [INFO] search-service: Session created for user u_9486
+2025-11-15 00:03:50.205 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:03:53.452 [INFO] billing-service: Kafka consumer lag: partition 1 lag=148
+2025-11-15 00:03:54.185 [INFO] notification-service: Health check passed
+2025-11-15 00:03:57.246 [INFO] user-service: Background job enqueued: generate_invoice_2879
+2025-11-15 00:03:59.220 [INFO] search-service: Database query completed in 139ms
+2025-11-15 00:04:01.895 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:04:02.630 [INFO] notification-service: Health check passed
+2025-11-15 00:04:05.738 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:04:07.531 [INFO] export-service: Upstream response from backend-1: 200 (110ms)
+2025-11-15 00:04:08.115 [INFO] export-service: JWT token validated for user u_1513
+2025-11-15 00:04:11.124 [INFO] user-service: Metrics flushed: 247 datapoints
+2025-11-15 00:04:12.383 [INFO] billing-service: Incoming request: GET /api/v1/products?page=9
+2025-11-15 00:04:14.933 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:04:16.862 [INFO] notification-service: Session created for user u_1205
+2025-11-15 00:04:19.365 [INFO] user-service: Health check passed
+2025-11-15 00:04:21.439 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:04:22.692 [INFO] auth-service: TLS handshake completed with client 10.0.56.235
+2025-11-15 00:04:25.171 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:04:27.700 [INFO] api-gateway: Upstream response from backend-3: 200 (42ms)
+2025-11-15 00:04:28.554 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:04:30.398 [INFO] auth-service: Background job enqueued: generate_invoice_1163
+2025-11-15 00:04:33.537 [INFO] auth-service: Incoming request: GET /api/v1/products?page=31
+2025-11-15 00:04:35.729 [INFO] user-service: Log rotation completed, archived server.log.9835.gz
+2025-11-15 00:04:37.633 [INFO] export-service: Middleware chain completed in 138ms
+2025-11-15 00:04:39.117 [INFO] user-service: Database query completed in 149ms
+2025-11-15 00:04:41.479 [INFO] notification-service: Redis PING response time: 148ms
+2025-11-15 00:04:43.603 [INFO] billing-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:04:45.927 [INFO] scheduler: Gzip compression applied, ratio: 0.55
+2025-11-15 00:04:46.671 [INFO] notification-service: Rate limit check passed for tenant t_7099
+2025-11-15 00:04:49.859 [INFO] user-service: Kafka consumer lag: partition 2 lag=156
+2025-11-15 00:04:50.238 [INFO] billing-service: Cache hit for key user_session_9167
+2025-11-15 00:04:52.691 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:04:55.285 [INFO] api-gateway: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:04:56.550 [INFO] auth-service: Upstream response from backend-4: 200 (124ms)
+2025-11-15 00:04:59.693 [INFO] export-service: Health check passed
+2025-11-15 00:05:00.819 [WARN] notification-service: Slow query detected: SELECT * FROM orders WHERE... (2277ms)
+2025-11-15 00:05:03.604 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:05:05.191 [INFO] auth-service: Database query completed in 117ms
+2025-11-15 00:05:07.733 [INFO] api-gateway: Gzip compression applied, ratio: 0.65
+2025-11-15 00:05:08.585 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:05:10.621 [INFO] export-service: Cache hit for key user_session_5890
+2025-11-15 00:05:12.464 [INFO] export-service: Upstream response from backend-1: 200 (19ms)
+2025-11-15 00:05:15.488 [INFO] export-service: Middleware chain completed in 78ms
+2025-11-15 00:05:16.616 [INFO] api-gateway: JWT token validated for user u_9201
+2025-11-15 00:05:18.940 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:05:21.298 [INFO] auth-service: Incoming request: GET /api/v1/users/3654
+2025-11-15 00:05:22.902 [INFO] search-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:05:24.850 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:05:27.851 [INFO] search-service: Upstream response from backend-1: 200 (54ms)
+2025-11-15 00:05:28.594 [INFO] scheduler: Request processed successfully
+2025-11-15 00:05:31.318 [INFO] billing-service: Session created for user u_5414
+2025-11-15 00:05:32.492 [INFO] notification-service: Incoming request: GET /api/v1/products?page=45
+2025-11-15 00:05:35.199 [INFO] search-service: Cache miss for key product_catalog_3496
+2025-11-15 00:05:37.595 [INFO] export-service: Cache hit for key user_session_7691
+2025-11-15 00:05:39.528 [INFO] api-gateway: JWT token validated for user u_8495
+2025-11-15 00:05:41.222 [INFO] auth-service: Serving static asset /assets/app.9114.js
+2025-11-15 00:05:42.275 [INFO] auth-service: Database query completed in 97ms
+2025-11-15 00:05:44.812 [INFO] export-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:05:47.184 [INFO] user-service: Kafka consumer lag: partition 3 lag=423
+2025-11-15 00:05:49.673 [INFO] export-service: Middleware chain completed in 81ms
+2025-11-15 00:05:51.406 [INFO] billing-service: Incoming request: GET /api/v1/users/3688
+2025-11-15 00:05:52.602 [INFO] export-service: Background job enqueued: generate_invoice_5562
+2025-11-15 00:05:55.188 [INFO] auth-service: Session created for user u_1360
+2025-11-15 00:05:56.799 [INFO] export-service: Session created for user u_5237
+2025-11-15 00:05:58.292 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:06:01.946 [INFO] billing-service: Kafka consumer lag: partition 5 lag=43
+2025-11-15 00:06:02.124 [INFO] notification-service: Serving static asset /assets/app.1881.js
+2025-11-15 00:06:05.360 [INFO] user-service: Database query completed in 150ms
+2025-11-15 00:06:07.763 [INFO] scheduler: Health check passed
+2025-11-15 00:06:08.915 [INFO] export-service: Response sent: 201 Created (112ms)
+2025-11-15 00:06:10.520 [INFO] auth-service: TLS handshake completed with client 10.0.248.137
+2025-11-15 00:06:12.348 [INFO] auth-service: Database query completed in 122ms
+2025-11-15 00:06:15.320 [INFO] search-service: Session created for user u_7302
+2025-11-15 00:06:16.369 [INFO] notification-service: Database query completed in 77ms
+2025-11-15 00:06:19.744 [INFO] notification-service: Incoming request: GET /api/v1/users/9886
+2025-11-15 00:06:20.224 [INFO] user-service: Worker thread pool utilization: 71%
+2025-11-15 00:06:23.301 [INFO] notification-service: Cache miss for key product_catalog_5838
+2025-11-15 00:06:25.265 [INFO] search-service: JWT token validated for user u_9450
+2025-11-15 00:06:26.241 [INFO] notification-service: Rate limit check passed for tenant t_3207
+2025-11-15 00:06:28.653 [INFO] user-service: Kafka consumer lag: partition 5 lag=200
+2025-11-15 00:06:31.887 [INFO] scheduler: Cache hit for key user_session_4742
+2025-11-15 00:06:32.803 [INFO] auth-service: Kafka message published to acme.events.production (partition 7)
+2025-11-15 00:06:35.734 [INFO] scheduler: Serving static asset /assets/app.5857.js
+2025-11-15 00:06:37.120 [INFO] scheduler: Log rotation completed, archived server.log.7626.gz
+2025-11-15 00:06:39.438 [INFO] search-service: Background job enqueued: generate_invoice_7593
+2025-11-15 00:06:40.873 [INFO] billing-service: Gzip compression applied, ratio: 0.93
+2025-11-15 00:06:43.232 [INFO] export-service: Middleware chain completed in 86ms
+2025-11-15 00:06:44.194 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:06:47.194 [INFO] notification-service: JWT token validated for user u_1655
+2025-11-15 00:06:49.875 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:06:51.149 [INFO] auth-service: JWT token validated for user u_7016
+2025-11-15 00:06:53.323 [INFO] auth-service: Upstream response from backend-4: 200 (70ms)
+2025-11-15 00:06:55.484 [INFO] auth-service: Response sent: 201 Created (189ms)
+2025-11-15 00:06:57.516 [INFO] user-service: Cache miss for key product_catalog_9445
+2025-11-15 00:06:59.130 [INFO] scheduler: Middleware chain completed in 165ms
+2025-11-15 00:07:00.604 [INFO] billing-service: Database query completed in 134ms
+2025-11-15 00:07:02.523 [INFO] export-service: Upstream response from backend-3: 200 (105ms)
+2025-11-15 00:07:05.649 [INFO] search-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:07:07.193 [INFO] scheduler: Rate limit check passed for tenant t_7671
+2025-11-15 00:07:09.678 [INFO] api-gateway: Log rotation completed, archived server.log.3713.gz
+2025-11-15 00:07:11.355 [INFO] api-gateway: Database query completed in 12ms
+2025-11-15 00:07:13.141 [INFO] scheduler: Gzip compression applied, ratio: 0.29
+2025-11-15 00:07:14.299 [INFO] api-gateway: Serving static asset /assets/app.7061.js
+2025-11-15 00:07:16.877 [INFO] billing-service: JWT token validated for user u_7057
+2025-11-15 00:07:19.588 [INFO] export-service: Middleware chain completed in 5ms
+2025-11-15 00:07:21.586 [INFO] api-gateway: Kafka consumer lag: partition 0 lag=280
+2025-11-15 00:07:22.358 [INFO] user-service: JWT token validated for user u_1496
+2025-11-15 00:07:24.213 [INFO] auth-service: Health check passed
+2025-11-15 00:07:26.881 [INFO] scheduler: Health check passed
+2025-11-15 00:07:29.929 [INFO] auth-service: Health check passed
+2025-11-15 00:07:30.577 [INFO] billing-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:07:32.626 [INFO] api-gateway: Serving static asset /assets/app.1792.js
+2025-11-15 00:07:35.794 [INFO] api-gateway: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:07:37.646 [INFO] user-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:07:38.700 [INFO] billing-service: Kafka consumer lag: partition 5 lag=363
+2025-11-15 00:07:41.531 [INFO] billing-service: Rate limit check passed for tenant t_8385
+2025-11-15 00:07:42.303 [INFO] user-service: Upstream response from backend-3: 200 (134ms)
+2025-11-15 00:07:44.604 [INFO] api-gateway: TLS handshake completed with client 10.0.132.114
+2025-11-15 00:07:47.256 [INFO] search-service: Log rotation completed, archived server.log.1219.gz
+2025-11-15 00:07:48.838 [INFO] notification-service: Background job enqueued: generate_invoice_4984
+2025-11-15 00:07:51.148 [INFO] user-service: Response sent: 200 OK (137ms)
+2025-11-15 00:07:53.424 [INFO] search-service: Gzip compression applied, ratio: 0.79
+2025-11-15 00:07:55.440 [INFO] scheduler: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:07:56.607 [INFO] search-service: Upstream response from backend-2: 200 (146ms)
+2025-11-15 00:07:58.458 [INFO] auth-service: Response sent: 201 Created (194ms)
+2025-11-15 00:08:00.510 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:08:03.451 [INFO] auth-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:08:04.701 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:08:07.317 [INFO] user-service: Incoming request: GET /api/v1/products?page=23
+2025-11-15 00:08:08.102 [INFO] auth-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:08:10.257 [INFO] notification-service: Log rotation completed, archived server.log.5907.gz
+2025-11-15 00:08:13.275 [INFO] api-gateway: Cache miss for key product_catalog_4945
+2025-11-15 00:08:14.418 [INFO] search-service: Response sent: 201 Created (195ms)
+2025-11-15 00:08:17.672 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:08:18.744 [INFO] billing-service: Log rotation completed, archived server.log.8929.gz
+2025-11-15 00:08:21.747 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:08:22.493 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:08:25.879 [INFO] user-service: JWT token validated for user u_7516
+2025-11-15 00:08:27.105 [INFO] export-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:08:29.441 [INFO] auth-service: Request processed successfully
+2025-11-15 00:08:31.864 [INFO] scheduler: Response sent: 201 Created (63ms)
+2025-11-15 00:08:33.486 [INFO] scheduler: Middleware chain completed in 190ms
+2025-11-15 00:08:35.485 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:08:36.891 [INFO] billing-service: Rate limit check passed for tenant t_6309
+2025-11-15 00:08:38.886 [INFO] auth-service: Request processed successfully
+2025-11-15 00:08:40.367 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:08:42.559 [INFO] billing-service: Incoming request: GET /api/v1/products?page=49
+2025-11-15 00:08:44.470 [INFO] billing-service: Gzip compression applied, ratio: 0.58
+2025-11-15 00:08:46.376 [INFO] auth-service: Worker thread pool utilization: 65%
+2025-11-15 00:08:48.201 [INFO] user-service: Upstream response from backend-3: 200 (82ms)
+2025-11-15 00:08:51.776 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:08:53.672 [INFO] notification-service: Upstream response from backend-3: 200 (13ms)
+2025-11-15 00:08:54.784 [INFO] api-gateway: Background job enqueued: generate_invoice_4073
+2025-11-15 00:08:57.274 [INFO] user-service: Incoming request: GET /api/v1/users/8890
+2025-11-15 00:08:59.167 [INFO] scheduler: Middleware chain completed in 69ms
+2025-11-15 00:09:01.629 [INFO] user-service: Rate limit check passed for tenant t_6186
+2025-11-15 00:09:03.931 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:09:04.282 [INFO] auth-service: Cache miss for key product_catalog_7860
+2025-11-15 00:09:06.457 [INFO] api-gateway: Session created for user u_3268
+2025-11-15 00:09:09.552 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:09:10.976 [INFO] notification-service: Database query completed in 7ms
+2025-11-15 00:09:13.668 [INFO] api-gateway: Rate limit check passed for tenant t_4394
+2025-11-15 00:09:14.912 [INFO] api-gateway: Upstream response from backend-2: 200 (20ms)
+2025-11-15 00:09:16.693 [INFO] export-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:09:19.198 [INFO] api-gateway: Rate limit check passed for tenant t_7382
+2025-11-15 00:09:20.880 [INFO] billing-service: Cache miss for key product_catalog_7826
+2025-11-15 00:09:22.501 [INFO] export-service: Serving static asset /assets/app.6134.js
+2025-11-15 00:09:24.335 [INFO] billing-service: JWT token validated for user u_4810
+2025-11-15 00:09:26.860 [INFO] api-gateway: Serving static asset /assets/app.2593.js
+2025-11-15 00:09:29.249 [INFO] scheduler: Middleware chain completed in 165ms
+2025-11-15 00:09:30.209 [INFO] api-gateway: Metrics flushed: 247 datapoints
+2025-11-15 00:09:33.998 [INFO] scheduler: JWT token validated for user u_6890
+2025-11-15 00:09:34.189 [INFO] billing-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:09:36.671 [INFO] user-service: Background job enqueued: generate_invoice_7147
+2025-11-15 00:09:38.129 [INFO] billing-service: Cache hit for key user_session_5190
+2025-11-15 00:09:41.463 [INFO] export-service: Cache miss for key product_catalog_4145
+2025-11-15 00:09:43.939 [INFO] user-service: Worker thread pool utilization: 25%
+2025-11-15 00:09:45.937 [INFO] billing-service: Incoming request: GET /api/v1/products?page=19
+2025-11-15 00:09:47.340 [INFO] auth-service: Background job enqueued: generate_invoice_6741
+2025-11-15 00:09:49.624 [INFO] export-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:09:51.321 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:09:53.998 [INFO] api-gateway: Rate limit check passed for tenant t_5509
+2025-11-15 00:09:54.828 [INFO] notification-service: Health check passed
+2025-11-15 00:09:57.882 [INFO] user-service: Worker thread pool utilization: 84%
+2025-11-15 00:09:58.727 [INFO] billing-service: Request processed successfully
+2025-11-15 00:10:01.705 [INFO] auth-service: Request processed successfully
+2025-11-15 00:10:02.923 [INFO] auth-service: Background job enqueued: generate_invoice_5133
+2025-11-15 00:10:05.815 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:10:06.344 [INFO] auth-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:10:09.141 [INFO] billing-service: Serving static asset /assets/app.9179.js
+2025-11-15 00:10:10.801 [INFO] api-gateway: Kafka consumer lag: partition 3 lag=370
+2025-11-15 00:10:12.220 [INFO] billing-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:10:15.872 [INFO] search-service: Background job enqueued: generate_invoice_6459
+2025-11-15 00:10:16.384 [INFO] scheduler: Health check passed
+2025-11-15 00:10:18.802 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:10:20.679 [INFO] notification-service: Incoming request: GET /api/v1/users/6068
+2025-11-15 00:10:22.885 [INFO] user-service: Redis PING response time: 55ms
+2025-11-15 00:10:25.860 [INFO] auth-service: Kafka message published to acme.events.production (partition 7)
+2025-11-15 00:10:26.410 [INFO] scheduler: Middleware chain completed in 182ms
+2025-11-15 00:10:29.897 [INFO] notification-service: Response sent: 200 OK (158ms)
+2025-11-15 00:10:30.158 [INFO] export-service: Cache hit for key user_session_1832
+2025-11-15 00:10:32.137 [INFO] export-service: JWT token validated for user u_7129
+2025-11-15 00:10:35.160 [INFO] export-service: JWT token validated for user u_3525
+2025-11-15 00:10:36.277 [INFO] search-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:10:38.218 [INFO] billing-service: Middleware chain completed in 98ms
+2025-11-15 00:10:41.107 [INFO] user-service: Health check passed
+2025-11-15 00:10:43.151 [INFO] api-gateway: Session created for user u_9617
+2025-11-15 00:10:44.897 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:10:47.786 [INFO] billing-service: TLS handshake completed with client 10.0.168.124
+2025-11-15 00:10:49.195 [INFO] search-service: Response sent: 200 OK (116ms)
+2025-11-15 00:10:51.342 [INFO] api-gateway: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:10:52.808 [INFO] export-service: Session created for user u_4164
+2025-11-15 00:10:54.132 [INFO] search-service: Gzip compression applied, ratio: 0.12
+2025-11-15 00:10:56.824 [INFO] user-service: Gzip compression applied, ratio: 0.29
+2025-11-15 00:10:59.770 [INFO] billing-service: Gzip compression applied, ratio: 0.15
+2025-11-15 00:11:00.837 [INFO] api-gateway: Session created for user u_4463
+2025-11-15 00:11:03.499 [INFO] api-gateway: Worker thread pool utilization: 80%
+2025-11-15 00:11:04.240 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:11:07.749 [INFO] notification-service: Upstream response from backend-1: 200 (39ms)
+2025-11-15 00:11:09.469 [INFO] api-gateway: Incoming request: POST /api/v1/orders
+2025-11-15 00:11:10.920 [INFO] user-service: JWT token validated for user u_4711
+2025-11-15 00:11:12.735 [INFO] notification-service: Database query completed in 55ms
+2025-11-15 00:11:15.860 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:11:16.872 [INFO] user-service: Response sent: 200 OK (153ms)
+2025-11-15 00:11:18.971 [INFO] billing-service: Background job enqueued: generate_invoice_7927
+2025-11-15 00:11:21.328 [WARN] scheduler: Connection pool nearing capacity: 45/50 active connections
+2025-11-15 00:11:23.888 [INFO] search-service: Session created for user u_1864
+2025-11-15 00:11:24.255 [INFO] notification-service: Database query completed in 132ms
+2025-11-15 00:11:26.101 [INFO] auth-service: Response sent: 200 OK (26ms)
+2025-11-15 00:11:28.184 [INFO] user-service: Cache miss for key product_catalog_2068
+2025-11-15 00:11:30.124 [INFO] billing-service: Kafka consumer lag: partition 1 lag=315
+2025-11-15 00:11:33.547 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=34
+2025-11-15 00:11:35.519 [INFO] search-service: Database query completed in 101ms
+2025-11-15 00:11:37.610 [INFO] api-gateway: TLS handshake completed with client 10.0.82.7
+2025-11-15 00:11:38.583 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:11:41.629 [INFO] api-gateway: Health check passed
+2025-11-15 00:11:42.740 [INFO] search-service: Middleware chain completed in 119ms
+2025-11-15 00:11:44.414 [INFO] notification-service: Gzip compression applied, ratio: 0.57
+2025-11-15 00:11:46.468 [INFO] notification-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:11:49.340 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:11:50.499 [INFO] auth-service: Rate limit check passed for tenant t_2881
+2025-11-15 00:11:52.448 [INFO] auth-service: Session created for user u_9747
+2025-11-15 00:11:55.537 [INFO] search-service: Kafka message published to acme.events.production (partition 7)
+2025-11-15 00:11:56.280 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 00:11:59.462 [INFO] api-gateway: Response sent: 201 Created (111ms)
+2025-11-15 00:12:00.531 [INFO] auth-service: Session created for user u_1127
+2025-11-15 00:12:03.337 [INFO] notification-service: Upstream response from backend-3: 200 (12ms)
+2025-11-15 00:12:04.425 [INFO] api-gateway: Incoming request: GET /api/v1/users/4656
+2025-11-15 00:12:06.330 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:12:09.829 [INFO] auth-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:12:10.772 [INFO] billing-service: Response sent: 200 OK (46ms)
+2025-11-15 00:12:13.694 [INFO] search-service: Worker thread pool utilization: 37%
+2025-11-15 00:12:14.710 [INFO] billing-service: Gzip compression applied, ratio: 0.61
+2025-11-15 00:12:16.908 [INFO] notification-service: Gzip compression applied, ratio: 0.82
+2025-11-15 00:12:18.609 [INFO] auth-service: Rate limit check passed for tenant t_1192
+2025-11-15 00:12:20.454 [INFO] search-service: JWT token validated for user u_9885
+2025-11-15 00:12:22.955 [INFO] scheduler: Incoming request: POST /api/v1/orders
+2025-11-15 00:12:25.151 [INFO] export-service: Cache miss for key product_catalog_2165
+2025-11-15 00:12:26.580 [INFO] scheduler: Incoming request: GET /api/v1/products?page=43
+2025-11-15 00:12:29.487 [INFO] api-gateway: Middleware chain completed in 114ms
+2025-11-15 00:12:30.718 [INFO] notification-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:12:33.878 [INFO] export-service: Redis PING response time: 194ms
+2025-11-15 00:12:35.992 [INFO] notification-service: Serving static asset /assets/app.2311.js
+2025-11-15 00:12:37.957 [INFO] scheduler: Incoming request: POST /api/v1/orders
+2025-11-15 00:12:38.232 [INFO] scheduler: Response sent: 201 Created (180ms)
+2025-11-15 00:12:40.843 [INFO] scheduler: Log rotation completed, archived server.log.2749.gz
+2025-11-15 00:12:43.962 [INFO] search-service: Database query completed in 88ms
+2025-11-15 00:12:44.560 [INFO] export-service: Session created for user u_6641
+2025-11-15 00:12:46.533 [INFO] export-service: Cache miss for key product_catalog_8980
+2025-11-15 00:12:48.871 [INFO] api-gateway: Serving static asset /assets/app.9586.js
+2025-11-15 00:12:50.353 [INFO] scheduler: Health check passed
+2025-11-15 00:12:52.626 [INFO] export-service: Incoming request: GET /api/v1/products?page=25
+2025-11-15 00:12:55.273 [INFO] billing-service: Gzip compression applied, ratio: 0.91
+2025-11-15 00:12:56.182 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:12:58.984 [INFO] billing-service: Kafka consumer lag: partition 0 lag=466
+2025-11-15 00:13:01.449 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:13:03.603 [INFO] search-service: Database query completed in 75ms
+2025-11-15 00:13:05.886 [INFO] api-gateway: JWT token validated for user u_4011
+2025-11-15 00:13:07.760 [INFO] auth-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:13:09.128 [INFO] api-gateway: Incoming request: POST /api/v1/orders
+2025-11-15 00:13:11.470 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:13:13.946 [INFO] api-gateway: Database query completed in 29ms
+2025-11-15 00:13:14.442 [INFO] auth-service: Upstream response from backend-3: 200 (138ms)
+2025-11-15 00:13:17.557 [INFO] api-gateway: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:13:18.466 [INFO] api-gateway: Response sent: 200 OK (161ms)
+2025-11-15 00:13:20.423 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:13:22.372 [INFO] api-gateway: Response sent: 201 Created (106ms)
+2025-11-15 00:13:24.635 [INFO] auth-service: Worker thread pool utilization: 53%
+2025-11-15 00:13:27.830 [INFO] search-service: Upstream response from backend-1: 200 (54ms)
+2025-11-15 00:13:28.214 [INFO] api-gateway: Cache miss for key product_catalog_3999
+2025-11-15 00:13:30.896 [INFO] billing-service: Log rotation completed, archived server.log.4395.gz
+2025-11-15 00:13:32.335 [INFO] auth-service: Cache hit for key user_session_7507
+2025-11-15 00:13:34.710 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 00:13:37.926 [INFO] scheduler: Cache miss for key product_catalog_9762
+2025-11-15 00:13:38.569 [INFO] export-service: Incoming request: GET /api/v1/products?page=33
+2025-11-15 00:13:40.467 [INFO] notification-service: Response sent: 201 Created (47ms)
+2025-11-15 00:13:43.809 [INFO] export-service: Serving static asset /assets/app.3830.js
+2025-11-15 00:13:44.227 [INFO] api-gateway: JWT token validated for user u_2627
+2025-11-15 00:13:47.707 [INFO] scheduler: Request processed successfully
+2025-11-15 00:13:48.311 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:13:50.832 [INFO] notification-service: Incoming request: GET /api/v1/products?page=44
+2025-11-15 00:13:53.282 [INFO] export-service: Request processed successfully
+2025-11-15 00:13:55.219 [INFO] notification-service: Incoming request: GET /api/v1/products?page=22
+2025-11-15 00:13:57.707 [INFO] user-service: Response sent: 200 OK (170ms)
+2025-11-15 00:13:59.849 [INFO] billing-service: Response sent: 201 Created (49ms)
+2025-11-15 00:14:01.553 [INFO] billing-service: Incoming request: GET /api/v1/products?page=46
+2025-11-15 00:14:03.645 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:14:04.827 [INFO] export-service: Kafka consumer lag: partition 3 lag=212
+2025-11-15 00:14:07.797 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:14:09.655 [INFO] api-gateway: JWT token validated for user u_3629
+2025-11-15 00:14:10.517 [INFO] user-service: Health check passed
+2025-11-15 00:14:12.798 [INFO] export-service: Response sent: 200 OK (10ms)
+2025-11-15 00:14:14.117 [INFO] notification-service: JWT token validated for user u_7011
+2025-11-15 00:14:17.109 [INFO] api-gateway: Response sent: 200 OK (19ms)
+2025-11-15 00:14:18.884 [INFO] scheduler: Background job enqueued: generate_invoice_7242
+2025-11-15 00:14:21.275 [INFO] billing-service: Kafka consumer lag: partition 5 lag=44
+2025-11-15 00:14:22.905 [INFO] user-service: Upstream response from backend-2: 200 (142ms)
+2025-11-15 00:14:25.828 [INFO] notification-service: Gzip compression applied, ratio: 0.80
+2025-11-15 00:14:26.113 [INFO] export-service: Redis PING response time: 61ms
+2025-11-15 00:14:29.883 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:14:30.347 [INFO] api-gateway: Response sent: 200 OK (105ms)
+2025-11-15 00:14:33.607 [INFO] api-gateway: Redis PING response time: 88ms
+2025-11-15 00:14:35.798 [INFO] search-service: Incoming request: GET /api/v1/users/9728
+2025-11-15 00:14:36.346 [INFO] search-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:14:39.308 [INFO] api-gateway: Redis PING response time: 86ms
+2025-11-15 00:14:40.846 [INFO] api-gateway: Response sent: 200 OK (110ms)
+2025-11-15 00:14:43.728 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:14:45.197 [INFO] auth-service: Response sent: 200 OK (159ms)
+2025-11-15 00:14:47.189 [INFO] export-service: Cache miss for key product_catalog_5916
+2025-11-15 00:14:49.736 [INFO] api-gateway: Middleware chain completed in 119ms
+2025-11-15 00:14:51.780 [INFO] user-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:14:52.645 [INFO] auth-service: Worker thread pool utilization: 66%
+2025-11-15 00:14:55.230 [INFO] search-service: Database query completed in 101ms
+2025-11-15 00:14:56.955 [INFO] scheduler: TLS handshake completed with client 10.0.183.86
+2025-11-15 00:14:58.906 [INFO] auth-service: Request processed successfully
+2025-11-15 00:15:01.659 [INFO] notification-service: Response sent: 201 Created (96ms)
+2025-11-15 00:15:03.535 [INFO] scheduler: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:15:04.429 [INFO] api-gateway: Incoming request: GET /api/v1/users/4775
+2025-11-15 00:15:07.600 [INFO] api-gateway: TLS handshake completed with client 10.0.7.20
+2025-11-15 00:15:08.470 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=24
+2025-11-15 00:15:11.895 [INFO] notification-service: Incoming request: GET /api/v1/products?page=23
+2025-11-15 00:15:12.966 [INFO] notification-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:15:14.378 [INFO] api-gateway: Cache miss for key product_catalog_9309
+2025-11-15 00:15:16.662 [INFO] notification-service: JWT token validated for user u_2493
+2025-11-15 00:15:18.446 [INFO] export-service: Upstream response from backend-2: 200 (16ms)
+2025-11-15 00:15:20.736 [INFO] scheduler: Metrics flushed: 247 datapoints
+2025-11-15 00:15:22.431 [INFO] auth-service: Incoming request: GET /api/v1/users/4430
+2025-11-15 00:15:24.280 [INFO] billing-service: Middleware chain completed in 116ms
+2025-11-15 00:15:27.368 [INFO] export-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:15:29.677 [INFO] api-gateway: Background job enqueued: generate_invoice_3190
+2025-11-15 00:15:31.278 [INFO] scheduler: Redis PING response time: 58ms
+2025-11-15 00:15:33.287 [INFO] auth-service: Redis PING response time: 33ms
+2025-11-15 00:15:35.913 [INFO] auth-service: Rate limit check passed for tenant t_2944
+2025-11-15 00:15:37.422 [INFO] scheduler: Log rotation completed, archived server.log.2654.gz
+2025-11-15 00:15:38.798 [INFO] export-service: Health check passed
+2025-11-15 00:15:41.518 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:15:43.607 [INFO] billing-service: Kafka message published to acme.events.production (partition 7)
+2025-11-15 00:15:45.547 [INFO] user-service: Worker thread pool utilization: 35%
+2025-11-15 00:15:46.205 [INFO] billing-service: TLS handshake completed with client 10.0.126.236
+2025-11-15 00:15:48.739 [INFO] notification-service: Session created for user u_7276
+2025-11-15 00:15:50.635 [INFO] api-gateway: Rate limit check passed for tenant t_2410
+2025-11-15 00:15:52.291 [INFO] scheduler: Response sent: 201 Created (17ms)
+2025-11-15 00:15:55.954 [INFO] notification-service: Health check passed
+2025-11-15 00:15:57.348 [INFO] user-service: Database query completed in 68ms
+2025-11-15 00:15:59.928 [INFO] auth-service: Serving static asset /assets/app.6040.js
+2025-11-15 00:16:00.399 [INFO] export-service: Worker thread pool utilization: 76%
+2025-11-15 00:16:03.353 [INFO] auth-service: Redis PING response time: 76ms
+2025-11-15 00:16:05.271 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:16:07.990 [INFO] auth-service: TLS handshake completed with client 10.0.11.53
+2025-11-15 00:16:09.342 [INFO] export-service: Incoming request: GET /api/v1/products?page=4
+2025-11-15 00:16:11.599 [INFO] export-service: Rate limit check passed for tenant t_3126
+2025-11-15 00:16:13.529 [INFO] user-service: Request processed successfully
+2025-11-15 00:16:15.880 [INFO] export-service: Response sent: 201 Created (104ms)
+2025-11-15 00:16:16.802 [INFO] user-service: Response sent: 200 OK (66ms)
+2025-11-15 00:16:18.873 [INFO] api-gateway: JWT token validated for user u_7862
+2025-11-15 00:16:21.510 [INFO] user-service: Cache hit for key user_session_6071
+2025-11-15 00:16:22.414 [INFO] user-service: Response sent: 201 Created (64ms)
+2025-11-15 00:16:25.764 [INFO] api-gateway: Cache hit for key user_session_6405
+2025-11-15 00:16:27.443 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:16:28.780 [INFO] billing-service: Gzip compression applied, ratio: 0.49
+2025-11-15 00:16:30.115 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:16:33.381 [INFO] scheduler: Request processed successfully
+2025-11-15 00:16:34.761 [INFO] notification-service: Database query completed in 109ms
+2025-11-15 00:16:37.266 [INFO] notification-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:16:39.642 [INFO] user-service: TLS handshake completed with client 10.0.129.148
+2025-11-15 00:16:41.829 [INFO] billing-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:16:42.750 [INFO] billing-service: Redis PING response time: 35ms
+2025-11-15 00:16:44.348 [INFO] user-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:16:46.156 [INFO] billing-service: Incoming request: GET /api/v1/users/5092
+2025-11-15 00:16:49.784 [INFO] export-service: TLS handshake completed with client 10.0.94.167
+2025-11-15 00:16:50.157 [INFO] scheduler: Rate limit check passed for tenant t_9398
+2025-11-15 00:16:53.859 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:16:55.344 [INFO] api-gateway: Middleware chain completed in 97ms
+2025-11-15 00:16:56.984 [INFO] notification-service: Kafka consumer lag: partition 4 lag=264
+2025-11-15 00:16:58.418 [INFO] user-service: Incoming request: GET /api/v1/products?page=42
+2025-11-15 00:17:00.345 [INFO] search-service: Upstream response from backend-1: 200 (162ms)
+2025-11-15 00:17:02.763 [INFO] billing-service: Response sent: 200 OK (92ms)
+2025-11-15 00:17:04.793 [INFO] user-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:17:06.366 [INFO] billing-service: Session created for user u_8765
+2025-11-15 00:17:09.340 [INFO] billing-service: Database query completed in 145ms
+2025-11-15 00:17:10.447 [INFO] auth-service: Response sent: 200 OK (124ms)
+2025-11-15 00:17:12.799 [INFO] auth-service: Database query completed in 17ms
+2025-11-15 00:17:14.885 [INFO] auth-service: Serving static asset /assets/app.2194.js
+2025-11-15 00:17:16.550 [INFO] scheduler: Request processed successfully
+2025-11-15 00:17:18.964 [INFO] scheduler: Middleware chain completed in 96ms
+2025-11-15 00:17:21.876 [WARN] billing-service: Retry attempt 2/3 for upstream request to billing-service
+2025-11-15 00:17:23.833 [INFO] export-service: JWT token validated for user u_2387
+2025-11-15 00:17:24.362 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:17:26.151 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:17:29.193 [INFO] export-service: Upstream response from backend-3: 200 (70ms)
+2025-11-15 00:17:31.681 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:17:32.580 [INFO] user-service: Incoming request: GET /api/v1/products?page=11
+2025-11-15 00:17:35.524 [INFO] api-gateway: Database query completed in 23ms
+2025-11-15 00:17:36.242 [INFO] export-service: Request processed successfully
+2025-11-15 00:17:39.578 [INFO] auth-service: Middleware chain completed in 174ms
+2025-11-15 00:17:41.416 [INFO] notification-service: Redis PING response time: 42ms
+2025-11-15 00:17:42.615 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:17:44.509 [INFO] scheduler: Gzip compression applied, ratio: 0.51
+2025-11-15 00:17:47.227 [INFO] export-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:17:49.432 [INFO] billing-service: Incoming request: GET /api/v1/products?page=30
+2025-11-15 00:17:51.627 [INFO] auth-service: Cache miss for key product_catalog_1978
+2025-11-15 00:17:52.918 [INFO] user-service: Response sent: 201 Created (21ms)
+2025-11-15 00:17:54.949 [INFO] auth-service: Database query completed in 140ms
+2025-11-15 00:17:56.306 [INFO] billing-service: TLS handshake completed with client 10.0.56.87
+2025-11-15 00:17:59.909 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:18:00.492 [INFO] search-service: Response sent: 201 Created (7ms)
+2025-11-15 00:18:02.630 [INFO] billing-service: TLS handshake completed with client 10.0.254.46
+2025-11-15 00:18:05.138 [INFO] api-gateway: TLS handshake completed with client 10.0.5.35
+2025-11-15 00:18:07.607 [INFO] user-service: Gzip compression applied, ratio: 0.88
+2025-11-15 00:18:08.761 [INFO] scheduler: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:18:11.207 [INFO] export-service: Kafka consumer lag: partition 3 lag=446
+2025-11-15 00:18:12.192 [INFO] billing-service: Log rotation completed, archived server.log.9364.gz
+2025-11-15 00:18:14.621 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:18:16.722 [INFO] notification-service: Cache miss for key product_catalog_6635
+2025-11-15 00:18:18.913 [INFO] user-service: Response sent: 200 OK (66ms)
+2025-11-15 00:18:21.264 [INFO] notification-service: JWT token validated for user u_9942
+2025-11-15 00:18:23.931 [INFO] billing-service: Upstream response from backend-1: 200 (115ms)
+2025-11-15 00:18:25.459 [INFO] notification-service: Request processed successfully
+2025-11-15 00:18:26.949 [INFO] export-service: Response sent: 201 Created (168ms)
+2025-11-15 00:18:28.526 [INFO] user-service: Redis PING response time: 184ms
+2025-11-15 00:18:30.244 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:18:32.571 [INFO] api-gateway: TLS handshake completed with client 10.0.44.79
+2025-11-15 00:18:35.917 [INFO] auth-service: Session created for user u_7216
+2025-11-15 00:18:36.852 [INFO] api-gateway: Log rotation completed, archived server.log.4643.gz
+2025-11-15 00:18:38.127 [INFO] auth-service: TLS handshake completed with client 10.0.230.37
+2025-11-15 00:18:41.331 [INFO] scheduler: Incoming request: GET /api/v1/users/5481
+2025-11-15 00:18:43.656 [INFO] export-service: Background job enqueued: generate_invoice_6118
+2025-11-15 00:18:44.959 [INFO] user-service: Rate limit check passed for tenant t_8731
+2025-11-15 00:18:47.598 [INFO] notification-service: Rate limit check passed for tenant t_5640
+2025-11-15 00:18:49.526 [INFO] auth-service: Kafka consumer lag: partition 5 lag=187
+2025-11-15 00:18:50.609 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:18:52.453 [INFO] notification-service: Upstream response from backend-1: 200 (113ms)
+2025-11-15 00:18:55.649 [INFO] notification-service: Request processed successfully
+2025-11-15 00:18:57.999 [INFO] user-service: Upstream response from backend-2: 200 (110ms)
+2025-11-15 00:18:58.868 [INFO] billing-service: Incoming request: GET /api/v1/products?page=18
+2025-11-15 00:19:01.638 [INFO] notification-service: Session created for user u_2956
+2025-11-15 00:19:02.575 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:19:05.191 [INFO] api-gateway: Response sent: 200 OK (184ms)
+2025-11-15 00:19:06.830 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:19:09.189 [INFO] api-gateway: Incoming request: GET /api/v1/users/9622
+2025-11-15 00:19:11.456 [INFO] billing-service: Upstream response from backend-3: 200 (85ms)
+2025-11-15 00:19:13.131 [INFO] export-service: Response sent: 201 Created (93ms)
+2025-11-15 00:19:15.112 [INFO] auth-service: JWT token validated for user u_3439
+2025-11-15 00:19:16.232 [INFO] user-service: Log rotation completed, archived server.log.6989.gz
+2025-11-15 00:19:18.949 [INFO] api-gateway: Session created for user u_3777
+2025-11-15 00:19:21.194 [INFO] search-service: Cache miss for key product_catalog_5168
+2025-11-15 00:19:23.579 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:19:24.564 [INFO] user-service: Cache miss for key product_catalog_9907
+2025-11-15 00:19:26.990 [INFO] notification-service: Background job enqueued: generate_invoice_2266
+2025-11-15 00:19:28.489 [INFO] user-service: Worker thread pool utilization: 69%
+2025-11-15 00:19:31.747 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:19:32.563 [INFO] user-service: Incoming request: GET /api/v1/products?page=12
+2025-11-15 00:19:35.984 [INFO] api-gateway: Log rotation completed, archived server.log.7806.gz
+2025-11-15 00:19:37.881 [INFO] user-service: JWT token validated for user u_1683
+2025-11-15 00:19:39.477 [INFO] notification-service: Cache miss for key product_catalog_1109
+2025-11-15 00:19:41.818 [INFO] search-service: Background job enqueued: generate_invoice_8747
+2025-11-15 00:19:43.412 [INFO] scheduler: Incoming request: GET /api/v1/users/4233
+2025-11-15 00:19:44.839 [INFO] user-service: Upstream response from backend-3: 200 (31ms)
+2025-11-15 00:19:47.282 [INFO] export-service: Incoming request: GET /api/v1/users/2199
+2025-11-15 00:19:48.178 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:19:50.722 [INFO] export-service: Kafka consumer lag: partition 7 lag=346
+2025-11-15 00:19:53.236 [INFO] api-gateway: Response sent: 201 Created (187ms)
+2025-11-15 00:19:54.509 [INFO] user-service: Kafka consumer lag: partition 6 lag=54
+2025-11-15 00:19:56.519 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:19:58.250 [INFO] api-gateway: Middleware chain completed in 52ms
+2025-11-15 00:20:00.392 [INFO] search-service: Request processed successfully
+2025-11-15 00:20:02.778 [INFO] api-gateway: Middleware chain completed in 4ms
+2025-11-15 00:20:04.408 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:20:07.811 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:20:08.114 [INFO] api-gateway: Redis PING response time: 54ms
+2025-11-15 00:20:10.690 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:20:12.175 [INFO] auth-service: Redis PING response time: 120ms
+2025-11-15 00:20:14.901 [INFO] billing-service: Health check passed
+2025-11-15 00:20:17.776 [INFO] export-service: Session created for user u_9751
+2025-11-15 00:20:18.286 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 00:20:20.631 [INFO] search-service: Worker thread pool utilization: 54%
+2025-11-15 00:20:23.283 [INFO] api-gateway: Incoming request: GET /api/v1/users/2756
+2025-11-15 00:20:24.329 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:20:27.266 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:20:29.337 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:20:31.794 [INFO] scheduler: Gzip compression applied, ratio: 0.56
+2025-11-15 00:20:33.659 [INFO] scheduler: Request processed successfully
+2025-11-15 00:20:35.555 [INFO] auth-service: Response sent: 200 OK (162ms)
+2025-11-15 00:20:37.694 [INFO] search-service: Session created for user u_4177
+2025-11-15 00:20:39.105 [INFO] user-service: Session created for user u_5411
+2025-11-15 00:20:41.617 [INFO] api-gateway: Kafka consumer lag: partition 3 lag=96
+2025-11-15 00:20:42.418 [INFO] notification-service: Log rotation completed, archived server.log.3271.gz
+2025-11-15 00:20:44.316 [INFO] api-gateway: Kafka consumer lag: partition 5 lag=328
+2025-11-15 00:20:46.196 [INFO] auth-service: Upstream response from backend-2: 200 (123ms)
+2025-11-15 00:20:49.250 [INFO] scheduler: Redis PING response time: 1ms
+2025-11-15 00:20:51.776 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:20:53.964 [INFO] scheduler: Middleware chain completed in 109ms
+2025-11-15 00:20:55.390 [INFO] api-gateway: Log rotation completed, archived server.log.6474.gz
+2025-11-15 00:20:57.343 [INFO] scheduler: Cache miss for key product_catalog_8653
+2025-11-15 00:20:58.879 [INFO] scheduler: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:21:00.885 [INFO] scheduler: JWT token validated for user u_7313
+2025-11-15 00:21:02.156 [INFO] auth-service: Response sent: 200 OK (118ms)
+2025-11-15 00:21:05.813 [INFO] user-service: JWT token validated for user u_6781
+2025-11-15 00:21:06.241 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 00:21:09.190 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:21:11.620 [INFO] notification-service: Kafka consumer lag: partition 2 lag=118
+2025-11-15 00:21:12.834 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=33
+2025-11-15 00:21:14.562 [INFO] notification-service: Request processed successfully
+2025-11-15 00:21:17.498 [INFO] notification-service: JWT token validated for user u_3445
+2025-11-15 00:21:18.189 [INFO] billing-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:21:21.763 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:21:22.882 [INFO] notification-service: TLS handshake completed with client 10.0.235.231
+2025-11-15 00:21:24.551 [INFO] search-service: Upstream response from backend-4: 200 (19ms)
+2025-11-15 00:21:26.355 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:21:29.714 [INFO] search-service: Incoming request: GET /api/v1/products?page=1
+2025-11-15 00:21:31.460 [INFO] billing-service: Response sent: 200 OK (118ms)
+2025-11-15 00:21:32.587 [INFO] notification-service: Serving static asset /assets/app.4884.js
+2025-11-15 00:21:34.773 [INFO] api-gateway: Log rotation completed, archived server.log.7421.gz
+2025-11-15 00:21:37.790 [INFO] user-service: Log rotation completed, archived server.log.4670.gz
+2025-11-15 00:21:39.906 [INFO] notification-service: Incoming request: GET /api/v1/products?page=30
+2025-11-15 00:21:41.202 [INFO] notification-service: Health check passed
+2025-11-15 00:21:42.552 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:21:45.338 [INFO] billing-service: Database query completed in 88ms
+2025-11-15 00:21:46.475 [INFO] billing-service: Incoming request: GET /api/v1/products?page=50
+2025-11-15 00:21:49.183 [INFO] api-gateway: Static file served from CDN cache
+2025-11-15 00:21:50.449 [INFO] scheduler: Incoming request: GET /api/v1/users/4220
+2025-11-15 00:21:52.655 [INFO] api-gateway: Health check passed
+2025-11-15 00:21:55.669 [INFO] scheduler: Background job enqueued: generate_invoice_8120
+2025-11-15 00:21:57.174 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:21:59.661 [INFO] auth-service: Serving static asset /assets/app.9209.js
+2025-11-15 00:22:01.320 [INFO] scheduler: Response sent: 201 Created (113ms)
+2025-11-15 00:22:02.306 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:22:04.653 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:22:07.156 [INFO] billing-service: Incoming request: GET /api/v1/products?page=26
+2025-11-15 00:22:08.293 [INFO] search-service: Response sent: 200 OK (98ms)
+2025-11-15 00:22:10.940 [INFO] auth-service: Background job enqueued: generate_invoice_6021
+2025-11-15 00:22:13.667 [INFO] auth-service: Kafka consumer lag: partition 7 lag=468
+2025-11-15 00:22:15.568 [INFO] api-gateway: Response sent: 200 OK (161ms)
+2025-11-15 00:22:16.545 [INFO] billing-service: Kafka consumer lag: partition 4 lag=196
+2025-11-15 00:22:19.462 [INFO] user-service: Request processed successfully
+2025-11-15 00:22:21.978 [INFO] export-service: Redis PING response time: 28ms
+2025-11-15 00:22:23.636 [INFO] scheduler: Upstream response from backend-4: 200 (110ms)
+2025-11-15 00:22:25.987 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:22:26.593 [INFO] search-service: JWT token validated for user u_9418
+2025-11-15 00:22:29.846 [INFO] auth-service: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:22:31.591 [INFO] auth-service: Background job enqueued: generate_invoice_6970
+2025-11-15 00:22:32.219 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:22:34.394 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:22:37.134 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:22:38.551 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:22:41.352 [WARN] billing-service: Request body size 48MB approaching limit of 50MB
+2025-11-15 00:22:42.554 [INFO] export-service: Gzip compression applied, ratio: 0.81
+2025-11-15 00:22:44.830 [INFO] auth-service: Incoming request: GET /api/v1/users/2999
+2025-11-15 00:22:47.139 [INFO] export-service: Request processed successfully
+2025-11-15 00:22:49.522 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:22:50.960 [INFO] export-service: Response sent: 200 OK (83ms)
+2025-11-15 00:22:52.212 [INFO] notification-service: Incoming request: GET /api/v1/products?page=39
+2025-11-15 00:22:54.748 [INFO] search-service: Gzip compression applied, ratio: 0.42
+2025-11-15 00:22:56.412 [INFO] user-service: Database query completed in 80ms
+2025-11-15 00:22:58.645 [INFO] billing-service: Background job enqueued: generate_invoice_6664
+2025-11-15 00:23:00.635 [INFO] search-service: Upstream response from backend-2: 200 (123ms)
+2025-11-15 00:23:02.879 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:23:04.724 [INFO] user-service: Cache hit for key user_session_2195
+2025-11-15 00:23:06.601 [INFO] billing-service: Background job enqueued: generate_invoice_6126
+2025-11-15 00:23:09.922 [INFO] notification-service: Upstream response from backend-2: 200 (143ms)
+2025-11-15 00:23:11.768 [INFO] export-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:23:12.998 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:23:14.931 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:23:16.823 [INFO] scheduler: Worker thread pool utilization: 52%
+2025-11-15 00:23:18.375 [INFO] billing-service: Incoming request: GET /api/v1/users/6796
+2025-11-15 00:23:20.620 [INFO] scheduler: JWT token validated for user u_9438
+2025-11-15 00:23:22.274 [INFO] search-service: Log rotation completed, archived server.log.5667.gz
+2025-11-15 00:23:25.694 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=4
+2025-11-15 00:23:27.997 [INFO] search-service: Background job enqueued: generate_invoice_4454
+2025-11-15 00:23:29.653 [INFO] notification-service: Log rotation completed, archived server.log.9975.gz
+2025-11-15 00:23:30.583 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:23:32.847 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:23:35.569 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:23:37.141 [INFO] scheduler: Upstream response from backend-4: 200 (178ms)
+2025-11-15 00:23:39.843 [INFO] billing-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:23:41.490 [INFO] api-gateway: Cache miss for key product_catalog_1721
+2025-11-15 00:23:43.101 [INFO] api-gateway: TLS handshake completed with client 10.0.17.139
+2025-11-15 00:23:45.295 [INFO] search-service: Incoming request: GET /api/v1/users/9225
+2025-11-15 00:23:47.688 [INFO] scheduler: Redis PING response time: 81ms
+2025-11-15 00:23:48.472 [INFO] billing-service: Kafka consumer lag: partition 1 lag=438
+2025-11-15 00:23:50.865 [INFO] export-service: Request processed successfully
+2025-11-15 00:23:52.781 [INFO] export-service: Gzip compression applied, ratio: 0.85
+2025-11-15 00:23:55.106 [INFO] export-service: Redis PING response time: 158ms
+2025-11-15 00:23:56.697 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:23:58.331 [INFO] scheduler: Rate limit check passed for tenant t_7304
+2025-11-15 00:24:01.890 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:24:02.223 [INFO] user-service: Serving static asset /assets/app.9599.js
+2025-11-15 00:24:05.976 [INFO] notification-service: Session created for user u_8321
+2025-11-15 00:24:07.126 [INFO] api-gateway: Kafka consumer lag: partition 4 lag=270
+2025-11-15 00:24:09.645 [INFO] api-gateway: Response sent: 200 OK (78ms)
+2025-11-15 00:24:11.667 [INFO] api-gateway: Database query completed in 187ms
+2025-11-15 00:24:13.338 [INFO] billing-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:24:14.445 [INFO] billing-service: Response sent: 200 OK (84ms)
+2025-11-15 00:24:16.161 [INFO] billing-service: Middleware chain completed in 5ms
+2025-11-15 00:24:19.143 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:24:21.589 [INFO] notification-service: Rate limit check passed for tenant t_8653
+2025-11-15 00:24:22.579 [INFO] user-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:24:25.279 [INFO] billing-service: Database query completed in 76ms
+2025-11-15 00:24:26.445 [INFO] billing-service: Middleware chain completed in 173ms
+2025-11-15 00:24:29.277 [INFO] auth-service: Gzip compression applied, ratio: 0.80
+2025-11-15 00:24:30.141 [INFO] billing-service: TLS handshake completed with client 10.0.108.96
+2025-11-15 00:24:33.783 [INFO] auth-service: Log rotation completed, archived server.log.4182.gz
+2025-11-15 00:24:35.794 [INFO] notification-service: Upstream response from backend-1: 200 (29ms)
+2025-11-15 00:24:37.721 [INFO] user-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:24:39.610 [INFO] notification-service: Background job enqueued: generate_invoice_2828
+2025-11-15 00:24:40.337 [INFO] user-service: Rate limit check passed for tenant t_1479
+2025-11-15 00:24:42.534 [INFO] export-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:24:44.129 [INFO] user-service: Serving static asset /assets/app.8386.js
+2025-11-15 00:24:46.804 [INFO] api-gateway: Upstream response from backend-4: 200 (156ms)
+2025-11-15 00:24:49.622 [INFO] billing-service: JWT token validated for user u_1965
+2025-11-15 00:24:51.991 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:24:52.228 [INFO] auth-service: Request processed successfully
+2025-11-15 00:24:55.842 [INFO] api-gateway: TLS handshake completed with client 10.0.31.240
+2025-11-15 00:24:57.545 [INFO] billing-service: Static file served from CDN cache
+2025-11-15 00:24:59.718 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:25:01.686 [INFO] user-service: Session created for user u_2142
+2025-11-15 00:25:03.820 [INFO] user-service: Kafka consumer lag: partition 6 lag=120
+2025-11-15 00:25:05.981 [INFO] export-service: Response sent: 201 Created (113ms)
+2025-11-15 00:25:06.100 [INFO] billing-service: Health check passed
+2025-11-15 00:25:08.302 [INFO] export-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:25:10.125 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:25:12.320 [INFO] user-service: Incoming request: GET /api/v1/users/1069
+2025-11-15 00:25:14.243 [INFO] export-service: TLS handshake completed with client 10.0.83.59
+2025-11-15 00:25:16.759 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:25:18.113 [INFO] user-service: Middleware chain completed in 101ms
+2025-11-15 00:25:20.985 [INFO] export-service: Database query completed in 54ms
+2025-11-15 00:25:23.640 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:25:25.709 [INFO] auth-service: Database query completed in 51ms
+2025-11-15 00:25:27.445 [INFO] scheduler: Rate limit check passed for tenant t_7488
+2025-11-15 00:25:29.897 [INFO] billing-service: Static file served from CDN cache
+2025-11-15 00:25:30.624 [INFO] api-gateway: Gzip compression applied, ratio: 0.11
+2025-11-15 00:25:32.921 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 00:25:34.411 [INFO] billing-service: TLS handshake completed with client 10.0.229.136
+2025-11-15 00:25:37.876 [INFO] notification-service: JWT token validated for user u_5128
+2025-11-15 00:25:38.926 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:25:40.543 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:25:43.433 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:25:45.891 [INFO] notification-service: Session created for user u_8816
+2025-11-15 00:25:46.790 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:25:49.593 [INFO] export-service: Kafka consumer lag: partition 0 lag=314
+2025-11-15 00:25:51.111 [INFO] billing-service: Response sent: 201 Created (120ms)
+2025-11-15 00:25:52.653 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:25:54.155 [INFO] auth-service: Cache miss for key product_catalog_5969
+2025-11-15 00:25:57.906 [INFO] export-service: Upstream response from backend-3: 200 (22ms)
+2025-11-15 00:25:59.347 [INFO] scheduler: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:26:00.272 [INFO] export-service: Serving static asset /assets/app.4367.js
+2025-11-15 00:26:02.951 [INFO] billing-service: Worker thread pool utilization: 84%
+2025-11-15 00:26:04.584 [INFO] export-service: Middleware chain completed in 151ms
+2025-11-15 00:26:07.258 [INFO] billing-service: Health check passed
+2025-11-15 00:26:09.160 [INFO] auth-service: TLS handshake completed with client 10.0.91.222
+2025-11-15 00:26:11.211 [INFO] user-service: Response sent: 201 Created (147ms)
+2025-11-15 00:26:13.856 [INFO] search-service: Serving static asset /assets/app.9108.js
+2025-11-15 00:26:14.244 [INFO] search-service: Incoming request: GET /api/v1/users/3094
+2025-11-15 00:26:17.229 [INFO] api-gateway: Response sent: 200 OK (178ms)
+2025-11-15 00:26:18.634 [INFO] api-gateway: Kafka consumer lag: partition 3 lag=92
+2025-11-15 00:26:21.577 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:26:22.294 [INFO] billing-service: Incoming request: GET /api/v1/products?page=48
+2025-11-15 00:26:25.256 [INFO] scheduler: Cache hit for key user_session_5322
+2025-11-15 00:26:27.650 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:26:28.952 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:26:30.537 [INFO] auth-service: Request processed successfully
+2025-11-15 00:26:32.211 [INFO] api-gateway: Session created for user u_4530
+2025-11-15 00:26:34.800 [INFO] export-service: Log rotation completed, archived server.log.3285.gz
+2025-11-15 00:26:37.611 [INFO] user-service: Database query completed in 61ms
+2025-11-15 00:26:39.490 [ERROR] api-gateway: database connection pool exhausted, 47 pending queries dropped
+2025-11-15 00:26:41.621 [INFO] billing-service: Cache miss for key product_catalog_6428
+2025-11-15 00:26:42.328 [INFO] search-service: Cache hit for key user_session_8691
+2025-11-15 00:26:45.423 [INFO] export-service: Database query completed in 23ms
+2025-11-15 00:26:47.331 [INFO] export-service: Redis PING response time: 68ms
+2025-11-15 00:26:49.259 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:26:51.252 [INFO] user-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:26:52.101 [INFO] api-gateway: JWT token validated for user u_8305
+2025-11-15 00:26:54.337 [INFO] api-gateway: Log rotation completed, archived server.log.1024.gz
+2025-11-15 00:26:56.554 [INFO] export-service: Response sent: 200 OK (11ms)
+2025-11-15 00:26:59.470 [INFO] auth-service: Worker thread pool utilization: 71%
+2025-11-15 00:27:00.551 [INFO] api-gateway: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:27:02.183 [INFO] api-gateway: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:27:04.736 [INFO] notification-service: Log rotation completed, archived server.log.1843.gz
+2025-11-15 00:27:07.435 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:27:09.472 [INFO] search-service: Session created for user u_9828
+2025-11-15 00:27:11.682 [INFO] scheduler: Incoming request: GET /api/v1/products?page=26
+2025-11-15 00:27:13.963 [INFO] billing-service: Request processed successfully
+2025-11-15 00:27:15.608 [INFO] notification-service: Rate limit check passed for tenant t_8734
+2025-11-15 00:27:17.689 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:27:19.547 [INFO] export-service: Request processed successfully
+2025-11-15 00:27:20.286 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:27:23.970 [INFO] billing-service: Cache hit for key user_session_4735
+2025-11-15 00:27:24.102 [INFO] notification-service: Database query completed in 193ms
+2025-11-15 00:27:26.916 [INFO] auth-service: Redis PING response time: 175ms
+2025-11-15 00:27:28.507 [INFO] api-gateway: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:27:31.542 [INFO] api-gateway: Upstream response from backend-4: 200 (65ms)
+2025-11-15 00:27:33.876 [INFO] user-service: Cache miss for key product_catalog_4507
+2025-11-15 00:27:35.317 [INFO] search-service: TLS handshake completed with client 10.0.91.228
+2025-11-15 00:27:37.261 [INFO] billing-service: Upstream response from backend-1: 200 (93ms)
+2025-11-15 00:27:39.597 [INFO] scheduler: Rate limit check passed for tenant t_4504
+2025-11-15 00:27:41.302 [INFO] billing-service: Cache miss for key product_catalog_1682
+2025-11-15 00:27:42.315 [INFO] auth-service: JWT token validated for user u_5583
+2025-11-15 00:27:45.541 [INFO] billing-service: Background job enqueued: generate_invoice_5132
+2025-11-15 00:27:47.640 [INFO] scheduler: Database query completed in 151ms
+2025-11-15 00:27:48.342 [INFO] billing-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:27:50.700 [INFO] auth-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:27:52.627 [INFO] user-service: Kafka consumer lag: partition 5 lag=111
+2025-11-15 00:27:55.990 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:27:56.466 [INFO] auth-service: Response sent: 201 Created (88ms)
+2025-11-15 00:27:58.862 [INFO] notification-service: Cache hit for key user_session_6413
+2025-11-15 00:28:01.186 [INFO] billing-service: Kafka consumer lag: partition 2 lag=325
+2025-11-15 00:28:03.619 [INFO] notification-service: Background job enqueued: generate_invoice_1639
+2025-11-15 00:28:05.235 [INFO] billing-service: Background job enqueued: generate_invoice_1503
+2025-11-15 00:28:07.469 [INFO] api-gateway: Response sent: 201 Created (59ms)
+2025-11-15 00:28:09.185 [INFO] billing-service: JWT token validated for user u_9274
+2025-11-15 00:28:10.219 [INFO] billing-service: Cache miss for key product_catalog_1301
+2025-11-15 00:28:12.603 [INFO] notification-service: Rate limit check passed for tenant t_4654
+2025-11-15 00:28:14.274 [INFO] search-service: JWT token validated for user u_2793
+2025-11-15 00:28:17.147 [INFO] user-service: Health check passed
+2025-11-15 00:28:18.770 [INFO] billing-service: Health check passed
+2025-11-15 00:28:20.839 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:28:22.216 [INFO] api-gateway: Cache hit for key user_session_3340
+2025-11-15 00:28:25.982 [INFO] api-gateway: Upstream response from backend-3: 200 (172ms)
+2025-11-15 00:28:27.832 [INFO] billing-service: Gzip compression applied, ratio: 0.46
+2025-11-15 00:28:29.570 [INFO] auth-service: Cache hit for key user_session_4422
+2025-11-15 00:28:30.644 [INFO] search-service: Session created for user u_9121
+2025-11-15 00:28:33.920 [INFO] scheduler: Incoming request: POST /api/v1/orders
+2025-11-15 00:28:34.318 [INFO] api-gateway: Serving static asset /assets/app.9197.js
+2025-11-15 00:28:37.723 [INFO] billing-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:28:39.957 [INFO] search-service: Middleware chain completed in 127ms
+2025-11-15 00:28:41.624 [INFO] api-gateway: Gzip compression applied, ratio: 0.74
+2025-11-15 00:28:42.918 [INFO] user-service: Log rotation completed, archived server.log.4492.gz
+2025-11-15 00:28:44.530 [INFO] auth-service: Rate limit check passed for tenant t_8777
+2025-11-15 00:28:47.877 [INFO] export-service: Response sent: 200 OK (26ms)
+2025-11-15 00:28:49.305 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:28:50.623 [INFO] user-service: Cache hit for key user_session_7163
+2025-11-15 00:28:52.453 [INFO] notification-service: Session created for user u_1884
+2025-11-15 00:28:54.572 [INFO] scheduler: Cache miss for key product_catalog_9640
+2025-11-15 00:28:56.311 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:28:58.655 [INFO] search-service: Incoming request: GET /api/v1/products?page=32
+2025-11-15 00:29:00.918 [INFO] export-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:29:03.395 [INFO] search-service: Cache miss for key product_catalog_2630
+2025-11-15 00:29:05.275 [INFO] scheduler: Serving static asset /assets/app.6082.js
+2025-11-15 00:29:07.345 [INFO] billing-service: Gzip compression applied, ratio: 0.81
+2025-11-15 00:29:09.910 [INFO] notification-service: Response sent: 200 OK (54ms)
+2025-11-15 00:29:11.844 [INFO] search-service: Response sent: 201 Created (151ms)
+2025-11-15 00:29:12.731 [INFO] export-service: Redis PING response time: 103ms
+2025-11-15 00:29:15.491 [INFO] auth-service: Database query completed in 82ms
+2025-11-15 00:29:17.298 [INFO] search-service: Database query completed in 55ms
+2025-11-15 00:29:18.694 [INFO] billing-service: Request processed successfully
+2025-11-15 00:29:20.809 [INFO] user-service: Background job enqueued: generate_invoice_7507
+2025-11-15 00:29:22.553 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:29:25.549 [INFO] billing-service: Serving static asset /assets/app.6592.js
+2025-11-15 00:29:27.881 [INFO] billing-service: TLS handshake completed with client 10.0.160.206
+2025-11-15 00:29:29.164 [INFO] export-service: Log rotation completed, archived server.log.9720.gz
+2025-11-15 00:29:31.616 [INFO] search-service: Worker thread pool utilization: 59%
+2025-11-15 00:29:32.154 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:29:35.741 [INFO] api-gateway: TLS handshake completed with client 10.0.123.190
+2025-11-15 00:29:37.466 [INFO] billing-service: Middleware chain completed in 86ms
+2025-11-15 00:29:38.895 [INFO] notification-service: Incoming request: GET /api/v1/products?page=43
+2025-11-15 00:29:40.501 [INFO] search-service: Request processed successfully
+2025-11-15 00:29:43.874 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:29:45.504 [INFO] auth-service: JWT token validated for user u_6018
+2025-11-15 00:29:47.901 [INFO] notification-service: Request processed successfully
+2025-11-15 00:29:48.943 [INFO] export-service: Response sent: 200 OK (49ms)
+2025-11-15 00:29:50.663 [INFO] billing-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:29:52.715 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:29:54.805 [INFO] export-service: Rate limit check passed for tenant t_7609
+2025-11-15 00:29:57.756 [INFO] user-service: Cache hit for key user_session_7067
+2025-11-15 00:29:58.833 [INFO] api-gateway: Kafka consumer lag: partition 1 lag=437
+2025-11-15 00:30:00.857 [INFO] auth-service: Worker thread pool utilization: 19%
+2025-11-15 00:30:02.727 [INFO] notification-service: Redis PING response time: 171ms
+2025-11-15 00:30:04.828 [INFO] billing-service: Worker thread pool utilization: 86%
+2025-11-15 00:30:07.360 [INFO] user-service: Session created for user u_8597
+2025-11-15 00:30:08.312 [INFO] billing-service: Session created for user u_2724
+2025-11-15 00:30:10.335 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:30:13.847 [INFO] scheduler: Serving static asset /assets/app.3179.js
+2025-11-15 00:30:15.421 [INFO] scheduler: Incoming request: GET /api/v1/users/9747
+2025-11-15 00:30:16.737 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:30:18.149 [INFO] export-service: Log rotation completed, archived server.log.4260.gz
+2025-11-15 00:30:21.403 [INFO] auth-service: Background job enqueued: generate_invoice_7046
+2025-11-15 00:30:23.847 [INFO] export-service: Background job enqueued: generate_invoice_6115
+2025-11-15 00:30:25.420 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 00:30:27.439 [INFO] billing-service: Response sent: 201 Created (58ms)
+2025-11-15 00:30:29.237 [INFO] export-service: Incoming request: GET /api/v1/users/5185
+2025-11-15 00:30:30.950 [INFO] scheduler: Incoming request: GET /api/v1/products?page=21
+2025-11-15 00:30:32.739 [INFO] scheduler: Database query completed in 37ms
+2025-11-15 00:30:34.991 [INFO] billing-service: Worker thread pool utilization: 93%
+2025-11-15 00:30:37.923 [INFO] user-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:30:39.297 [INFO] scheduler: Incoming request: GET /api/v1/products?page=18
+2025-11-15 00:30:40.490 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:30:43.778 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:30:44.150 [INFO] auth-service: Middleware chain completed in 87ms
+2025-11-15 00:30:47.673 [INFO] notification-service: Response sent: 201 Created (119ms)
+2025-11-15 00:30:49.747 [INFO] api-gateway: Cache miss for key product_catalog_7939
+2025-11-15 00:30:51.563 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:30:52.276 [INFO] scheduler: Redis PING response time: 103ms
+2025-11-15 00:30:55.874 [INFO] scheduler: Metrics flushed: 247 datapoints
+2025-11-15 00:30:57.228 [INFO] notification-service: Incoming request: GET /api/v1/users/1692
+2025-11-15 00:30:58.502 [INFO] export-service: Response sent: 201 Created (157ms)
+2025-11-15 00:31:00.468 [INFO] billing-service: Log rotation completed, archived server.log.3493.gz
+2025-11-15 00:31:02.206 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:31:04.829 [INFO] billing-service: Worker thread pool utilization: 59%
+2025-11-15 00:31:07.106 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:31:09.336 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:31:10.132 [INFO] scheduler: Response sent: 200 OK (69ms)
+2025-11-15 00:31:12.860 [INFO] scheduler: JWT token validated for user u_7590
+2025-11-15 00:31:15.674 [INFO] auth-service: Incoming request: GET /api/v1/users/7567
+2025-11-15 00:31:16.931 [INFO] billing-service: Background job enqueued: generate_invoice_1911
+2025-11-15 00:31:18.440 [INFO] search-service: Gzip compression applied, ratio: 0.16
+2025-11-15 00:31:20.619 [INFO] api-gateway: Metrics flushed: 247 datapoints
+2025-11-15 00:31:22.474 [INFO] user-service: Incoming request: GET /api/v1/users/8411
+2025-11-15 00:31:25.594 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:31:26.875 [INFO] user-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:31:29.645 [INFO] user-service: Database query completed in 85ms
+2025-11-15 00:31:30.523 [INFO] notification-service: Upstream response from backend-4: 200 (110ms)
+2025-11-15 00:31:32.371 [INFO] billing-service: Health check passed
+2025-11-15 00:31:35.116 [INFO] billing-service: Cache miss for key product_catalog_4769
+2025-11-15 00:31:37.906 [INFO] user-service: Database query completed in 181ms
+2025-11-15 00:31:39.958 [INFO] user-service: Serving static asset /assets/app.7085.js
+2025-11-15 00:31:41.911 [WARN] search-service: Deprecated API endpoint called: GET /api/v0/users
+2025-11-15 00:31:43.123 [INFO] auth-service: TLS handshake completed with client 10.0.68.108
+2025-11-15 00:31:45.771 [INFO] search-service: Background job enqueued: generate_invoice_3639
+2025-11-15 00:31:47.466 [INFO] search-service: Background job enqueued: generate_invoice_8339
+2025-11-15 00:31:49.103 [INFO] export-service: Database query completed in 186ms
+2025-11-15 00:31:50.879 [INFO] scheduler: Response sent: 201 Created (34ms)
+2025-11-15 00:31:52.551 [INFO] api-gateway: Log rotation completed, archived server.log.4813.gz
+2025-11-15 00:31:55.517 [INFO] auth-service: Response sent: 201 Created (93ms)
+2025-11-15 00:31:56.745 [INFO] notification-service: Response sent: 200 OK (166ms)
+2025-11-15 00:31:59.222 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:32:00.199 [INFO] export-service: Incoming request: GET /api/v1/users/8014
+2025-11-15 00:32:03.614 [INFO] export-service: Background job enqueued: generate_invoice_5623
+2025-11-15 00:32:04.871 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:32:06.209 [INFO] user-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:32:09.598 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:32:11.462 [INFO] export-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:32:12.528 [INFO] user-service: Serving static asset /assets/app.8504.js
+2025-11-15 00:32:15.268 [INFO] search-service: TLS handshake completed with client 10.0.119.42
+2025-11-15 00:32:17.956 [INFO] export-service: Database query completed in 83ms
+2025-11-15 00:32:18.627 [INFO] scheduler: Cache hit for key user_session_8680
+2025-11-15 00:32:21.175 [INFO] user-service: Incoming request: GET /api/v1/products?page=37
+2025-11-15 00:32:22.492 [INFO] billing-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:32:25.477 [INFO] export-service: Cache miss for key product_catalog_7976
+2025-11-15 00:32:27.258 [INFO] notification-service: Incoming request: GET /api/v1/products?page=16
+2025-11-15 00:32:29.246 [INFO] auth-service: Upstream response from backend-1: 200 (173ms)
+2025-11-15 00:32:30.346 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:32:32.754 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:32:35.528 [INFO] api-gateway: Background job enqueued: generate_invoice_6974
+2025-11-15 00:32:36.226 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 00:32:39.736 [INFO] search-service: Serving static asset /assets/app.7243.js
+2025-11-15 00:32:41.652 [INFO] auth-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:32:43.570 [INFO] export-service: Database query completed in 36ms
+2025-11-15 00:32:44.974 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:32:46.582 [INFO] notification-service: Middleware chain completed in 152ms
+2025-11-15 00:32:49.650 [INFO] notification-service: Response sent: 201 Created (68ms)
+2025-11-15 00:32:50.645 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:32:53.520 [INFO] scheduler: Middleware chain completed in 118ms
+2025-11-15 00:32:55.798 [INFO] search-service: Upstream response from backend-4: 200 (74ms)
+2025-11-15 00:32:56.649 [INFO] notification-service: Session created for user u_1474
+2025-11-15 00:32:58.893 [INFO] api-gateway: Response sent: 200 OK (50ms)
+2025-11-15 00:33:01.536 [INFO] user-service: Background job enqueued: generate_invoice_8685
+2025-11-15 00:33:03.444 [INFO] scheduler: Upstream response from backend-4: 200 (142ms)
+2025-11-15 00:33:05.104 [INFO] billing-service: Log rotation completed, archived server.log.4241.gz
+2025-11-15 00:33:07.986 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:33:09.590 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:33:10.542 [INFO] api-gateway: Session created for user u_5824
+2025-11-15 00:33:12.751 [INFO] api-gateway: Background job enqueued: generate_invoice_4519
+2025-11-15 00:33:15.947 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:33:17.958 [INFO] export-service: Incoming request: GET /api/v1/users/3998
+2025-11-15 00:33:18.147 [INFO] api-gateway: Incoming request: POST /api/v1/orders
+2025-11-15 00:33:20.596 [INFO] scheduler: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:33:22.849 [INFO] scheduler: Response sent: 201 Created (54ms)
+2025-11-15 00:33:25.310 [INFO] export-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:33:26.684 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:33:29.265 [INFO] search-service: Middleware chain completed in 167ms
+2025-11-15 00:33:30.349 [INFO] api-gateway: Cache hit for key user_session_7720
+2025-11-15 00:33:33.244 [INFO] user-service: Cache hit for key user_session_7225
+2025-11-15 00:33:35.354 [INFO] user-service: Cache miss for key product_catalog_2906
+2025-11-15 00:33:36.463 [INFO] search-service: Session created for user u_7603
+2025-11-15 00:33:38.945 [INFO] user-service: Serving static asset /assets/app.4873.js
+2025-11-15 00:33:40.469 [INFO] auth-service: Background job enqueued: generate_invoice_9605
+2025-11-15 00:33:43.881 [INFO] billing-service: Serving static asset /assets/app.6540.js
+2025-11-15 00:33:44.609 [INFO] search-service: Gzip compression applied, ratio: 0.36
+2025-11-15 00:33:47.883 [INFO] search-service: Gzip compression applied, ratio: 0.36
+2025-11-15 00:33:48.839 [INFO] scheduler: Upstream response from backend-4: 200 (65ms)
+2025-11-15 00:33:51.515 [INFO] export-service: Background job enqueued: generate_invoice_5582
+2025-11-15 00:33:52.530 [INFO] notification-service: Incoming request: GET /api/v1/products?page=21
+2025-11-15 00:33:54.895 [INFO] api-gateway: Session created for user u_3234
+2025-11-15 00:33:56.230 [INFO] user-service: Incoming request: GET /api/v1/products?page=33
+2025-11-15 00:33:58.662 [INFO] search-service: Session created for user u_8326
+2025-11-15 00:34:01.716 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 00:34:03.884 [INFO] scheduler: TLS handshake completed with client 10.0.213.11
+2025-11-15 00:34:04.252 [INFO] search-service: Log rotation completed, archived server.log.6291.gz
+2025-11-15 00:34:06.509 [INFO] notification-service: Log rotation completed, archived server.log.1230.gz
+2025-11-15 00:34:09.542 [INFO] user-service: Metrics flushed: 247 datapoints
+2025-11-15 00:34:11.220 [INFO] auth-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:34:12.820 [INFO] user-service: Incoming request: GET /api/v1/products?page=50
+2025-11-15 00:34:14.409 [INFO] billing-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:34:17.508 [INFO] search-service: Database query completed in 15ms
+2025-11-15 00:34:19.548 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:34:20.661 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:34:22.687 [INFO] notification-service: Gzip compression applied, ratio: 0.11
+2025-11-15 00:34:24.897 [INFO] notification-service: Background job enqueued: generate_invoice_9454
+2025-11-15 00:34:26.566 [INFO] auth-service: Serving static asset /assets/app.1694.js
+2025-11-15 00:34:29.555 [INFO] billing-service: Redis PING response time: 161ms
+2025-11-15 00:34:31.554 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:34:33.578 [INFO] notification-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:34:35.583 [INFO] scheduler: Cache hit for key user_session_6167
+2025-11-15 00:34:37.213 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:34:38.158 [INFO] notification-service: Response sent: 201 Created (114ms)
+2025-11-15 00:34:41.636 [INFO] scheduler: Incoming request: POST /api/v1/orders
+2025-11-15 00:34:43.410 [INFO] notification-service: Request processed successfully
+2025-11-15 00:34:44.587 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:34:46.320 [INFO] export-service: Response sent: 200 OK (79ms)
+2025-11-15 00:34:49.505 [INFO] search-service: Incoming request: GET /api/v1/users/4590
+2025-11-15 00:34:51.298 [INFO] scheduler: Incoming request: POST /api/v1/orders
+2025-11-15 00:34:53.950 [INFO] api-gateway: Health check passed
+2025-11-15 00:34:54.940 [INFO] api-gateway: Cache hit for key user_session_1467
+2025-11-15 00:34:57.318 [INFO] export-service: Incoming request: GET /api/v1/users/9145
+2025-11-15 00:34:59.171 [INFO] notification-service: Incoming request: GET /api/v1/users/8682
+2025-11-15 00:35:00.876 [WARN] auth-service: High memory usage detected: 78% of available heap
+2025-11-15 00:35:02.368 [INFO] search-service: Database query completed in 61ms
+2025-11-15 00:35:04.253 [INFO] auth-service: Gzip compression applied, ratio: 0.25
+2025-11-15 00:35:07.129 [INFO] user-service: Cache hit for key user_session_6741
+2025-11-15 00:35:09.777 [INFO] api-gateway: Response sent: 200 OK (58ms)
+2025-11-15 00:35:11.697 [INFO] billing-service: Response sent: 201 Created (31ms)
+2025-11-15 00:35:13.596 [INFO] user-service: Cache hit for key user_session_8592
+2025-11-15 00:35:15.878 [INFO] auth-service: Response sent: 200 OK (184ms)
+2025-11-15 00:35:16.603 [INFO] export-service: Log rotation completed, archived server.log.3093.gz
+2025-11-15 00:35:19.874 [INFO] auth-service: Serving static asset /assets/app.9676.js
+2025-11-15 00:35:20.553 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:35:22.143 [INFO] api-gateway: Upstream response from backend-1: 200 (95ms)
+2025-11-15 00:35:25.324 [INFO] export-service: Worker thread pool utilization: 26%
+2025-11-15 00:35:26.987 [INFO] search-service: Incoming request: GET /api/v1/products?page=39
+2025-11-15 00:35:28.676 [INFO] billing-service: Redis PING response time: 84ms
+2025-11-15 00:35:30.664 [INFO] notification-service: Database query completed in 198ms
+2025-11-15 00:35:33.983 [INFO] search-service: Session created for user u_9806
+2025-11-15 00:35:35.736 [INFO] export-service: Background job enqueued: generate_invoice_6046
+2025-11-15 00:35:37.704 [INFO] api-gateway: Serving static asset /assets/app.6574.js
+2025-11-15 00:35:39.490 [INFO] auth-service: Response sent: 200 OK (124ms)
+2025-11-15 00:35:41.898 [INFO] export-service: JWT token validated for user u_2044
+2025-11-15 00:35:42.768 [INFO] scheduler: JWT token validated for user u_7618
+2025-11-15 00:35:45.326 [INFO] auth-service: Response sent: 201 Created (145ms)
+2025-11-15 00:35:47.196 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:35:49.307 [INFO] user-service: Redis PING response time: 84ms
+2025-11-15 00:35:51.214 [INFO] auth-service: Background job enqueued: generate_invoice_6106
+2025-11-15 00:35:52.637 [INFO] export-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:35:55.193 [INFO] scheduler: Serving static asset /assets/app.4843.js
+2025-11-15 00:35:57.931 [INFO] user-service: JWT token validated for user u_7795
+2025-11-15 00:35:59.219 [INFO] billing-service: Static file served from CDN cache
+2025-11-15 00:36:00.708 [INFO] export-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:36:03.133 [INFO] billing-service: Background job enqueued: generate_invoice_5957
+2025-11-15 00:36:04.763 [INFO] export-service: Request processed successfully
+2025-11-15 00:36:07.465 [INFO] user-service: Health check passed
+2025-11-15 00:36:09.206 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:36:11.822 [INFO] export-service: Middleware chain completed in 77ms
+2025-11-15 00:36:12.351 [INFO] export-service: Background job enqueued: generate_invoice_9887
+2025-11-15 00:36:14.598 [INFO] api-gateway: Response sent: 201 Created (85ms)
+2025-11-15 00:36:16.361 [INFO] scheduler: Middleware chain completed in 116ms
+2025-11-15 00:36:19.984 [INFO] search-service: Kafka consumer lag: partition 7 lag=168
+2025-11-15 00:36:21.614 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=11
+2025-11-15 00:36:23.290 [INFO] export-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:36:25.877 [INFO] export-service: Log rotation completed, archived server.log.8188.gz
+2025-11-15 00:36:26.745 [INFO] notification-service: Session created for user u_8304
+2025-11-15 00:36:29.782 [INFO] auth-service: Database query completed in 168ms
+2025-11-15 00:36:31.190 [INFO] export-service: Response sent: 201 Created (183ms)
+2025-11-15 00:36:32.910 [INFO] scheduler: Session created for user u_9294
+2025-11-15 00:36:35.785 [INFO] search-service: Background job enqueued: generate_invoice_4093
+2025-11-15 00:36:36.152 [INFO] api-gateway: Background job enqueued: generate_invoice_4623
+2025-11-15 00:36:39.664 [INFO] auth-service: Gzip compression applied, ratio: 0.73
+2025-11-15 00:36:41.130 [INFO] auth-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:36:43.581 [INFO] auth-service: Serving static asset /assets/app.6668.js
+2025-11-15 00:36:44.734 [INFO] scheduler: Kafka consumer lag: partition 2 lag=67
+2025-11-15 00:36:46.659 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:36:48.219 [INFO] notification-service: Database query completed in 98ms
+2025-11-15 00:36:51.667 [INFO] user-service: Session created for user u_2341
+2025-11-15 00:36:53.299 [INFO] scheduler: Serving static asset /assets/app.3519.js
+2025-11-15 00:36:54.653 [INFO] scheduler: Incoming request: GET /api/v1/users/4095
+2025-11-15 00:36:57.423 [INFO] auth-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:36:59.972 [INFO] user-service: Health check passed
+2025-11-15 00:37:01.915 [INFO] user-service: Worker thread pool utilization: 39%
+2025-11-15 00:37:02.391 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:37:04.307 [INFO] search-service: Response sent: 201 Created (91ms)
+2025-11-15 00:37:07.107 [INFO] billing-service: Gzip compression applied, ratio: 0.86
+2025-11-15 00:37:08.468 [INFO] billing-service: Static file served from CDN cache
+2025-11-15 00:37:10.398 [INFO] api-gateway: Response sent: 201 Created (92ms)
+2025-11-15 00:37:13.882 [INFO] scheduler: Health check passed
+2025-11-15 00:37:14.593 [INFO] notification-service: Cache hit for key user_session_9873
+2025-11-15 00:37:17.225 [INFO] auth-service: TLS handshake completed with client 10.0.221.249
+2025-11-15 00:37:19.876 [INFO] user-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:37:21.556 [INFO] export-service: JWT token validated for user u_3309
+2025-11-15 00:37:22.588 [INFO] user-service: Incoming request: GET /api/v1/products?page=3
+2025-11-15 00:37:24.180 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:37:26.158 [INFO] auth-service: Kafka consumer lag: partition 6 lag=169
+2025-11-15 00:37:28.651 [INFO] billing-service: Response sent: 200 OK (131ms)
+2025-11-15 00:37:31.550 [INFO] notification-service: Cache miss for key product_catalog_3934
+2025-11-15 00:37:32.913 [INFO] notification-service: Background job enqueued: generate_invoice_6675
+2025-11-15 00:37:35.876 [INFO] auth-service: Upstream response from backend-2: 200 (42ms)
+2025-11-15 00:37:37.736 [INFO] auth-service: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:37:39.306 [INFO] search-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:37:40.167 [INFO] export-service: Redis PING response time: 183ms
+2025-11-15 00:37:43.621 [INFO] auth-service: Request processed successfully
+2025-11-15 00:37:45.202 [INFO] search-service: Kafka consumer lag: partition 6 lag=97
+2025-11-15 00:37:46.486 [INFO] user-service: TLS handshake completed with client 10.0.83.159
+2025-11-15 00:37:48.614 [INFO] search-service: Middleware chain completed in 47ms
+2025-11-15 00:37:51.707 [INFO] export-service: Incoming request: GET /api/v1/products?page=42
+2025-11-15 00:37:52.747 [INFO] api-gateway: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:37:55.520 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:37:57.237 [INFO] search-service: Gzip compression applied, ratio: 0.45
+2025-11-15 00:37:58.217 [INFO] export-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:38:01.562 [INFO] notification-service: Session created for user u_5090
+2025-11-15 00:38:03.953 [INFO] user-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:38:04.935 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:38:06.866 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:38:08.870 [INFO] billing-service: Background job enqueued: generate_invoice_1759
+2025-11-15 00:38:11.974 [INFO] scheduler: Response sent: 200 OK (14ms)
+2025-11-15 00:38:12.495 [INFO] user-service: Incoming request: GET /api/v1/products?page=22
+2025-11-15 00:38:14.867 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:38:16.802 [INFO] export-service: Redis PING response time: 61ms
+2025-11-15 00:38:18.292 [INFO] user-service: TLS handshake completed with client 10.0.248.113
+2025-11-15 00:38:21.457 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:38:22.262 [INFO] billing-service: Response sent: 200 OK (156ms)
+2025-11-15 00:38:25.413 [INFO] notification-service: Serving static asset /assets/app.2305.js
+2025-11-15 00:38:27.847 [INFO] export-service: Gzip compression applied, ratio: 0.44
+2025-11-15 00:38:29.566 [INFO] user-service: Worker thread pool utilization: 26%
+2025-11-15 00:38:31.382 [INFO] billing-service: TLS handshake completed with client 10.0.10.205
+2025-11-15 00:38:33.401 [INFO] scheduler: Request processed successfully
+2025-11-15 00:38:35.394 [INFO] search-service: JWT token validated for user u_9085
+2025-11-15 00:38:36.871 [INFO] scheduler: Rate limit check passed for tenant t_8015
+2025-11-15 00:38:38.475 [INFO] user-service: Redis PING response time: 59ms
+2025-11-15 00:38:41.649 [INFO] billing-service: Serving static asset /assets/app.4528.js
+2025-11-15 00:38:42.978 [INFO] export-service: Kafka consumer lag: partition 4 lag=218
+2025-11-15 00:38:44.510 [INFO] auth-service: Cache miss for key product_catalog_8847
+2025-11-15 00:38:46.397 [INFO] scheduler: Rate limit check passed for tenant t_1592
+2025-11-15 00:38:48.110 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:38:50.548 [INFO] auth-service: Background job enqueued: generate_invoice_8615
+2025-11-15 00:38:52.371 [INFO] search-service: Serving static asset /assets/app.2173.js
+2025-11-15 00:38:55.658 [INFO] search-service: Upstream response from backend-2: 200 (30ms)
+2025-11-15 00:38:56.835 [INFO] user-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:38:59.154 [INFO] auth-service: Database query completed in 119ms
+2025-11-15 00:39:00.709 [INFO] user-service: Gzip compression applied, ratio: 0.28
+2025-11-15 00:39:02.138 [INFO] api-gateway: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:39:05.954 [INFO] api-gateway: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:39:06.227 [INFO] api-gateway: Middleware chain completed in 109ms
+2025-11-15 00:39:09.753 [INFO] user-service: Gzip compression applied, ratio: 0.20
+2025-11-15 00:39:11.688 [INFO] auth-service: Serving static asset /assets/app.3081.js
+2025-11-15 00:39:12.808 [INFO] billing-service: TLS handshake completed with client 10.0.138.253
+2025-11-15 00:39:14.534 [INFO] scheduler: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:39:16.243 [INFO] auth-service: Serving static asset /assets/app.6080.js
+2025-11-15 00:39:18.355 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:39:21.434 [INFO] billing-service: Middleware chain completed in 12ms
+2025-11-15 00:39:22.126 [INFO] notification-service: Background job enqueued: generate_invoice_5462
+2025-11-15 00:39:24.143 [INFO] scheduler: Incoming request: GET /api/v1/users/3160
+2025-11-15 00:39:26.576 [INFO] search-service: Background job enqueued: generate_invoice_6131
+2025-11-15 00:39:28.804 [INFO] search-service: Middleware chain completed in 129ms
+2025-11-15 00:39:30.916 [INFO] search-service: Worker thread pool utilization: 95%
+2025-11-15 00:39:32.413 [INFO] api-gateway: Metrics flushed: 247 datapoints
+2025-11-15 00:39:35.784 [INFO] scheduler: Session created for user u_2213
+2025-11-15 00:39:36.938 [INFO] notification-service: Worker thread pool utilization: 40%
+2025-11-15 00:39:39.327 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:39:40.645 [INFO] auth-service: Cache hit for key user_session_3576
+2025-11-15 00:39:43.168 [INFO] notification-service: TLS handshake completed with client 10.0.219.171
+2025-11-15 00:39:45.863 [INFO] billing-service: Log rotation completed, archived server.log.1020.gz
+2025-11-15 00:39:46.801 [INFO] notification-service: Database query completed in 159ms
+2025-11-15 00:39:48.709 [INFO] scheduler: TLS handshake completed with client 10.0.135.125
+2025-11-15 00:39:51.504 [INFO] auth-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:39:53.369 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:39:55.415 [INFO] export-service: Incoming request: GET /api/v1/users/7993
+2025-11-15 00:39:57.428 [INFO] billing-service: Cache miss for key product_catalog_6380
+2025-11-15 00:39:59.269 [FATAL] export-service: OOM killer invoked, process nginx (pid 4521) killed
+2025-11-15 00:40:00.872 [INFO] notification-service: Gzip compression applied, ratio: 0.94
+2025-11-15 00:40:02.247 [INFO] export-service: Log rotation completed, archived server.log.3428.gz
+2025-11-15 00:40:05.554 [INFO] user-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:40:06.501 [INFO] export-service: Background job enqueued: generate_invoice_4587
+2025-11-15 00:40:08.546 [INFO] auth-service: Upstream response from backend-1: 200 (176ms)
+2025-11-15 00:40:11.286 [INFO] export-service: Response sent: 200 OK (100ms)
+2025-11-15 00:40:12.880 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 00:40:14.774 [INFO] auth-service: Log rotation completed, archived server.log.6974.gz
+2025-11-15 00:40:16.283 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:40:19.963 [INFO] user-service: Incoming request: GET /api/v1/products?page=33
+2025-11-15 00:40:21.504 [INFO] search-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:40:23.656 [INFO] search-service: Serving static asset /assets/app.6584.js
+2025-11-15 00:40:25.650 [INFO] auth-service: Gzip compression applied, ratio: 0.86
+2025-11-15 00:40:26.432 [INFO] notification-service: Log rotation completed, archived server.log.2933.gz
+2025-11-15 00:40:28.817 [INFO] search-service: Kafka consumer lag: partition 3 lag=500
+2025-11-15 00:40:31.688 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:40:33.905 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:40:35.297 [INFO] search-service: Health check passed
+2025-11-15 00:40:36.945 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:40:39.812 [INFO] scheduler: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:40:40.829 [INFO] scheduler: JWT token validated for user u_8935
+2025-11-15 00:40:43.677 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:40:44.348 [INFO] api-gateway: Worker thread pool utilization: 30%
+2025-11-15 00:40:47.322 [INFO] notification-service: Rate limit check passed for tenant t_6283
+2025-11-15 00:40:48.613 [INFO] scheduler: Cache hit for key user_session_7377
+2025-11-15 00:40:51.304 [INFO] scheduler: Incoming request: GET /api/v1/users/5591
+2025-11-15 00:40:53.673 [INFO] auth-service: Redis PING response time: 53ms
+2025-11-15 00:40:54.549 [INFO] api-gateway: Incoming request: POST /api/v1/orders
+2025-11-15 00:40:56.949 [INFO] auth-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:40:58.883 [INFO] export-service: Redis PING response time: 126ms
+2025-11-15 00:41:00.330 [INFO] scheduler: Response sent: 200 OK (197ms)
+2025-11-15 00:41:03.108 [INFO] scheduler: Incoming request: GET /api/v1/users/9850
+2025-11-15 00:41:04.126 [INFO] search-service: Cache hit for key user_session_8975
+2025-11-15 00:41:06.700 [INFO] scheduler: Middleware chain completed in 189ms
+2025-11-15 00:41:09.412 [INFO] scheduler: Serving static asset /assets/app.3102.js
+2025-11-15 00:41:10.739 [INFO] scheduler: Metrics flushed: 247 datapoints
+2025-11-15 00:41:12.774 [INFO] auth-service: Gzip compression applied, ratio: 0.13
+2025-11-15 00:41:14.522 [INFO] billing-service: Serving static asset /assets/app.5840.js
+2025-11-15 00:41:16.548 [INFO] search-service: Worker thread pool utilization: 41%
+2025-11-15 00:41:18.909 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:41:21.209 [INFO] user-service: TLS handshake completed with client 10.0.31.81
+2025-11-15 00:41:22.419 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:41:25.410 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:41:26.384 [INFO] export-service: Rate limit check passed for tenant t_4431
+2025-11-15 00:41:28.993 [INFO] api-gateway: Gzip compression applied, ratio: 0.55
+2025-11-15 00:41:31.553 [INFO] search-service: Cache hit for key user_session_9249
+2025-11-15 00:41:33.204 [INFO] billing-service: TLS handshake completed with client 10.0.96.94
+2025-11-15 00:41:35.499 [INFO] user-service: Worker thread pool utilization: 68%
+2025-11-15 00:41:37.730 [INFO] auth-service: Request processed successfully
+2025-11-15 00:41:39.946 [INFO] api-gateway: Kafka consumer lag: partition 6 lag=48
+2025-11-15 00:41:40.305 [INFO] notification-service: Upstream response from backend-4: 200 (2ms)
+2025-11-15 00:41:42.121 [INFO] export-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:41:44.670 [INFO] auth-service: Cache hit for key user_session_8992
+2025-11-15 00:41:47.722 [INFO] scheduler: Rate limit check passed for tenant t_5209
+2025-11-15 00:41:49.402 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:41:50.958 [INFO] auth-service: Background job enqueued: generate_invoice_8772
+2025-11-15 00:41:52.448 [INFO] auth-service: Incoming request: GET /api/v1/products?page=12
+2025-11-15 00:41:55.339 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:41:57.132 [INFO] user-service: Cache hit for key user_session_4323
+2025-11-15 00:41:58.838 [INFO] scheduler: Request processed successfully
+2025-11-15 00:42:01.956 [INFO] auth-service: TLS handshake completed with client 10.0.117.1
+2025-11-15 00:42:03.873 [INFO] user-service: Response sent: 201 Created (98ms)
+2025-11-15 00:42:05.586 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 00:42:07.965 [INFO] scheduler: Redis PING response time: 65ms
+2025-11-15 00:42:08.763 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=6
+2025-11-15 00:42:11.597 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:42:13.172 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:42:15.837 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:42:17.668 [INFO] scheduler: Cache miss for key product_catalog_3955
+2025-11-15 00:42:19.737 [INFO] billing-service: Upstream response from backend-4: 200 (76ms)
+2025-11-15 00:42:20.796 [INFO] api-gateway: Response sent: 200 OK (128ms)
+2025-11-15 00:42:22.930 [INFO] notification-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:42:24.579 [INFO] search-service: JWT token validated for user u_4694
+2025-11-15 00:42:27.483 [INFO] search-service: Rate limit check passed for tenant t_9132
+2025-11-15 00:42:28.395 [INFO] search-service: Log rotation completed, archived server.log.9636.gz
+2025-11-15 00:42:31.630 [INFO] export-service: Cache miss for key product_catalog_8117
+2025-11-15 00:42:33.564 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:42:34.237 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:42:37.207 [INFO] auth-service: Gzip compression applied, ratio: 0.83
+2025-11-15 00:42:38.792 [INFO] notification-service: Cache miss for key product_catalog_7668
+2025-11-15 00:42:40.386 [INFO] user-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:42:43.719 [INFO] scheduler: Upstream response from backend-2: 200 (164ms)
+2025-11-15 00:42:45.730 [INFO] export-service: Incoming request: GET /api/v1/products?page=28
+2025-11-15 00:42:46.845 [INFO] api-gateway: Middleware chain completed in 99ms
+2025-11-15 00:42:49.917 [INFO] api-gateway: Serving static asset /assets/app.8305.js
+2025-11-15 00:42:50.953 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:42:53.709 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:42:55.252 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:42:57.188 [INFO] api-gateway: Worker thread pool utilization: 54%
+2025-11-15 00:42:58.756 [INFO] notification-service: Upstream response from backend-4: 200 (24ms)
+2025-11-15 00:43:00.905 [INFO] auth-service: Redis PING response time: 44ms
+2025-11-15 00:43:03.718 [INFO] user-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:43:04.692 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:43:07.776 [INFO] api-gateway: Redis PING response time: 61ms
+2025-11-15 00:43:09.988 [INFO] scheduler: JWT token validated for user u_9308
+2025-11-15 00:43:10.259 [INFO] notification-service: Serving static asset /assets/app.4511.js
+2025-11-15 00:43:13.521 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:43:14.551 [INFO] api-gateway: Metrics flushed: 247 datapoints
+2025-11-15 00:43:17.859 [INFO] api-gateway: Health check passed
+2025-11-15 00:43:19.606 [INFO] user-service: JWT token validated for user u_7088
+2025-11-15 00:43:20.412 [INFO] user-service: TLS handshake completed with client 10.0.84.25
+2025-11-15 00:43:22.455 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:43:24.730 [INFO] user-service: Background job enqueued: generate_invoice_2235
+2025-11-15 00:43:26.131 [INFO] search-service: Request processed successfully
+2025-11-15 00:43:28.142 [INFO] export-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:43:30.271 [INFO] user-service: JWT token validated for user u_2719
+2025-11-15 00:43:33.794 [INFO] auth-service: Incoming request: GET /api/v1/users/2301
+2025-11-15 00:43:35.173 [INFO] user-service: JWT token validated for user u_4717
+2025-11-15 00:43:37.827 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:43:38.992 [INFO] notification-service: Request processed successfully
+2025-11-15 00:43:41.846 [INFO] scheduler: Rate limit check passed for tenant t_5913
+2025-11-15 00:43:43.446 [INFO] export-service: TLS handshake completed with client 10.0.157.181
+2025-11-15 00:43:44.491 [INFO] user-service: Incoming request: GET /api/v1/users/6601
+2025-11-15 00:43:46.604 [INFO] api-gateway: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:43:48.415 [INFO] user-service: Redis PING response time: 165ms
+2025-11-15 00:43:51.637 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:43:52.609 [INFO] notification-service: JWT token validated for user u_9668
+2025-11-15 00:43:54.497 [INFO] auth-service: Upstream response from backend-3: 200 (64ms)
+2025-11-15 00:43:56.928 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:43:58.253 [INFO] export-service: Worker thread pool utilization: 47%
+2025-11-15 00:44:00.140 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:44:02.595 [INFO] search-service: Kafka consumer lag: partition 5 lag=13
+2025-11-15 00:44:05.474 [INFO] export-service: Gzip compression applied, ratio: 0.28
+2025-11-15 00:44:06.583 [INFO] user-service: Upstream response from backend-3: 200 (178ms)
+2025-11-15 00:44:09.724 [INFO] auth-service: JWT token validated for user u_6169
+2025-11-15 00:44:11.535 [INFO] export-service: Incoming request: GET /api/v1/users/3866
+2025-11-15 00:44:12.678 [INFO] user-service: Redis PING response time: 40ms
+2025-11-15 00:44:15.240 [INFO] search-service: Health check passed
+2025-11-15 00:44:16.982 [INFO] export-service: JWT token validated for user u_7775
+2025-11-15 00:44:19.573 [INFO] scheduler: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:44:20.261 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:44:23.635 [INFO] scheduler: Serving static asset /assets/app.3312.js
+2025-11-15 00:44:25.205 [INFO] search-service: Session created for user u_3817
+2025-11-15 00:44:27.544 [INFO] auth-service: Database query completed in 130ms
+2025-11-15 00:44:29.960 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:44:31.904 [INFO] scheduler: Metrics flushed: 247 datapoints
+2025-11-15 00:44:33.944 [INFO] billing-service: Log rotation completed, archived server.log.6786.gz
+2025-11-15 00:44:34.863 [INFO] search-service: Static file served from CDN cache
+2025-11-15 00:44:37.307 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:44:39.756 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:44:41.179 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:44:43.100 [INFO] export-service: Cache hit for key user_session_2599
+2025-11-15 00:44:45.980 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:44:47.108 [INFO] notification-service: Session created for user u_8378
+2025-11-15 00:44:49.355 [INFO] user-service: Background job enqueued: generate_invoice_5319
+2025-11-15 00:44:50.878 [INFO] notification-service: Upstream response from backend-3: 200 (24ms)
+2025-11-15 00:44:53.523 [INFO] export-service: Gzip compression applied, ratio: 0.14
+2025-11-15 00:44:54.324 [INFO] auth-service: Serving static asset /assets/app.5262.js
+2025-11-15 00:44:57.462 [INFO] scheduler: Cache hit for key user_session_3974
+2025-11-15 00:44:58.122 [INFO] search-service: Database query completed in 194ms
+2025-11-15 00:45:00.749 [WARN] auth-service: Kafka consumer lag increasing: partition 3 lag=1247
+2025-11-15 00:45:03.397 [INFO] scheduler: Request processed successfully
+2025-11-15 00:45:04.885 [INFO] user-service: Worker thread pool utilization: 16%
+2025-11-15 00:45:07.784 [INFO] api-gateway: Response sent: 200 OK (139ms)
+2025-11-15 00:45:08.170 [INFO] search-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:45:11.146 [INFO] notification-service: Cache hit for key user_session_2511
+2025-11-15 00:45:13.744 [INFO] export-service: Upstream response from backend-1: 200 (175ms)
+2025-11-15 00:45:15.371 [INFO] user-service: Response sent: 200 OK (81ms)
+2025-11-15 00:45:16.193 [INFO] auth-service: Session created for user u_6641
+2025-11-15 00:45:19.234 [INFO] billing-service: Cache hit for key user_session_6608
+2025-11-15 00:45:21.249 [INFO] notification-service: Cache hit for key user_session_2112
+2025-11-15 00:45:23.941 [INFO] user-service: TLS handshake completed with client 10.0.48.230
+2025-11-15 00:45:25.663 [INFO] api-gateway: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:45:26.924 [INFO] notification-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:45:29.159 [INFO] auth-service: Rate limit check passed for tenant t_7833
+2025-11-15 00:45:31.131 [INFO] billing-service: Health check passed
+2025-11-15 00:45:33.963 [INFO] api-gateway: Log rotation completed, archived server.log.1948.gz
+2025-11-15 00:45:34.408 [INFO] scheduler: Session created for user u_4159
+2025-11-15 00:45:36.352 [INFO] auth-service: Database query completed in 185ms
+2025-11-15 00:45:39.416 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:45:40.544 [INFO] user-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:45:42.805 [INFO] search-service: Middleware chain completed in 197ms
+2025-11-15 00:45:44.866 [INFO] search-service: Response sent: 200 OK (64ms)
+2025-11-15 00:45:47.623 [INFO] notification-service: Middleware chain completed in 18ms
+2025-11-15 00:45:49.628 [INFO] billing-service: JWT token validated for user u_3345
+2025-11-15 00:45:51.731 [INFO] search-service: Cache miss for key product_catalog_2199
+2025-11-15 00:45:52.983 [INFO] export-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 00:45:54.210 [INFO] billing-service: Database query completed in 163ms
+2025-11-15 00:45:57.531 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:45:58.913 [INFO] export-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:46:01.101 [INFO] user-service: Redis PING response time: 23ms
+2025-11-15 00:46:02.610 [INFO] billing-service: Log rotation completed, archived server.log.6250.gz
+2025-11-15 00:46:04.548 [INFO] billing-service: Serving static asset /assets/app.4776.js
+2025-11-15 00:46:06.234 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:46:09.673 [INFO] export-service: Response sent: 201 Created (54ms)
+2025-11-15 00:46:11.133 [INFO] billing-service: Kafka consumer lag: partition 6 lag=406
+2025-11-15 00:46:12.586 [INFO] search-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:46:14.350 [INFO] scheduler: Health check passed
+2025-11-15 00:46:17.169 [INFO] export-service: Cache hit for key user_session_5064
+2025-11-15 00:46:19.522 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:46:20.373 [INFO] user-service: Database query completed in 30ms
+2025-11-15 00:46:22.733 [INFO] export-service: Response sent: 201 Created (78ms)
+2025-11-15 00:46:25.540 [INFO] user-service: Metrics flushed: 247 datapoints
+2025-11-15 00:46:27.850 [INFO] search-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:46:29.590 [INFO] scheduler: Cache hit for key user_session_8551
+2025-11-15 00:46:30.450 [INFO] export-service: Worker thread pool utilization: 40%
+2025-11-15 00:46:33.139 [INFO] api-gateway: JWT token validated for user u_9636
+2025-11-15 00:46:34.269 [INFO] auth-service: Kafka consumer lag: partition 4 lag=321
+2025-11-15 00:46:36.124 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:46:39.842 [INFO] user-service: Cache miss for key product_catalog_8296
+2025-11-15 00:46:40.776 [INFO] scheduler: Database query completed in 92ms
+2025-11-15 00:46:43.410 [INFO] billing-service: Response sent: 200 OK (57ms)
+2025-11-15 00:46:45.300 [INFO] auth-service: JWT token validated for user u_8182
+2025-11-15 00:46:47.768 [INFO] auth-service: Log rotation completed, archived server.log.7017.gz
+2025-11-15 00:46:48.674 [INFO] auth-service: Cache hit for key user_session_4087
+2025-11-15 00:46:50.118 [INFO] notification-service: Response sent: 201 Created (119ms)
+2025-11-15 00:46:52.718 [INFO] api-gateway: Middleware chain completed in 97ms
+2025-11-15 00:46:54.775 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:46:56.671 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:46:58.751 [INFO] notification-service: Session created for user u_5034
+2025-11-15 00:47:01.515 [INFO] auth-service: Response sent: 200 OK (44ms)
+2025-11-15 00:47:02.474 [INFO] auth-service: Log rotation completed, archived server.log.2100.gz
+2025-11-15 00:47:04.986 [INFO] user-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:47:06.911 [INFO] notification-service: Response sent: 201 Created (123ms)
+2025-11-15 00:47:08.367 [INFO] notification-service: Background job enqueued: generate_invoice_4740
+2025-11-15 00:47:10.875 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:47:12.747 [INFO] api-gateway: Serving static asset /assets/app.1121.js
+2025-11-15 00:47:15.297 [INFO] search-service: Response sent: 200 OK (91ms)
+2025-11-15 00:47:16.618 [INFO] api-gateway: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:47:19.416 [INFO] billing-service: TLS handshake completed with client 10.0.117.163
+2025-11-15 00:47:20.880 [INFO] user-service: Worker thread pool utilization: 84%
+2025-11-15 00:47:23.466 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:47:25.620 [INFO] api-gateway: Response sent: 200 OK (183ms)
+2025-11-15 00:47:27.216 [INFO] user-service: Session created for user u_6964
+2025-11-15 00:47:28.273 [INFO] api-gateway: Redis PING response time: 53ms
+2025-11-15 00:47:31.860 [INFO] search-service: Response sent: 200 OK (165ms)
+2025-11-15 00:47:32.514 [INFO] export-service: Gzip compression applied, ratio: 0.80
+2025-11-15 00:47:34.612 [INFO] user-service: JWT token validated for user u_1876
+2025-11-15 00:47:37.955 [INFO] export-service: Rate limit check passed for tenant t_4643
+2025-11-15 00:47:38.494 [INFO] notification-service: Log rotation completed, archived server.log.5948.gz
+2025-11-15 00:47:40.141 [INFO] search-service: Database query completed in 4ms
+2025-11-15 00:47:43.365 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 00:47:44.863 [INFO] notification-service: Session created for user u_2350
+2025-11-15 00:47:46.462 [INFO] export-service: Rate limit check passed for tenant t_3898
+2025-11-15 00:47:49.880 [INFO] search-service: Rate limit check passed for tenant t_7293
+2025-11-15 00:47:51.790 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:47:53.517 [INFO] auth-service: TLS handshake completed with client 10.0.133.80
+2025-11-15 00:47:54.405 [INFO] search-service: Worker thread pool utilization: 24%
+2025-11-15 00:47:57.374 [INFO] export-service: Serving static asset /assets/app.2500.js
+2025-11-15 00:47:59.754 [INFO] notification-service: Incoming request: GET /api/v1/products?page=32
+2025-11-15 00:48:00.617 [INFO] billing-service: Worker thread pool utilization: 78%
+2025-11-15 00:48:02.945 [INFO] auth-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:48:05.410 [INFO] api-gateway: Kafka message published to acme.events.production (partition 2)
+2025-11-15 00:48:06.796 [INFO] notification-service: Response sent: 200 OK (30ms)
+2025-11-15 00:48:08.300 [INFO] notification-service: Log rotation completed, archived server.log.1643.gz
+2025-11-15 00:48:11.430 [INFO] billing-service: TLS handshake completed with client 10.0.84.50
+2025-11-15 00:48:12.866 [INFO] notification-service: Serving static asset /assets/app.2311.js
+2025-11-15 00:48:14.620 [INFO] export-service: Incoming request: GET /api/v1/users/1000
+2025-11-15 00:48:16.326 [INFO] billing-service: Redis PING response time: 119ms
+2025-11-15 00:48:19.178 [INFO] export-service: Cache hit for key user_session_9887
+2025-11-15 00:48:20.277 [INFO] auth-service: Serving static asset /assets/app.4818.js
+2025-11-15 00:48:23.790 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:48:25.426 [INFO] search-service: JWT token validated for user u_2152
+2025-11-15 00:48:27.910 [INFO] scheduler: Response sent: 201 Created (134ms)
+2025-11-15 00:48:29.990 [INFO] export-service: Worker thread pool utilization: 24%
+2025-11-15 00:48:31.956 [INFO] notification-service: Metrics flushed: 247 datapoints
+2025-11-15 00:48:32.412 [INFO] export-service: Incoming request: GET /api/v1/products?page=38
+2025-11-15 00:48:35.374 [INFO] user-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:48:36.540 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:48:39.866 [INFO] export-service: Session created for user u_8148
+2025-11-15 00:48:40.648 [INFO] search-service: Incoming request: GET /api/v1/products?page=47
+2025-11-15 00:48:42.591 [INFO] user-service: Background job enqueued: generate_invoice_3725
+2025-11-15 00:48:44.610 [INFO] auth-service: Cache hit for key user_session_9189
+2025-11-15 00:48:47.102 [INFO] scheduler: Serving static asset /assets/app.2526.js
+2025-11-15 00:48:48.899 [INFO] notification-service: Gzip compression applied, ratio: 0.43
+2025-11-15 00:48:50.235 [INFO] notification-service: Log rotation completed, archived server.log.3637.gz
+2025-11-15 00:48:52.135 [INFO] notification-service: TLS handshake completed with client 10.0.97.143
+2025-11-15 00:48:55.915 [INFO] billing-service: Health check passed
+2025-11-15 00:48:57.783 [INFO] search-service: JWT token validated for user u_1761
+2025-11-15 00:48:58.846 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:49:01.425 [INFO] scheduler: Cache hit for key user_session_7022
+2025-11-15 00:49:02.573 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:49:05.601 [INFO] billing-service: Response sent: 200 OK (97ms)
+2025-11-15 00:49:06.592 [INFO] notification-service: Response sent: 201 Created (42ms)
+2025-11-15 00:49:08.267 [INFO] search-service: Redis PING response time: 4ms
+2025-11-15 00:49:10.320 [INFO] scheduler: Serving static asset /assets/app.7598.js
+2025-11-15 00:49:12.460 [INFO] user-service: Kafka message published to acme.events.production (partition 4)
+2025-11-15 00:49:14.956 [INFO] scheduler: Upstream response from backend-2: 200 (121ms)
+2025-11-15 00:49:16.451 [INFO] api-gateway: JWT token validated for user u_1021
+2025-11-15 00:49:18.935 [INFO] scheduler: Cache hit for key user_session_7130
+2025-11-15 00:49:21.584 [INFO] api-gateway: Kafka consumer lag: partition 5 lag=328
+2025-11-15 00:49:23.319 [INFO] export-service: Gzip compression applied, ratio: 0.49
+2025-11-15 00:49:24.930 [INFO] api-gateway: Rate limit check passed for tenant t_3993
+2025-11-15 00:49:27.188 [INFO] user-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:49:28.543 [INFO] search-service: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:49:30.478 [INFO] user-service: TLS handshake completed with client 10.0.4.14
+2025-11-15 00:49:32.881 [INFO] search-service: Health check passed
+2025-11-15 00:49:34.476 [INFO] billing-service: Request processed successfully
+2025-11-15 00:49:36.316 [INFO] api-gateway: Cache hit for key user_session_9690
+2025-11-15 00:49:38.703 [INFO] search-service: Database query completed in 137ms
+2025-11-15 00:49:40.614 [INFO] search-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:49:42.819 [INFO] billing-service: Request processed successfully
+2025-11-15 00:49:44.578 [INFO] export-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:49:47.679 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:49:48.962 [INFO] export-service: Background job enqueued: generate_invoice_8468
+2025-11-15 00:49:51.396 [INFO] auth-service: Log rotation completed, archived server.log.7430.gz
+2025-11-15 00:49:53.813 [INFO] api-gateway: Middleware chain completed in 70ms
+2025-11-15 00:49:54.947 [INFO] billing-service: Redis PING response time: 183ms
+2025-11-15 00:49:57.211 [INFO] notification-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:49:59.358 [WARN] search-service: SSL certificate expires in 3 days
+2025-11-15 00:50:01.811 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:50:02.452 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:50:04.316 [INFO] user-service: Request processed successfully
+2025-11-15 00:50:07.532 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:50:08.660 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:50:11.422 [INFO] billing-service: Kafka consumer lag: partition 7 lag=330
+2025-11-15 00:50:13.365 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 00:50:15.259 [INFO] search-service: TLS handshake completed with client 10.0.30.157
+2025-11-15 00:50:17.638 [INFO] export-service: Request processed successfully
+2025-11-15 00:50:18.324 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:50:21.342 [INFO] scheduler: JWT token validated for user u_6870
+2025-11-15 00:50:23.122 [INFO] api-gateway: Upstream response from backend-4: 200 (166ms)
+2025-11-15 00:50:25.938 [INFO] api-gateway: Kafka consumer lag: partition 6 lag=334
+2025-11-15 00:50:26.731 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:50:29.424 [INFO] export-service: Kafka consumer lag: partition 4 lag=277
+2025-11-15 00:50:31.132 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:50:33.707 [INFO] scheduler: Upstream response from backend-2: 200 (54ms)
+2025-11-15 00:50:34.683 [INFO] search-service: Serving static asset /assets/app.2258.js
+2025-11-15 00:50:37.939 [INFO] scheduler: Upstream response from backend-3: 200 (175ms)
+2025-11-15 00:50:38.461 [INFO] notification-service: Background job enqueued: generate_invoice_4120
+2025-11-15 00:50:41.415 [INFO] billing-service: JWT token validated for user u_7233
+2025-11-15 00:50:42.806 [INFO] user-service: Rate limit check passed for tenant t_5055
+2025-11-15 00:50:44.522 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:50:46.224 [INFO] billing-service: Background job enqueued: generate_invoice_7314
+2025-11-15 00:50:48.183 [INFO] auth-service: Middleware chain completed in 197ms
+2025-11-15 00:50:50.179 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:50:53.256 [INFO] scheduler: Rate limit check passed for tenant t_9176
+2025-11-15 00:50:54.715 [INFO] search-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:50:57.304 [INFO] scheduler: Request processed successfully
+2025-11-15 00:50:58.303 [INFO] api-gateway: Rate limit check passed for tenant t_3586
+2025-11-15 00:51:01.365 [INFO] api-gateway: Gzip compression applied, ratio: 0.56
+2025-11-15 00:51:02.576 [INFO] auth-service: Session created for user u_2580
+2025-11-15 00:51:04.491 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:51:07.671 [INFO] export-service: Redis PING response time: 12ms
+2025-11-15 00:51:08.438 [INFO] export-service: Gzip compression applied, ratio: 0.51
+2025-11-15 00:51:10.147 [INFO] scheduler: Rate limit check passed for tenant t_6527
+2025-11-15 00:51:12.451 [INFO] api-gateway: Request processed successfully
+2025-11-15 00:51:14.974 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:51:17.684 [INFO] user-service: Cache miss for key product_catalog_8215
+2025-11-15 00:51:18.464 [INFO] user-service: Database query completed in 70ms
+2025-11-15 00:51:20.748 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:51:23.920 [INFO] search-service: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:51:24.685 [INFO] billing-service: Response sent: 201 Created (14ms)
+2025-11-15 00:51:27.848 [INFO] user-service: Gzip compression applied, ratio: 0.11
+2025-11-15 00:51:28.520 [INFO] export-service: Database query completed in 77ms
+2025-11-15 00:51:30.301 [INFO] scheduler: Request processed successfully
+2025-11-15 00:51:33.723 [INFO] search-service: Session created for user u_2763
+2025-11-15 00:51:34.605 [INFO] notification-service: Log rotation completed, archived server.log.5793.gz
+2025-11-15 00:51:36.651 [INFO] user-service: Metrics flushed: 247 datapoints
+2025-11-15 00:51:39.754 [INFO] user-service: Incoming request: GET /api/v1/users/6782
+2025-11-15 00:51:41.288 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:51:43.941 [INFO] billing-service: Cache miss for key product_catalog_9990
+2025-11-15 00:51:45.127 [INFO] notification-service: Upstream response from backend-1: 200 (41ms)
+2025-11-15 00:51:47.705 [INFO] billing-service: Health check passed
+2025-11-15 00:51:49.766 [INFO] user-service: Cache hit for key user_session_3514
+2025-11-15 00:51:51.225 [INFO] scheduler: JWT token validated for user u_5175
+2025-11-15 00:51:53.118 [INFO] notification-service: Background job enqueued: generate_invoice_8812
+2025-11-15 00:51:55.765 [INFO] scheduler: Request processed successfully
+2025-11-15 00:51:56.319 [INFO] auth-service: Serving static asset /assets/app.1640.js
+2025-11-15 00:51:59.303 [INFO] search-service: Kafka consumer lag: partition 2 lag=9
+2025-11-15 00:52:00.693 [INFO] user-service: Session created for user u_2075
+2025-11-15 00:52:03.820 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:52:05.124 [INFO] user-service: JWT token validated for user u_8908
+2025-11-15 00:52:06.343 [INFO] billing-service: Incoming request: GET /api/v1/users/8556
+2025-11-15 00:52:09.580 [INFO] notification-service: Response sent: 200 OK (6ms)
+2025-11-15 00:52:10.835 [INFO] user-service: Upstream response from backend-2: 200 (6ms)
+2025-11-15 00:52:12.256 [INFO] search-service: Background job enqueued: generate_invoice_9757
+2025-11-15 00:52:15.683 [INFO] api-gateway: Serving static asset /assets/app.8794.js
+2025-11-15 00:52:17.516 [INFO] auth-service: Request processed successfully
+2025-11-15 00:52:19.434 [INFO] billing-service: Request processed successfully
+2025-11-15 00:52:21.638 [INFO] search-service: Health check passed
+2025-11-15 00:52:22.290 [INFO] auth-service: Response sent: 200 OK (48ms)
+2025-11-15 00:52:25.494 [INFO] notification-service: Incoming request: GET /api/v1/users/7750
+2025-11-15 00:52:26.960 [INFO] search-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:52:29.732 [INFO] auth-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:52:31.491 [INFO] search-service: Incoming request: GET /api/v1/users/6490
+2025-11-15 00:52:33.588 [INFO] user-service: TLS handshake completed with client 10.0.223.238
+2025-11-15 00:52:35.704 [INFO] user-service: Response sent: 200 OK (106ms)
+2025-11-15 00:52:37.395 [INFO] api-gateway: Metrics flushed: 247 datapoints
+2025-11-15 00:52:39.508 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:52:41.569 [INFO] auth-service: Cache hit for key user_session_3535
+2025-11-15 00:52:43.670 [INFO] billing-service: Static file served from CDN cache
+2025-11-15 00:52:44.918 [INFO] auth-service: Kafka consumer lag: partition 3 lag=431
+2025-11-15 00:52:47.887 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:52:49.776 [INFO] search-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:52:51.307 [INFO] scheduler: Metrics flushed: 247 datapoints
+2025-11-15 00:52:52.700 [INFO] api-gateway: Rate limit check passed for tenant t_3099
+2025-11-15 00:52:55.956 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:52:57.906 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:52:58.175 [INFO] notification-service: Kafka message published to acme.events.production (partition 3)
+2025-11-15 00:53:01.398 [INFO] scheduler: Response sent: 200 OK (44ms)
+2025-11-15 00:53:03.581 [INFO] search-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:53:04.513 [INFO] export-service: Incoming request: GET /api/v1/users/2438
+2025-11-15 00:53:07.626 [INFO] billing-service: Request processed successfully
+2025-11-15 00:53:08.633 [INFO] auth-service: Redis PING response time: 58ms
+2025-11-15 00:53:11.662 [INFO] auth-service: Upstream response from backend-2: 200 (95ms)
+2025-11-15 00:53:13.254 [INFO] notification-service: Redis PING response time: 5ms
+2025-11-15 00:53:15.379 [INFO] notification-service: Incoming request: GET /api/v1/products?page=33
+2025-11-15 00:53:16.341 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:53:18.628 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 00:53:21.832 [INFO] export-service: Incoming request: GET /api/v1/products?page=45
+2025-11-15 00:53:22.334 [INFO] export-service: Background job enqueued: generate_invoice_3137
+2025-11-15 00:53:24.504 [INFO] scheduler: Middleware chain completed in 140ms
+2025-11-15 00:53:27.142 [INFO] auth-service: Background job enqueued: generate_invoice_9881
+2025-11-15 00:53:28.809 [INFO] export-service: Kafka consumer lag: partition 7 lag=27
+2025-11-15 00:53:30.965 [INFO] billing-service: Log rotation completed, archived server.log.7205.gz
+2025-11-15 00:53:32.423 [INFO] billing-service: Log rotation completed, archived server.log.2742.gz
+2025-11-15 00:53:34.397 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:53:36.457 [INFO] billing-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:53:39.160 [INFO] export-service: Incoming request: GET /api/v1/products?page=26
+2025-11-15 00:53:40.592 [INFO] auth-service: Background job enqueued: generate_invoice_4968
+2025-11-15 00:53:43.914 [INFO] api-gateway: Middleware chain completed in 177ms
+2025-11-15 00:53:45.357 [INFO] user-service: Gzip compression applied, ratio: 0.38
+2025-11-15 00:53:46.477 [INFO] notification-service: Health check passed
+2025-11-15 00:53:49.698 [INFO] scheduler: Log rotation completed, archived server.log.8009.gz
+2025-11-15 00:53:50.106 [INFO] search-service: Cache miss for key product_catalog_9972
+2025-11-15 00:53:52.141 [INFO] scheduler: Database query completed in 75ms
+2025-11-15 00:53:55.157 [INFO] user-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:53:56.606 [INFO] user-service: Rate limit check passed for tenant t_6154
+2025-11-15 00:53:59.776 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:54:01.517 [INFO] billing-service: Worker thread pool utilization: 79%
+2025-11-15 00:54:02.271 [INFO] user-service: Serving static asset /assets/app.3355.js
+2025-11-15 00:54:05.309 [INFO] notification-service: Middleware chain completed in 79ms
+2025-11-15 00:54:06.558 [INFO] search-service: Worker thread pool utilization: 55%
+2025-11-15 00:54:09.979 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:54:11.273 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:54:13.184 [INFO] search-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:54:14.503 [INFO] notification-service: Cache hit for key user_session_3903
+2025-11-15 00:54:16.408 [INFO] api-gateway: Cache miss for key product_catalog_8815
+2025-11-15 00:54:19.190 [INFO] auth-service: TLS handshake completed with client 10.0.220.130
+2025-11-15 00:54:20.634 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:54:22.236 [INFO] auth-service: Response sent: 200 OK (100ms)
+2025-11-15 00:54:25.434 [INFO] billing-service: Redis PING response time: 152ms
+2025-11-15 00:54:27.154 [INFO] api-gateway: JWT token validated for user u_2810
+2025-11-15 00:54:29.675 [INFO] user-service: Kafka consumer lag: partition 0 lag=18
+2025-11-15 00:54:31.448 [INFO] scheduler: Rate limit check passed for tenant t_2966
+2025-11-15 00:54:32.918 [INFO] notification-service: Response sent: 200 OK (24ms)
+2025-11-15 00:54:35.855 [INFO] export-service: Static file served from CDN cache
+2025-11-15 00:54:36.965 [INFO] export-service: Background job enqueued: generate_invoice_6416
+2025-11-15 00:54:38.774 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:54:40.516 [INFO] api-gateway: Kafka consumer lag: partition 4 lag=317
+2025-11-15 00:54:43.168 [INFO] search-service: JWT token validated for user u_2255
+2025-11-15 00:54:44.256 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:54:46.843 [INFO] search-service: Cache hit for key user_session_1986
+2025-11-15 00:54:48.227 [INFO] scheduler: Worker thread pool utilization: 80%
+2025-11-15 00:54:50.443 [INFO] search-service: Kafka consumer lag: partition 1 lag=284
+2025-11-15 00:54:52.692 [INFO] notification-service: Response sent: 200 OK (150ms)
+2025-11-15 00:54:55.666 [INFO] search-service: Background job enqueued: generate_invoice_3795
+2025-11-15 00:54:57.457 [INFO] scheduler: Redis PING response time: 177ms
+2025-11-15 00:54:59.536 [INFO] user-service: Cache hit for key user_session_1214
+2025-11-15 00:55:00.377 [WARN] auth-service: DNS resolution took 2.3s for db-replica-2.internal.acme.com
+2025-11-15 00:55:02.203 [INFO] export-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:55:04.481 [INFO] auth-service: Cache miss for key product_catalog_1490
+2025-11-15 00:55:06.446 [INFO] search-service: Response sent: 201 Created (124ms)
+2025-11-15 00:55:09.376 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:55:11.739 [INFO] search-service: Gzip compression applied, ratio: 0.94
+2025-11-15 00:55:13.565 [INFO] scheduler: Worker thread pool utilization: 18%
+2025-11-15 00:55:14.704 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:55:16.708 [INFO] scheduler: Response sent: 200 OK (97ms)
+2025-11-15 00:55:19.413 [INFO] scheduler: Health check passed
+2025-11-15 00:55:20.543 [INFO] auth-service: Cache miss for key product_catalog_3029
+2025-11-15 00:55:23.343 [INFO] scheduler: Gzip compression applied, ratio: 0.26
+2025-11-15 00:55:25.210 [INFO] search-service: Worker thread pool utilization: 85%
+2025-11-15 00:55:26.316 [INFO] user-service: Background job enqueued: generate_invoice_5388
+2025-11-15 00:55:28.641 [INFO] user-service: Upstream response from backend-4: 200 (26ms)
+2025-11-15 00:55:30.572 [INFO] export-service: Incoming request: POST /api/v1/orders
+2025-11-15 00:55:32.556 [INFO] export-service: Database query completed in 34ms
+2025-11-15 00:55:34.801 [INFO] billing-service: Request processed successfully
+2025-11-15 00:55:37.159 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:55:38.869 [INFO] search-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:55:40.624 [INFO] user-service: Incoming request: GET /api/v1/users/4281
+2025-11-15 00:55:42.654 [INFO] billing-service: Gzip compression applied, ratio: 0.39
+2025-11-15 00:55:45.685 [INFO] notification-service: Gzip compression applied, ratio: 0.24
+2025-11-15 00:55:46.775 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 00:55:48.324 [INFO] notification-service: Cache miss for key product_catalog_1360
+2025-11-15 00:55:50.905 [INFO] search-service: Metrics flushed: 247 datapoints
+2025-11-15 00:55:53.998 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:55:54.203 [INFO] api-gateway: Serving static asset /assets/app.2343.js
+2025-11-15 00:55:56.437 [INFO] auth-service: Background job enqueued: generate_invoice_9165
+2025-11-15 00:55:59.200 [INFO] billing-service: TLS handshake completed with client 10.0.223.37
+2025-11-15 00:56:00.885 [INFO] search-service: Request processed successfully
+2025-11-15 00:56:03.148 [INFO] search-service: TLS handshake completed with client 10.0.131.213
+2025-11-15 00:56:05.662 [INFO] scheduler: JWT token validated for user u_8667
+2025-11-15 00:56:07.278 [INFO] scheduler: Cache miss for key product_catalog_8532
+2025-11-15 00:56:08.699 [INFO] scheduler: Incoming request: GET /api/v1/products?page=42
+2025-11-15 00:56:10.365 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:56:12.417 [INFO] search-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:56:15.758 [INFO] search-service: Cache hit for key user_session_6232
+2025-11-15 00:56:17.110 [INFO] user-service: Response sent: 201 Created (111ms)
+2025-11-15 00:56:18.910 [INFO] export-service: Upstream response from backend-3: 200 (3ms)
+2025-11-15 00:56:21.632 [INFO] api-gateway: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:56:23.941 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:56:24.682 [INFO] billing-service: TLS handshake completed with client 10.0.95.41
+2025-11-15 00:56:26.576 [INFO] notification-service: Kafka message published to acme.events.production (partition 1)
+2025-11-15 00:56:29.774 [INFO] auth-service: Response sent: 201 Created (23ms)
+2025-11-15 00:56:30.807 [INFO] scheduler: Background job enqueued: generate_invoice_8993
+2025-11-15 00:56:33.226 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 00:56:34.622 [INFO] api-gateway: Gzip compression applied, ratio: 0.35
+2025-11-15 00:56:36.283 [INFO] billing-service: Database query completed in 88ms
+2025-11-15 00:56:39.980 [INFO] search-service: Log rotation completed, archived server.log.1462.gz
+2025-11-15 00:56:41.396 [INFO] notification-service: TLS handshake completed with client 10.0.145.203
+2025-11-15 00:56:42.235 [INFO] auth-service: Request processed successfully
+2025-11-15 00:56:44.312 [INFO] search-service: Session created for user u_7853
+2025-11-15 00:56:46.659 [INFO] notification-service: Rate limit check passed for tenant t_9061
+2025-11-15 00:56:48.421 [INFO] scheduler: Response sent: 200 OK (57ms)
+2025-11-15 00:56:50.447 [INFO] notification-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:56:52.907 [INFO] export-service: Worker thread pool utilization: 19%
+2025-11-15 00:56:54.387 [INFO] auth-service: Incoming request: GET /api/v1/products?page=37
+2025-11-15 00:56:57.940 [INFO] export-service: Response sent: 200 OK (184ms)
+2025-11-15 00:56:58.150 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:57:00.801 [INFO] search-service: Request processed successfully
+2025-11-15 00:57:02.782 [INFO] export-service: Response sent: 200 OK (132ms)
+2025-11-15 00:57:04.216 [INFO] search-service: Worker thread pool utilization: 95%
+2025-11-15 00:57:06.594 [INFO] scheduler: Rate limit check passed for tenant t_3873
+2025-11-15 00:57:09.473 [INFO] notification-service: Gzip compression applied, ratio: 0.33
+2025-11-15 00:57:11.535 [INFO] notification-service: Gzip compression applied, ratio: 0.23
+2025-11-15 00:57:13.303 [INFO] scheduler: Middleware chain completed in 78ms
+2025-11-15 00:57:14.229 [INFO] notification-service: Session created for user u_2750
+2025-11-15 00:57:17.658 [INFO] auth-service: Request processed successfully
+2025-11-15 00:57:18.657 [INFO] notification-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:57:20.554 [INFO] user-service: Kafka consumer lag: partition 7 lag=240
+2025-11-15 00:57:22.803 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:57:25.229 [INFO] user-service: Upstream response from backend-2: 200 (16ms)
+2025-11-15 00:57:27.969 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:57:28.300 [INFO] api-gateway: TLS handshake completed with client 10.0.216.101
+2025-11-15 00:57:31.427 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:57:33.140 [INFO] user-service: Background job enqueued: generate_invoice_3791
+2025-11-15 00:57:35.634 [INFO] auth-service: Rate limit check passed for tenant t_5158
+2025-11-15 00:57:36.100 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:57:39.900 [INFO] api-gateway: Health check passed
+2025-11-15 00:57:40.418 [INFO] export-service: Cache hit for key user_session_1864
+2025-11-15 00:57:43.114 [INFO] scheduler: Response sent: 201 Created (38ms)
+2025-11-15 00:57:44.430 [INFO] user-service: Session created for user u_2784
+2025-11-15 00:57:46.656 [INFO] auth-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:57:48.534 [INFO] scheduler: Cache hit for key user_session_2815
+2025-11-15 00:57:50.130 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:57:53.790 [INFO] api-gateway: Incoming request: GET /api/v1/products?page=49
+2025-11-15 00:57:54.141 [INFO] billing-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:57:57.213 [INFO] billing-service: Worker thread pool utilization: 56%
+2025-11-15 00:57:58.793 [INFO] auth-service: Incoming request: GET /api/v1/users/2547
+2025-11-15 00:58:00.433 [INFO] api-gateway: Incoming request: POST /api/v1/orders
+2025-11-15 00:58:03.545 [INFO] user-service: Redis PING response time: 26ms
+2025-11-15 00:58:04.981 [INFO] auth-service: Rate limit check passed for tenant t_5638
+2025-11-15 00:58:06.597 [INFO] search-service: Redis PING response time: 93ms
+2025-11-15 00:58:08.241 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 00:58:11.760 [INFO] api-gateway: Cache miss for key product_catalog_8650
+2025-11-15 00:58:13.549 [INFO] scheduler: Worker thread pool utilization: 74%
+2025-11-15 00:58:15.470 [INFO] search-service: Middleware chain completed in 1ms
+2025-11-15 00:58:16.889 [INFO] api-gateway: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:58:18.727 [INFO] notification-service: JWT token validated for user u_9157
+2025-11-15 00:58:20.225 [INFO] api-gateway: Gzip compression applied, ratio: 0.62
+2025-11-15 00:58:22.758 [INFO] api-gateway: Kafka message published to acme.events.production (partition 6)
+2025-11-15 00:58:25.100 [INFO] user-service: TLS handshake completed with client 10.0.67.39
+2025-11-15 00:58:26.921 [INFO] notification-service: Incoming request: GET /api/v1/users/2706
+2025-11-15 00:58:28.632 [INFO] scheduler: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:58:30.909 [INFO] auth-service: Middleware chain completed in 89ms
+2025-11-15 00:58:33.995 [INFO] scheduler: Cache miss for key product_catalog_1908
+2025-11-15 00:58:35.190 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:58:36.906 [INFO] billing-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:58:38.849 [INFO] user-service: Serving static asset /assets/app.8645.js
+2025-11-15 00:58:41.849 [INFO] user-service: Static file served from CDN cache
+2025-11-15 00:58:42.578 [INFO] user-service: TLS handshake completed with client 10.0.19.125
+2025-11-15 00:58:44.837 [INFO] billing-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:58:47.474 [INFO] billing-service: Serving static asset /assets/app.6380.js
+2025-11-15 00:58:48.883 [INFO] billing-service: Incoming request: GET /api/v1/products?page=9
+2025-11-15 00:58:51.633 [INFO] billing-service: Log rotation completed, archived server.log.8648.gz
+2025-11-15 00:58:52.726 [INFO] scheduler: Incoming request: GET /api/v1/users/6960
+2025-11-15 00:58:55.937 [INFO] search-service: Response sent: 200 OK (123ms)
+2025-11-15 00:58:57.998 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 00:58:58.776 [INFO] scheduler: Log rotation completed, archived server.log.2974.gz
+2025-11-15 00:59:00.488 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 00:59:02.888 [INFO] billing-service: Health check passed
+2025-11-15 00:59:05.683 [INFO] api-gateway: JWT token validated for user u_5904
+2025-11-15 00:59:06.136 [INFO] scheduler: Cache miss for key product_catalog_7968
+2025-11-15 00:59:09.587 [INFO] user-service: Serving static asset /assets/app.2075.js
+2025-11-15 00:59:11.543 [INFO] user-service: Serving static asset /assets/app.1186.js
+2025-11-15 00:59:13.359 [INFO] auth-service: Cache hit for key user_session_8473
+2025-11-15 00:59:15.682 [INFO] auth-service: Cache miss for key product_catalog_8990
+2025-11-15 00:59:16.243 [INFO] api-gateway: Worker thread pool utilization: 82%
+2025-11-15 00:59:19.756 [INFO] api-gateway: Log rotation completed, archived server.log.7225.gz
+2025-11-15 00:59:20.236 [INFO] auth-service: TLS handshake completed with client 10.0.118.80
+2025-11-15 00:59:22.127 [INFO] billing-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 00:59:25.285 [INFO] scheduler: Cache hit for key user_session_6578
+2025-11-15 00:59:27.341 [INFO] export-service: Log rotation completed, archived server.log.8128.gz
+2025-11-15 00:59:29.793 [INFO] export-service: Redis PING response time: 101ms
+2025-11-15 00:59:30.928 [INFO] notification-service: Middleware chain completed in 8ms
+2025-11-15 00:59:33.353 [INFO] user-service: Health check passed
+2025-11-15 00:59:34.524 [INFO] export-service: JWT token validated for user u_7691
+2025-11-15 00:59:36.880 [INFO] api-gateway: Response sent: 200 OK (115ms)
+2025-11-15 00:59:39.151 [INFO] user-service: Middleware chain completed in 72ms
+2025-11-15 00:59:41.307 [INFO] api-gateway: Middleware chain completed in 127ms
+2025-11-15 00:59:43.785 [INFO] scheduler: Kafka consumer lag: partition 3 lag=413
+2025-11-15 00:59:45.742 [INFO] billing-service: TLS handshake completed with client 10.0.8.180
+2025-11-15 00:59:46.124 [INFO] api-gateway: Middleware chain completed in 194ms
+2025-11-15 00:59:48.133 [INFO] auth-service: Kafka consumer lag: partition 7 lag=33
+2025-11-15 00:59:50.253 [INFO] auth-service: Log rotation completed, archived server.log.4526.gz
+2025-11-15 00:59:52.485 [INFO] user-service: Response sent: 201 Created (167ms)
+2025-11-15 00:59:55.836 [INFO] auth-service: Cache hit for key user_session_9462
+2025-11-15 00:59:56.693 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 00:59:59.667 [INFO] api-gateway: Incoming request: GET /api/v1/users/5548
+2025-11-15 01:00:00.899 [WARN] billing-service: Circuit breaker half-open for search-service
+2025-11-15 01:00:02.415 [INFO] user-service: Metrics flushed: 247 datapoints
+2025-11-15 01:00:05.859 [INFO] scheduler: Middleware chain completed in 23ms
+2025-11-15 01:00:06.915 [INFO] api-gateway: Session created for user u_2672
+2025-11-15 01:00:08.574 [INFO] billing-service: TLS handshake completed with client 10.0.37.28
+2025-11-15 01:00:11.321 [INFO] scheduler: Scheduled task completed: cleanup_temp_files
+2025-11-15 01:00:12.459 [INFO] api-gateway: Gzip compression applied, ratio: 0.83
+2025-11-15 01:00:14.592 [INFO] notification-service: Incoming request: GET /api/v1/users/9607
+2025-11-15 01:00:16.722 [INFO] notification-service: Middleware chain completed in 47ms
+2025-11-15 01:00:19.399 [INFO] user-service: TLS handshake completed with client 10.0.247.180
+2025-11-15 01:00:20.509 [INFO] api-gateway: Worker thread pool utilization: 47%
+2025-11-15 01:00:22.592 [INFO] api-gateway: Request processed successfully
+2025-11-15 01:00:24.693 [INFO] auth-service: Background job enqueued: generate_invoice_6655
+2025-11-15 01:00:27.708 [INFO] user-service: TLS handshake completed with client 10.0.209.117
+2025-11-15 01:00:28.482 [INFO] scheduler: Log rotation completed, archived server.log.3461.gz
+2025-11-15 01:00:30.181 [INFO] notification-service: Redis PING response time: 124ms
+2025-11-15 01:00:32.205 [INFO] export-service: Background job enqueued: generate_invoice_7785
+2025-11-15 01:00:34.472 [INFO] billing-service: Log rotation completed, archived server.log.3325.gz
+2025-11-15 01:00:37.799 [INFO] billing-service: Gzip compression applied, ratio: 0.72
+2025-11-15 01:00:38.453 [INFO] search-service: Middleware chain completed in 127ms
+2025-11-15 01:00:41.877 [INFO] search-service: Request processed successfully
+2025-11-15 01:00:42.712 [INFO] user-service: Log rotation completed, archived server.log.7257.gz
+2025-11-15 01:00:44.185 [INFO] search-service: Session created for user u_4407
+2025-11-15 01:00:47.956 [INFO] auth-service: Session created for user u_4238
+2025-11-15 01:00:49.958 [INFO] export-service: Incoming request: GET /api/v1/products?page=18
+2025-11-15 01:00:51.502 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 01:00:52.616 [INFO] search-service: Upstream response from backend-4: 200 (119ms)
+2025-11-15 01:00:55.492 [INFO] billing-service: Response sent: 201 Created (108ms)
+2025-11-15 01:00:56.524 [INFO] notification-service: Incoming request: GET /api/v1/users/7374
+2025-11-15 01:00:58.855 [INFO] auth-service: Redis PING response time: 69ms
+2025-11-15 01:01:01.196 [INFO] auth-service: Kafka message published to acme.events.production (partition 5)
+2025-11-15 01:01:03.699 [INFO] scheduler: Metrics flushed: 247 datapoints
+2025-11-15 01:01:05.287 [INFO] scheduler: Request processed successfully
+2025-11-15 01:01:07.659 [INFO] export-service: Kafka message published to acme.events.production (partition 0)
+2025-11-15 01:01:09.340 [INFO] auth-service: Static file served from CDN cache
+2025-11-15 01:01:11.119 [INFO] api-gateway: TLS handshake completed with client 10.0.1.145
+2025-11-15 01:01:13.840 [INFO] user-service: Background job enqueued: generate_invoice_4205
+2025-11-15 01:01:14.200 [INFO] api-gateway: Session created for user u_6476
+2025-11-15 01:01:17.464 [INFO] export-service: Incoming request: GET /api/v1/users/2224
+2025-11-15 01:01:18.184 [INFO] auth-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 01:01:21.655 [INFO] export-service: Incoming request: GET /api/v1/products?page=29
+2025-11-15 01:01:22.486 [INFO] user-service: TLS handshake completed with client 10.0.82.230
+2025-11-15 01:01:25.606 [INFO] notification-service: Static file served from CDN cache
+2025-11-15 01:01:27.527 [INFO] export-service: Static file served from CDN cache
+2025-11-15 01:01:28.541 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 01:01:31.622 [INFO] notification-service: Database query completed in 54ms
+2025-11-15 01:01:32.368 [INFO] api-gateway: Incoming request: GET /api/v1/users/6188
+2025-11-15 01:01:35.431 [INFO] scheduler: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:01:37.633 [INFO] billing-service: Database query completed in 29ms
+2025-11-15 01:01:38.848 [INFO] user-service: Response sent: 201 Created (22ms)
+2025-11-15 01:01:40.647 [INFO] user-service: JWT token validated for user u_8001
+2025-11-15 01:01:43.227 [INFO] user-service: Middleware chain completed in 49ms
+2025-11-15 01:01:45.215 [INFO] notification-service: Incoming request: GET /api/v1/products?page=21
+2025-11-15 01:01:46.413 [INFO] notification-service: Serving static asset /assets/app.4854.js
+2025-11-15 01:01:49.299 [INFO] billing-service: Log rotation completed, archived server.log.8367.gz
+2025-11-15 01:01:50.329 [INFO] billing-service: Upstream response from backend-3: 200 (105ms)
+2025-11-15 01:01:52.689 [INFO] export-service: Upstream response from backend-2: 200 (170ms)
+2025-11-15 01:01:54.621 [INFO] scheduler: Middleware chain completed in 45ms
+2025-11-15 01:01:56.104 [INFO] user-service: Cache miss for key product_catalog_5228
+2025-11-15 01:01:59.704 [INFO] user-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 01:02:00.256 [INFO] auth-service: Upstream response from backend-2: 200 (168ms)
+2025-11-15 01:02:02.515 [INFO] export-service: Worker thread pool utilization: 65%
+2025-11-15 01:02:05.347 [INFO] api-gateway: Rate limit check passed for tenant t_1065
+2025-11-15 01:02:07.151 [INFO] billing-service: Cache miss for key product_catalog_2808
+2025-11-15 01:02:08.484 [INFO] scheduler: Static file served from CDN cache
+2025-11-15 01:02:11.121 [INFO] api-gateway: Incoming request: GET /api/v1/users/1197
+2025-11-15 01:02:13.936 [INFO] user-service: Redis PING response time: 155ms
+2025-11-15 01:02:15.247 [INFO] api-gateway: Scheduled task completed: cleanup_temp_files
+2025-11-15 01:02:17.377 [INFO] scheduler: Upstream response from backend-4: 200 (82ms)
+2025-11-15 01:02:19.188 [INFO] scheduler: Kafka consumer lag: partition 6 lag=289
+2025-11-15 01:02:21.367 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 01:02:23.544 [INFO] export-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:02:25.927 [INFO] search-service: Incoming request: POST /api/v1/orders
+2025-11-15 01:02:26.650 [INFO] billing-service: TLS handshake completed with client 10.0.15.4
+2025-11-15 01:02:29.820 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:02:31.149 [INFO] notification-service: Worker thread pool utilization: 73%
+2025-11-15 01:02:33.379 [INFO] search-service: Response sent: 201 Created (46ms)
+2025-11-15 01:02:34.985 [INFO] billing-service: Middleware chain completed in 64ms
+2025-11-15 01:02:37.185 [INFO] search-service: Rate limit check passed for tenant t_3393
+2025-11-15 01:02:38.339 [INFO] search-service: Background job enqueued: generate_invoice_3370
+2025-11-15 01:02:41.586 [INFO] api-gateway: Gzip compression applied, ratio: 0.12
+2025-11-15 01:02:43.486 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:02:45.970 [INFO] scheduler: TLS handshake completed with client 10.0.225.9
+2025-11-15 01:02:47.714 [INFO] auth-service: Kafka message published to acme.events.production (partition 2)
+2025-11-15 01:02:49.688 [INFO] export-service: Cache miss for key product_catalog_7389
+2025-11-15 01:02:51.885 [INFO] auth-service: Incoming request: GET /api/v1/products?page=41
+2025-11-15 01:02:53.274 [INFO] billing-service: Incoming request: GET /api/v1/users/2142
+2025-11-15 01:02:55.704 [INFO] notification-service: Incoming request: POST /api/v1/orders
+2025-11-15 01:02:56.179 [INFO] auth-service: Cache hit for key user_session_3503
+2025-11-15 01:02:58.978 [INFO] user-service: Incoming request: GET /api/v1/users/1371
+2025-11-15 01:03:00.915 [INFO] export-service: JWT token validated for user u_9898
+2025-11-15 01:03:02.452 [INFO] billing-service: Incoming request: GET /api/v1/products?page=40
+2025-11-15 01:03:04.502 [INFO] search-service: Worker thread pool utilization: 61%
+2025-11-15 01:03:07.123 [INFO] user-service: JWT token validated for user u_5436
+2025-11-15 01:03:08.242 [INFO] api-gateway: Response sent: 201 Created (34ms)
+2025-11-15 01:03:10.567 [INFO] scheduler: Incoming request: POST /api/v1/orders
+2025-11-15 01:03:12.194 [INFO] user-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:03:15.553 [INFO] auth-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:03:17.492 [INFO] auth-service: Cache miss for key product_catalog_2327
+2025-11-15 01:03:19.525 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:03:21.969 [INFO] user-service: Response sent: 200 OK (150ms)
+2025-11-15 01:03:23.204 [INFO] auth-service: Background job enqueued: generate_invoice_8949
+2025-11-15 01:03:24.113 [INFO] notification-service: Kafka consumer lag: partition 7 lag=418
+2025-11-15 01:03:26.992 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 01:03:29.230 [INFO] auth-service: Rate limit check passed for tenant t_9176
+2025-11-15 01:03:30.179 [INFO] search-service: TLS handshake completed with client 10.0.173.196
+2025-11-15 01:03:32.489 [INFO] user-service: Kafka consumer lag: partition 7 lag=106
+2025-11-15 01:03:34.442 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 01:03:36.274 [INFO] search-service: Database query completed in 66ms
+2025-11-15 01:03:38.388 [INFO] user-service: Background job enqueued: generate_invoice_9698
+2025-11-15 01:03:41.761 [INFO] billing-service: Incoming request: GET /api/v1/products?page=17
+2025-11-15 01:03:42.385 [INFO] billing-service: Kafka message published to acme.events.production (partition 6)
+2025-11-15 01:03:45.946 [INFO] export-service: Health check passed
+2025-11-15 01:03:46.727 [INFO] api-gateway: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:03:49.640 [INFO] export-service: Metrics flushed: 247 datapoints
+2025-11-15 01:03:50.200 [INFO] auth-service: Request processed successfully
+2025-11-15 01:03:52.777 [INFO] scheduler: JWT token validated for user u_9004
+2025-11-15 01:03:55.462 [INFO] export-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:03:57.244 [INFO] api-gateway: Upstream response from backend-1: 200 (149ms)
+2025-11-15 01:03:58.370 [INFO] billing-service: Database query completed in 56ms
+2025-11-15 01:04:01.862 [WARN] export-service: Token refresh rate elevated: 340 refreshes/min (normal: ~50/min)
+2025-11-15 01:04:02.292 [INFO] billing-service: Metrics flushed: 247 datapoints
+2025-11-15 01:04:04.694 [INFO] api-gateway: Middleware chain completed in 114ms
+2025-11-15 01:04:06.640 [INFO] search-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:04:09.801 [INFO] notification-service: Background job enqueued: generate_invoice_1366
+2025-11-15 01:04:10.517 [INFO] billing-service: Cache hit for key user_session_1583
+2025-11-15 01:04:12.824 [INFO] user-service: Scheduled task completed: cleanup_temp_files
+2025-11-15 01:04:14.743 [INFO] notification-service: Kafka consumer lag: partition 2 lag=431
+2025-11-15 01:04:17.431 [INFO] user-service: Redis PING response time: 33ms
+2025-11-15 01:04:18.765 [INFO] scheduler: Incoming request: GET /api/v1/products?page=17
+2025-11-15 01:04:20.436 [INFO] search-service: JWT token validated for user u_4857
+2025-11-15 01:04:22.898 [INFO] user-service: Health check passed
+2025-11-15 01:04:25.872 [INFO] billing-service: Database query completed in 48ms
+2025-11-15 01:04:26.573 [INFO] scheduler: Health check passed
+2025-11-15 01:04:28.602 [INFO] scheduler: Feature flag evaluated: new_billing_engine=false
+2025-11-15 01:04:31.303 [INFO] api-gateway: Session created for user u_1417
+2025-11-15 01:04:33.422 [INFO] export-service: Static file served from CDN cache
+2025-11-15 01:04:34.419 [INFO] notification-service: Gzip compression applied, ratio: 0.19
+2025-11-15 01:04:37.217 [INFO] scheduler: Redis PING response time: 91ms
+2025-11-15 01:04:39.757 [INFO] billing-service: Response sent: 201 Created (57ms)
+2025-11-15 01:04:40.464 [INFO] billing-service: Response sent: 200 OK (18ms)
+2025-11-15 01:04:42.558 [INFO] export-service: Session created for user u_7918
+2025-11-15 01:04:44.960 [INFO] scheduler: Response sent: 201 Created (112ms)
+2025-11-15 01:04:47.754 [INFO] notification-service: Incoming request: GET /api/v1/products?page=33
+2025-11-15 01:04:48.837 [INFO] billing-service: Gzip compression applied, ratio: 0.67
+2025-11-15 01:04:51.170 [INFO] scheduler: Incoming request: GET /api/v1/products?page=33
+2025-11-15 01:04:52.484 [INFO] billing-service: Redis PING response time: 17ms
+2025-11-15 01:04:55.751 [INFO] billing-service: Response sent: 201 Created (191ms)
+2025-11-15 01:04:56.485 [INFO] export-service: Session created for user u_9631
+2025-11-15 01:04:59.822 [INFO] search-service: Health check passed
+2025-11-15 01:05:00.527 [INFO] user-service: Response sent: 201 Created (74ms)
+2025-11-15 01:05:03.555 [INFO] search-service: Static file served from CDN cache
+2025-11-15 01:05:04.331 [INFO] notification-service: Cache hit for key user_session_4701
+2025-11-15 01:05:07.860 [INFO] export-service: Log rotation completed, archived server.log.8248.gz
+2025-11-15 01:05:09.945 [INFO] api-gateway: Static file served from CDN cache
+2025-11-15 01:05:11.906 [INFO] auth-service: TLS handshake completed with client 10.0.72.155
+2025-11-15 01:05:13.114 [INFO] billing-service: Incoming request: GET /api/v1/products?page=18
+2025-11-15 01:05:14.309 [INFO] export-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 01:05:16.192 [INFO] search-service: Worker thread pool utilization: 17%
+2025-11-15 01:05:18.598 [INFO] billing-service: TLS handshake completed with client 10.0.246.121
+2025-11-15 01:05:21.693 [INFO] export-service: Database query completed in 164ms
+2025-11-15 01:05:23.787 [INFO] search-service: Incoming request: GET /api/v1/users/1648
+2025-11-15 01:05:25.475 [INFO] auth-service: Worker thread pool utilization: 32%
+2025-11-15 01:05:26.412 [INFO] billing-service: TLS handshake completed with client 10.0.132.105
+2025-11-15 01:05:28.647 [INFO] export-service: TLS handshake completed with client 10.0.125.11
+2025-11-15 01:05:31.531 [INFO] search-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:05:33.992 [INFO] scheduler: Gzip compression applied, ratio: 0.84
+2025-11-15 01:05:34.111 [INFO] search-service: Response sent: 201 Created (149ms)
+2025-11-15 01:05:37.427 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:05:38.609 [INFO] api-gateway: Incoming request: GET /api/v1/users/3842
+2025-11-15 01:05:40.657 [INFO] export-service: TLS handshake completed with client 10.0.94.134
+2025-11-15 01:05:42.485 [INFO] api-gateway: Scheduled task completed: cleanup_temp_files
+2025-11-15 01:05:45.671 [INFO] scheduler: Kafka message published to acme.events.production (partition 4)
+2025-11-15 01:05:47.492 [INFO] auth-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:05:49.840 [INFO] search-service: Worker thread pool utilization: 24%
+2025-11-15 01:05:50.921 [INFO] auth-service: Incoming request: GET /api/v1/users/8981
+2025-11-15 01:05:53.405 [INFO] notification-service: Incoming request: GET /api/v1/products?page=14
+2025-11-15 01:05:55.189 [INFO] scheduler: Redis PING response time: 13ms
+2025-11-15 01:05:57.952 [INFO] auth-service: Request processed successfully
+2025-11-15 01:05:58.251 [INFO] export-service: Cache hit for key user_session_3839
+2025-11-15 01:06:01.414 [INFO] notification-service: Feature flag evaluated: new_billing_engine=false
+2025-11-15 01:06:03.388 [INFO] scheduler: Health check passed
+2025-11-15 01:06:05.856 [INFO] scheduler: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:06:06.540 [INFO] auth-service: Incoming request: POST /api/v1/orders
+2025-11-15 01:06:08.943 [INFO] billing-service: Incoming request: POST /api/v1/orders
+2025-11-15 01:06:10.779 [INFO] notification-service: Connection pool stats: active=12 idle=38 total=50
+2025-11-15 01:06:12.956 [INFO] notification-service: Session created for user u_9084
+2025-11-15 01:06:15.677 [INFO] auth-service: Metrics flushed: 247 datapoints
+2025-11-15 01:06:17.723 [INFO] search-service: Kafka consumer lag: partition 1 lag=158
+2025-11-15 01:06:18.706 [INFO] search-service: Response sent: 201 Created (157ms)
+2025-11-15 01:06:21.113 [INFO] notification-service: JWT token validated for user u_9643
+2025-11-15 01:06:22.481 [INFO] scheduler: Incoming request: GET /api/v1/products?page=10
+2025-11-15 01:06:24.483 [INFO] user-service: Cache miss for key product_catalog_1448
+2025-11-15 01:06:27.864 [INFO] user-service: CORS preflight request handled for https://app.acme.com
+2025-11-15 01:06:28.323 [INFO] export-service: Response sent: 201 Created (184ms)
+2025-11-15 01:06:30.155 [INFO] billing-service: Gzip compression applied, ratio: 0.90
+2025-11-15 01:06:32.886 [INFO] api-gateway: Worker thread pool utilization: 75%
+2025-11-15 01:06:34.761 [INFO] notification-service: Serving static asset /assets/app.1563.js
+2025-11-15 01:06:37.413 [INFO] export-service: Kafka consumer lag: partition 5 lag=269
+2025-11-15 01:06:38.295 [INFO] user-service: Session created for user u_2456

@@ -5,6 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>tsh — Token Shell</title>
 <meta name="description" content="A POSIX shell for LLM agents. Manages context and memory with output safety filtering, token-aware routing, and local-model extraction via LangExtract.">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="color-scheme" content="dark">
+
+<!-- Preconnect to GitHub for the repo link (most common outbound click) -->
+<link rel="preconnect" href="https://github.com">
+<link rel="dns-prefetch" href="https://github.com">
+
+<!-- Speculative prerendering for likely navigation targets -->
+<script type="speculationrules">
+{
+  "prerender": [
+    { "where": { "href_matches": "https://github.com/maceip/tsh" } }
+  ],
+  "prefetch": [
+    { "where": { "href_matches": "https://github.com/reubeno/brush" } }
+  ]
+}
+</script>
+
+<!-- Inline everything — no render-blocking external requests -->
+<!-- content-visibility on off-screen sections defers layout/paint cost -->
 
 <!-- Agent-optimized structured data -->
 <script type="application/ld+json">
@@ -316,6 +337,8 @@
     padding: 4rem 2rem;
     max-width: 900px;
     margin: 0 auto;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
   }
 
   section h2 {
@@ -502,6 +525,141 @@
   @media (max-width: 640px) {
     .demo-grid { grid-template-columns: 1fr; }
     .demo-terminal { min-height: 180px; }
+  }
+
+  /* ---- Web shell ---- */
+  .webshell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .webshell h2 {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-wrap: balance;
+    text-align: center;
+  }
+
+  .webshell .subtitle {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .webshell-window {
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .webshell-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    background: oklch(0.15 0.01 280 / 0.7);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .webshell-chrome .traffic {
+    display: flex;
+    gap: 6px;
+  }
+
+  .webshell-chrome .traffic span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+
+  .webshell-chrome .traffic .red    { background: #f87171; }
+  .webshell-chrome .traffic .yellow { background: #fbbf24; }
+  .webshell-chrome .traffic .green  { background: #4ade80; }
+
+  .webshell-chrome .title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  .webshell-body {
+    padding: 1rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+    min-height: 320px;
+    position: relative;
+    cursor: text;
+  }
+
+  .webshell-body .line {
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .webshell-body .line .ps1 {
+    color: var(--green);
+    user-select: none;
+  }
+
+  .webshell-body .line .cmd {
+    color: var(--text);
+  }
+
+  .webshell-body .line .out {
+    color: var(--text-dim);
+  }
+
+  .webshell-body .line .err {
+    color: var(--amber);
+  }
+
+  .webshell-body .input-line {
+    display: flex;
+    align-items: center;
+  }
+
+  .webshell-body .input-line .ps1 {
+    color: var(--green);
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .webshell-body .input-line .typed {
+    color: var(--text);
+  }
+
+  .webshell-body .input-line .cursor-block {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--green);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+    opacity: 0.8;
+  }
+
+  .webshell-badge {
+    position: absolute;
+    top: 0.65rem;
+    right: 1rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    background: oklch(0.15 0.03 280 / 0.6);
+    border: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
   }
 
   /* ---- Footer ---- */
@@ -742,20 +900,85 @@
 }
 
 /* ======================================================================
-   Responsive
+   Responsive — tablet
    ====================================================================== */
-@media (max-width: 640px) {
-  .pipeline-flow { grid-template-columns: 1fr 1fr; }
-  .hero-code { font-size: 0.78rem; padding: 1rem 1.25rem; }
-  .agent-ref { padding: 1.25rem; }
-  section { padding: 3rem 1.25rem; }
-  .card-grid { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
+  .hero .tagline { font-size: 1rem; }
+  .demo-grid { grid-template-columns: 1fr; }
+  .demo-terminal { min-height: 160px; }
+  section { padding: 3rem 1.5rem; }
 }
 
+/* ======================================================================
+   Responsive — mobile / foldable outer screen (≤640px)
+   ====================================================================== */
+@media (max-width: 640px) {
+  .hero { min-height: 75vh; padding: 3rem 1.25rem; }
+  .hero h1 { font-size: 2.4rem; }
+  .hero .tagline { font-size: 0.92rem; margin: 1rem auto 1.5rem; }
+  .hero-code { font-size: 0.72rem; padding: 0.9rem 1rem; }
+  .pipeline-flow { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .pipeline-step { padding: 1.1rem; }
+  .agent-ref { padding: 1.1rem; }
+  section { padding: 2.5rem 1.25rem; }
+  section h2 { font-size: 1.25rem; }
+  .card-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .webshell-body { min-height: 240px; font-size: 0.75rem; }
+  pre { font-size: 0.78rem; padding: 1rem; }
+  table { font-size: 0.8rem; }
+  td, th { padding: 0.5rem; }
+}
+
+/* ======================================================================
+   Responsive — small phone / foldable inner ≤420px
+   ====================================================================== */
 @media (max-width: 420px) {
-  .pipeline-flow { grid-template-columns: 1fr; }
+  .hero { min-height: 70vh; padding: 2.5rem 1rem; }
+  .hero h1 { font-size: 2rem; letter-spacing: -0.03em; }
+  .hero .tagline { font-size: 0.85rem; }
+  .hero-code { font-size: 0.68rem; padding: 0.75rem 0.85rem; word-break: break-word; }
   .hero-actions { flex-direction: column; align-items: stretch; }
-  .btn { justify-content: center; }
+  .btn { justify-content: center; padding: 0.65rem 1.25rem; font-size: 0.82rem; }
+  .pipeline-flow { grid-template-columns: 1fr; }
+  .pipeline > h2 { font-size: 1.15rem; }
+  section { padding: 2rem 1rem; }
+  section h2 { font-size: 1.1rem; }
+  section h3 { font-size: 0.95rem; }
+  .card { padding: 1.1rem; }
+  .card h4 { font-size: 0.88rem; }
+  .agent-ref { padding: 1rem; margin: 1.25rem 0; }
+  .webshell-body { min-height: 200px; font-size: 0.7rem; padding: 0.75rem; }
+  .webshell-chrome .title { font-size: 0.68rem; }
+  #mount-folder-btn { font-size: 0.65rem; padding: 0.25rem 0.5rem; }
+  pre { font-size: 0.72rem; padding: 0.85rem; }
+  .demo-stats { flex-direction: column; gap: 0.25rem; }
+}
+
+/* ======================================================================
+   Foldable specific — Galaxy Fold / Pixel Fold outer screen (~280-320px)
+   ====================================================================== */
+@media (max-width: 320px) {
+  .hero h1 { font-size: 1.7rem; }
+  .hero .tagline { font-size: 0.78rem; line-height: 1.5; }
+  .hero-code { font-size: 0.62rem; }
+  .btn { font-size: 0.75rem; padding: 0.55rem 1rem; }
+  section h2 { font-size: 1rem; }
+  pre { font-size: 0.65rem; }
+  .webshell-body { font-size: 0.62rem; min-height: 180px; }
+  .demo-pane-header { font-size: 0.68rem; }
+  .demo-terminal { font-size: 0.65rem; }
+}
+
+/* ======================================================================
+   Foldable inner screen / landscape (≥600px and ≤900px height)
+   e.g. Pixel Fold unfolded, Galaxy Fold inner screen
+   ====================================================================== */
+@media (min-width: 600px) and (max-width: 900px) and (max-height: 600px) {
+  .hero { min-height: 85vh; padding: 2rem 2rem; }
+  .hero h1 { font-size: 2.8rem; }
+  .demo-grid { grid-template-columns: 1fr 1fr; }
+  .pipeline-flow { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 </head>
@@ -769,7 +992,7 @@
   <h1>&#x1FAB7; <span class="accent">tsh</span></h1>
   <p class="tagline">
     A shell that manages your agent's context.
-    Full POSIX. Output safety. Token-aware. Built for LLM agents.
+    Full POSIX. Smart output limiting. Structural extraction. No LLM needed.
   </p>
   <div class="hero-code"><span class="prompt">$</span> tsh
 <span class="prompt">tsh$</span> cat server.log <span class="pipe">|</span> grep -i error
@@ -778,57 +1001,32 @@
   <div class="hero-actions">
     <a href="#quickstart" class="btn btn-primary">Get started</a>
     <a href="#agent-reference" class="btn btn-secondary">Agent reference</a>
-    <a href="https://github.com/user/tsh" class="btn btn-secondary">GitHub</a>
+    <a href="https://github.com/maceip/tsh" class="btn btn-secondary">GitHub</a>
   </div>
 </div>
 
 <!-- ================================================================== -->
-<!-- CONTEXT MANAGEMENT DEMO                                            -->
+<!-- ANIMATED SHELL COMPARISON                                          -->
 <!-- ================================================================== -->
-<div class="demo">
+<div class="demo" id="demo-comparison">
   <div class="demo-grid">
 
-    <!-- tsh pane (managed) -->
+    <!-- tsh pane (animated) -->
     <div class="demo-pane demo-pane--tsh glass">
       <div class="demo-pane-header"><span class="dot"></span> tsh</div>
-      <div class="demo-terminal">
-<span class="prompt-tsh">tsh$</span> <span class="cmd">cat server.log | grep -i error</span>
-<span class="out">[03:13:22] proxy:error connection refused :5432
-[03:15:48] mpm_prefork reached MaxRequestWorkers
-[03:17:02] OOM killed pid 2891 (celery-worker)</span>
-<span class="prompt-tsh">tsh$</span> <span class="cmd">wc -l server.log</span>
-<span class="out">48,291 server.log</span>
-<span class="prompt-tsh">tsh$</span> <span class="cursor"></span>
-      </div>
-      <div class="demo-stats">
+      <div class="demo-terminal" id="demo-tsh"></div>
+      <div class="demo-stats" id="demo-tsh-stats" style="opacity:0;transition:opacity 0.4s ease;">
         <span><span class="label">Context used </span><span class="value">84 tokens</span></span>
         <span><span class="label">Filtered </span><span class="value">48,288 lines</span></span>
         <span><span class="label">Time </span><span class="value">0.3s</span></span>
       </div>
     </div>
 
-    <!-- bash pane (context flood) -->
+    <!-- bash pane (animated) -->
     <div class="demo-pane demo-pane--bash glass">
       <div class="demo-pane-header"><span class="dot"></span> bash (raw to agent)</div>
-      <div class="demo-terminal demo-terminal--flood">
-<span class="prompt-bash">$</span> <span class="cmd">cat server.log</span>
-<span class="out-flood">[Sun Mar 08 01:12:33.079022 2026] [mpm_prefork:notice] [pid 1842] AH00163: Apache/2.4.58 (Ubuntu) configured -- resuming normal operations
-[Sun Mar 08 01:12:33.079348 2026] [core:notice] [pid 1842] AH00094: Command line: '/usr/sbin/apache2'
-10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET / HTTP/1.1" 200 11237 "-" "Mozilla/5.0"
-10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /icons/ubuntu-logo.png HTTP/1.1" 200 3623
-10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /favicon.ico HTTP/1.1" 404 487
-10.0.2.1 - - [08/Mar/2026:01:13:02 +0000] "GET /server-status HTTP/1.1" 403 487
-10.0.2.1 - - [08/Mar/2026:01:13:15 +0000] "POST /api/health HTTP/1.1" 200 15
-[Sun Mar 08 01:13:22.411823 2026] [proxy:error] [pid 1844] (111)Connection refused: AH00957
-10.0.2.1 - - [08/Mar/2026:01:13:22 +0000] "GET /api/data HTTP/1.1" 502 341
-10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Googlebot/2.1"
-10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET /robots.txt HTTP/1.1" 200 128
-[Sun Mar 08 01:15:48.002194 2026] [mpm_prefork:error] [pid 1842] AH00161: server reached
-10.0.2.1 - - [08/Mar/2026:01:16:33 +0000] "GET /api/health HTTP/1.1" 200 15
-kernel: Out of memory: Killed process 2891 (celery-worker)
-10.0.2.1 - - [08/Mar/2026:01:17:44 +0000] "GET / HTTP/1.1" 200 11237</span>
-      </div>
-      <div class="demo-stats">
+      <div class="demo-terminal" id="demo-bash" style="overflow:hidden;"></div>
+      <div class="demo-stats" id="demo-bash-stats" style="opacity:0;transition:opacity 0.4s ease;">
         <span><span class="label">Context used </span><span class="value">~96,000 tokens</span></span>
         <span><span class="label">Filtered </span><span class="value">0 lines</span></span>
         <span><span class="label">Useful </span><span class="value">3 lines</span></span>
@@ -837,6 +1035,178 @@ kernel: Out of memory: Killed process 2891 (celery-worker)
 
   </div>
 </div>
+
+<script>
+(function() {
+  // ---- Typewriter engine ----
+  function createShellPlayer(container, script, opts) {
+    const o = Object.assign({ charDelay: 35, lineDelay: 80, cmdPause: 400 }, opts);
+    let idx = 0;
+
+    function addLine(text, cls) {
+      const div = document.createElement('div');
+      div.style.whiteSpace = 'pre-wrap';
+      div.style.wordBreak = 'break-all';
+      div.style.lineHeight = '1.55';
+      div.style.minHeight = '1.1em';
+      const span = document.createElement('span');
+      span.className = cls || 'out';
+      span.textContent = text;
+      div.appendChild(span);
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      return div;
+    }
+
+    function typeCmd(prompt, text, promptCls) {
+      return new Promise(resolve => {
+        const div = document.createElement('div');
+        div.style.whiteSpace = 'pre-wrap';
+        div.style.lineHeight = '1.55';
+        const ps = document.createElement('span');
+        ps.className = promptCls || 'prompt-tsh';
+        ps.textContent = prompt;
+        const cmd = document.createElement('span');
+        cmd.className = 'cmd';
+        div.appendChild(ps);
+        div.appendChild(cmd);
+        container.appendChild(div);
+
+        let i = 0;
+        const tick = setInterval(() => {
+          cmd.textContent = text.slice(0, ++i);
+          container.scrollTop = container.scrollHeight;
+          if (i >= text.length) { clearInterval(tick); setTimeout(resolve, o.cmdPause); }
+        }, o.charDelay);
+      });
+    }
+
+    function outputLines(lines, cls, delay) {
+      return new Promise(resolve => {
+        let i = 0;
+        const tick = setInterval(() => {
+          if (i >= lines.length) { clearInterval(tick); resolve(); return; }
+          addLine(lines[i], cls);
+          i++;
+        }, delay || o.lineDelay);
+      });
+    }
+
+    async function play() {
+      for (const step of script) {
+        if (step.type === 'cmd') {
+          await typeCmd(step.prompt || 'tsh$ ', step.text, step.promptCls);
+        } else if (step.type === 'output') {
+          await outputLines(step.lines, step.cls || 'out', step.delay);
+        } else if (step.type === 'pause') {
+          await new Promise(r => setTimeout(r, step.ms || 500));
+        } else if (step.type === 'cursor') {
+          const div = document.createElement('div');
+          div.style.whiteSpace = 'pre-wrap';
+          div.style.lineHeight = '1.55';
+          const ps = document.createElement('span');
+          ps.className = step.promptCls || 'prompt-tsh';
+          ps.textContent = step.prompt || 'tsh$ ';
+          const cur = document.createElement('span');
+          cur.className = 'cursor';
+          div.appendChild(ps);
+          div.appendChild(cur);
+          container.appendChild(div);
+        }
+      }
+    }
+
+    return { play };
+  }
+
+  // ---- Scripts ----
+  const tshScript = [
+    { type: 'cmd', prompt: 'tsh$ ', text: 'cat server.log | grep -i error', promptCls: 'prompt-tsh' },
+    { type: 'pause', ms: 300 },
+    { type: 'output', lines: [
+      '[03:13:22] proxy:error connection refused :5432',
+      '[03:15:48] mpm_prefork reached MaxRequestWorkers',
+      '[03:17:02] OOM killed pid 2891 (celery-worker)',
+    ], cls: 'out', delay: 120 },
+    { type: 'pause', ms: 600 },
+    { type: 'cmd', prompt: 'tsh$ ', text: 'wc -l server.log', promptCls: 'prompt-tsh' },
+    { type: 'pause', ms: 200 },
+    { type: 'output', lines: ['48,291 server.log'], cls: 'out', delay: 80 },
+    { type: 'pause', ms: 400 },
+    { type: 'cursor', prompt: 'tsh$ ', promptCls: 'prompt-tsh' },
+  ];
+
+  // Generate a big flood of Apache log lines for bash
+  const bashFloodLines = [
+    '[Sun Mar 08 01:12:33.079022 2026] [mpm_prefork:notice] [pid 1842] AH00163: Apache/2.4.58 configured -- resuming',
+    '[Sun Mar 08 01:12:33.079348 2026] [core:notice] [pid 1842] AH00094: Command line: \'/usr/sbin/apache2\'',
+    '10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET / HTTP/1.1" 200 11237 "-" "Mozilla/5.0"',
+    '10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /icons/ubuntu-logo.png HTTP/1.1" 200 3623',
+    '10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /favicon.ico HTTP/1.1" 404 487',
+    '10.0.2.1 - - [08/Mar/2026:01:13:02 +0000] "GET /server-status HTTP/1.1" 403 487',
+    '10.0.2.1 - - [08/Mar/2026:01:13:15 +0000] "POST /api/health HTTP/1.1" 200 15',
+    '[Sun Mar 08 01:13:22.411823 2026] [proxy:error] [pid 1844] (111)Connection refused: AH00957',
+    '10.0.2.1 - - [08/Mar/2026:01:13:22 +0000] "GET /api/data HTTP/1.1" 502 341',
+    '10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Googlebot/2.1"',
+    '10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET /robots.txt HTTP/1.1" 200 128',
+    '[Sun Mar 08 01:15:48.002194 2026] [mpm_prefork:error] [pid 1842] AH00161: server reached MaxRequestWorkers',
+    '10.0.2.1 - - [08/Mar/2026:01:15:50 +0000] "GET /api/health HTTP/1.1" 200 15',
+    '10.0.2.1 - - [08/Mar/2026:01:15:51 +0000] "GET /assets/main.css HTTP/1.1" 200 8923',
+    '10.0.2.1 - - [08/Mar/2026:01:15:52 +0000] "GET /assets/app.js HTTP/1.1" 200 142338',
+    '10.0.2.1 - - [08/Mar/2026:01:15:53 +0000] "POST /api/track HTTP/1.1" 204 0',
+    'kernel: Out of memory: Killed process 2891 (celery-worker)',
+    '10.0.2.1 - - [08/Mar/2026:01:17:44 +0000] "GET / HTTP/1.1" 200 11237',
+    '10.0.2.1 - - [08/Mar/2026:01:17:45 +0000] "GET /icons/ubuntu-logo.png HTTP/1.1" 304 0',
+    '10.0.2.1 - - [08/Mar/2026:01:17:46 +0000] "GET /api/users HTTP/1.1" 200 4521',
+    '10.0.2.1 - - [08/Mar/2026:01:17:47 +0000] "GET /api/users/42 HTTP/1.1" 200 283',
+    '10.0.2.1 - - [08/Mar/2026:01:17:48 +0000] "PUT /api/users/42 HTTP/1.1" 200 283',
+    '10.0.2.1 - - [08/Mar/2026:01:18:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Bingbot/2.0"',
+    '10.0.2.1 - - [08/Mar/2026:01:18:02 +0000] "GET /sitemap.xml HTTP/1.1" 200 1847',
+    '10.0.2.1 - - [08/Mar/2026:01:18:15 +0000] "POST /api/health HTTP/1.1" 200 15',
+    '10.0.2.1 - - [08/Mar/2026:01:18:33 +0000] "GET /api/metrics HTTP/1.1" 200 9284',
+    '10.0.2.1 - - [08/Mar/2026:01:19:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Mozilla/5.0"',
+    '10.0.2.1 - - [08/Mar/2026:01:19:02 +0000] "GET /assets/main.css HTTP/1.1" 304 0',
+    '10.0.2.1 - - [08/Mar/2026:01:19:03 +0000] "GET /assets/app.js HTTP/1.1" 304 0',
+    '10.0.2.1 - - [08/Mar/2026:01:19:15 +0000] "POST /api/health HTTP/1.1" 200 15',
+    '...',
+    '[STDOUT TRUNCATED at 1MB]',
+  ];
+
+  const bashScript = [
+    { type: 'cmd', prompt: '$ ', text: 'cat server.log', promptCls: 'prompt-bash' },
+    { type: 'pause', ms: 200 },
+    { type: 'output', lines: bashFloodLines, cls: 'out-flood', delay: 45 },
+  ];
+
+  // ---- Intersection Observer — play once when visible ----
+  let hasPlayed = false;
+  const demoSection = document.getElementById('demo-comparison');
+
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting && !hasPlayed) {
+        hasPlayed = true;
+        observer.disconnect();
+
+        const tshEl = document.getElementById('demo-tsh');
+        const bashEl = document.getElementById('demo-bash');
+        const tshPlayer = createShellPlayer(tshEl, tshScript, { charDelay: 30, cmdPause: 350 });
+        const bashPlayer = createShellPlayer(bashEl, bashScript, { charDelay: 20, cmdPause: 200 });
+
+        // Both start at the same time
+        const tshDone = tshPlayer.play().then(() => {
+          document.getElementById('demo-tsh-stats').style.opacity = '1';
+        });
+        const bashDone = bashPlayer.play().then(() => {
+          document.getElementById('demo-bash-stats').style.opacity = '1';
+        });
+      }
+    }
+  }, { threshold: 0.3 });
+
+  observer.observe(demoSection);
+})();
+</script>
 
 <!-- ================================================================== -->
 <!-- THREE MODES                                                        -->
@@ -875,27 +1245,389 @@ kernel: Out of memory: Killed process 2891 (celery-worker)
       <p>Pipes, redirects, heredocs, command substitution, process substitution, loops, traps, job control. Powered by brush-core — a Rust implementation of bash.</p>
     </div>
     <div class="card">
-      <h4>&#x1FAE7; Protect the context window</h4>
-      <p>Every byte of stdout flows through an async routing layer. Output is filtered, summarized, and truncated before it reaches the agent's memory. No more flooding context with noise.</p>
+      <h4>&#x1FAE7; Smart output limiting</h4>
+      <p>Large outputs are automatically reduced to their structural skeleton — function signatures, class defs, imports, errors. First 100 lines + structural extraction + last 20. No LLM call, just fast pattern matching.</p>
     </div>
     <div class="card">
       <h4>&#x1FABB; Internal pipes untouched</h4>
       <p>When you run <code>grep foo | sort | uniq</code>, those internal pipes run at OS speed. Only the final output to the agent gets routed through the safety layer. Zero overhead on intermediate work.</p>
     </div>
     <div class="card">
-      <h4>&#x1FAB7; Pluggable safety layer</h4>
-      <p>The Python safety subprocess is long-running and pluggable. Add your own filtering logic — token minimization, output summarization, sensitive data handling — without touching the shell.</p>
+      <h4>&#x1FAB7; Pluggable &amp; configurable</h4>
+      <p>Tune via env vars: <code>TSH_HEAD_LINES</code>, <code>TSH_TAIL_LINES</code>, <code>TSH_MAX_LINES</code>. Or set <code>TSH_NO_LIMIT=1</code> for full pass-through. The Python filter is pluggable — swap in your own logic.</p>
     </div>
     <div class="card">
       <h4>&#x1FAE7; Windows native</h4>
       <p>Auto-detects PowerShell's UTF-16LE encoding — with BOM, without BOM, or plain UTF-8. Agents on Windows need zero special configuration.</p>
     </div>
     <div class="card">
-      <h4>&#x1FABB; 1MB context guard</h4>
-      <p>Stdout is capped at 1MB per command. Prevents runaway output from blowing the agent's context budget. Truncation is logged to stderr so nothing is silently lost.</p>
+      <h4>&#x1FABB; Multilingual structural awareness</h4>
+      <p>Knows the structural patterns of Python, Rust, JavaScript, TypeScript, Java, C/C++, Go, and log formats. Extracts what matters — <code>def</code>, <code>class</code>, <code>pub fn</code>, <code>ERROR</code>, <code>Traceback</code> — elides the rest.</p>
     </div>
   </div>
 </section>
+
+<!-- ================================================================== -->
+<!-- WEB SHELL                                                          -->
+<!-- ================================================================== -->
+<div class="webshell" id="try">
+  <h2>&#x1FAE7; Try tsh in your browser</h2>
+  <p class="subtitle">A live shell. Connect a local folder to browse real files.</p>
+
+  <div class="webshell-window glass">
+    <div class="webshell-chrome">
+      <div class="traffic"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+      <div class="title">tsh — token shell</div>
+      <button id="mount-folder-btn" style="
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--bg-glass);
+        color: var(--accent);
+        cursor: pointer;
+        transition: border-color 0.2s, color 0.2s;
+        white-space: nowrap;
+      ">&#x1F4C2; Connect folder</button>
+    </div>
+    <div class="webshell-body" id="webshell-body">
+      <div class="line"><span class="out">Token Shell (tsh) 0.1.0</span></div>
+      <div class="line"><span class="out">Type commands below. Use "mount" to browse your connected folder.</span></div>
+      <div class="line"><span class="out">&nbsp;</span></div>
+      <div class="input-line" id="input-line">
+        <span class="ps1">tsh$ </span>
+        <span class="typed" id="typed-input"></span>
+        <span class="cursor-block"></span>
+      </div>
+      <span class="webshell-badge">browser shell</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const body = document.getElementById('webshell-body');
+  const inputLine = document.getElementById('input-line');
+  const typedInput = document.getElementById('typed-input');
+  const mountBtn = document.getElementById('mount-folder-btn');
+
+  let currentInput = '';
+  let history = [];
+  let historyIdx = -1;
+  let mountedDir = null;  // FileSystemDirectoryHandle
+  let cwd = '/';
+
+  // ---- Output helpers ----
+  function addLine(text, cls) {
+    const div = document.createElement('div');
+    div.className = 'line';
+    const span = document.createElement('span');
+    span.className = cls || 'out';
+    span.textContent = text;
+    div.appendChild(span);
+    body.insertBefore(div, inputLine);
+  }
+
+  function addCmdLine(cmd) {
+    const div = document.createElement('div');
+    div.className = 'line';
+    const ps1 = document.createElement('span');
+    ps1.className = 'ps1';
+    ps1.textContent = 'tsh$ ';
+    const c = document.createElement('span');
+    c.className = 'cmd';
+    c.textContent = cmd;
+    div.appendChild(ps1);
+    div.appendChild(c);
+    body.insertBefore(div, inputLine);
+  }
+
+  function scrollToBottom() {
+    body.scrollTop = body.scrollHeight;
+  }
+
+  // ---- File System Access API ----
+  async function mountFolder() {
+    if (!('showDirectoryPicker' in window)) {
+      addLine('File System Access API not supported in this browser.', 'err');
+      addLine('Try Chrome, Edge, or another Chromium-based browser.', 'err');
+      return;
+    }
+    try {
+      mountedDir = await window.showDirectoryPicker({ mode: 'read' });
+      mountBtn.textContent = '\u{1F4C2} ' + mountedDir.name;
+      mountBtn.style.color = 'var(--green)';
+      mountBtn.style.borderColor = 'var(--green)';
+      cwd = '/' + mountedDir.name;
+      addLine('Mounted: ' + mountedDir.name + '/', 'out');
+      addLine('Use "ls" to list files, "cat <file>" to read.', 'out');
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        addLine('Mount cancelled: ' + e.message, 'err');
+      }
+    }
+    scrollToBottom();
+  }
+
+  mountBtn.addEventListener('click', mountFolder);
+
+  async function listDir(handle, prefix) {
+    const entries = [];
+    for await (const [name, entry] of handle.entries()) {
+      entries.push({ name, kind: entry.kind });
+    }
+    entries.sort((a, b) => {
+      if (a.kind !== b.kind) return a.kind === 'directory' ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
+    for (const e of entries) {
+      const suffix = e.kind === 'directory' ? '/' : '';
+      addLine((prefix || '') + e.name + suffix, 'out');
+    }
+  }
+
+  async function catFile(handle, filename) {
+    try {
+      const fileHandle = await handle.getFileHandle(filename);
+      const file = await fileHandle.getFile();
+      const text = await file.text();
+      const lines = text.split('\n').slice(0, 200); // cap at 200 lines
+      for (const line of lines) {
+        addLine(line, 'out');
+      }
+      if (text.split('\n').length > 200) {
+        addLine('[truncated at 200 lines]', 'err');
+      }
+    } catch (e) {
+      addLine('cat: ' + filename + ': ' + e.message, 'err');
+    }
+  }
+
+  async function resolvePath(pathStr) {
+    if (!mountedDir) return null;
+    if (!pathStr || pathStr === '.' || pathStr === './') return mountedDir;
+    const parts = pathStr.replace(/^\.\//, '').split('/').filter(Boolean);
+    let current = mountedDir;
+    for (const part of parts) {
+      try {
+        current = await current.getDirectoryHandle(part);
+      } catch {
+        return null;
+      }
+    }
+    return current;
+  }
+
+  // ---- Built-in commands ----
+  const builtins = {
+    help() {
+      addLine('tsh web shell — available commands:', 'out');
+      addLine('  ls [path]          List files (requires mounted folder)', 'out');
+      addLine('  cat <file>         Read a file (first 200 lines)', 'out');
+      addLine('  mount              Open folder picker', 'out');
+      addLine('  pwd                Print working directory', 'out');
+      addLine('  echo <text>        Print text', 'out');
+      addLine('  clear              Clear terminal', 'out');
+      addLine('  whoami             Who are you?', 'out');
+      addLine('  uname              System info', 'out');
+      addLine('  date               Current date/time', 'out');
+      addLine('  history            Command history', 'out');
+      addLine('  exit               Exit message', 'out');
+    },
+
+    clear() {
+      const lines = body.querySelectorAll('.line');
+      lines.forEach(l => l.remove());
+    },
+
+    pwd() {
+      addLine(cwd, 'out');
+    },
+
+    echo(args) {
+      addLine(args.join(' '), 'out');
+    },
+
+    whoami() {
+      addLine('agent', 'out');
+    },
+
+    uname() {
+      addLine('tsh 0.1.0 (wasm-browser) brush-core/0.4', 'out');
+    },
+
+    date() {
+      addLine(new Date().toString(), 'out');
+    },
+
+    history() {
+      history.forEach((cmd, i) => {
+        addLine('  ' + (i + 1) + '  ' + cmd, 'out');
+      });
+    },
+
+    exit() {
+      addLine('tsh: this is a browser demo — nowhere to exit to :)', 'err');
+    },
+
+    async mount() {
+      await mountFolder();
+    },
+
+    async ls(args) {
+      if (!mountedDir) {
+        addLine('No folder mounted. Click "Connect folder" or run "mount".', 'err');
+        return;
+      }
+      const target = args[0] ? await resolvePath(args[0]) : mountedDir;
+      if (!target) {
+        addLine('ls: cannot access \'' + args[0] + '\': No such directory', 'err');
+        return;
+      }
+      await listDir(target);
+    },
+
+    async cat(args) {
+      if (!args[0]) {
+        addLine('cat: missing file operand', 'err');
+        return;
+      }
+      if (!mountedDir) {
+        addLine('No folder mounted. Click "Connect folder" or run "mount".', 'err');
+        return;
+      }
+      // Handle path/to/file
+      const parts = args[0].split('/');
+      const filename = parts.pop();
+      const dirPath = parts.join('/');
+      const dir = dirPath ? await resolvePath(dirPath) : mountedDir;
+      if (!dir) {
+        addLine('cat: ' + args[0] + ': No such file or directory', 'err');
+        return;
+      }
+      await catFile(dir, filename);
+    },
+
+    async wc(args) {
+      if (!args[0] && args[0] !== '-l') {
+        addLine('wc: missing file operand', 'err');
+        return;
+      }
+      if (!mountedDir) {
+        addLine('No folder mounted.', 'err');
+        return;
+      }
+      const flag = args[0] === '-l' ? '-l' : null;
+      const filename = flag ? args[1] : args[0];
+      if (!filename) { addLine('wc: missing file operand', 'err'); return; }
+      try {
+        const fh = await mountedDir.getFileHandle(filename);
+        const file = await fh.getFile();
+        const text = await file.text();
+        const lines = text.split('\n').length;
+        const words = text.split(/\s+/).filter(Boolean).length;
+        const bytes = new Blob([text]).size;
+        if (flag === '-l') {
+          addLine('  ' + lines + ' ' + filename, 'out');
+        } else {
+          addLine('  ' + lines + '  ' + words + ' ' + bytes + ' ' + filename, 'out');
+        }
+      } catch (e) {
+        addLine('wc: ' + filename + ': ' + e.message, 'err');
+      }
+    },
+
+    async head(args) {
+      if (!mountedDir) { addLine('No folder mounted.', 'err'); return; }
+      let n = 10;
+      let filename = args[0];
+      if (args[0] === '-n' && args[1]) { n = parseInt(args[1]) || 10; filename = args[2]; }
+      if (!filename) { addLine('head: missing file operand', 'err'); return; }
+      try {
+        const fh = await mountedDir.getFileHandle(filename);
+        const file = await fh.getFile();
+        const text = await file.text();
+        text.split('\n').slice(0, n).forEach(l => addLine(l, 'out'));
+      } catch (e) {
+        addLine('head: ' + filename + ': ' + e.message, 'err');
+      }
+    }
+  };
+
+  // ---- Command execution ----
+  async function execute(input) {
+    const trimmed = input.trim();
+    if (!trimmed) return;
+
+    addCmdLine(trimmed);
+    history.push(trimmed);
+    historyIdx = history.length;
+
+    const parts = trimmed.split(/\s+/);
+    const cmd = parts[0];
+    const args = parts.slice(1);
+
+    if (builtins[cmd]) {
+      await builtins[cmd](args);
+    } else {
+      addLine('tsh: ' + cmd + ': command not available in browser shell', 'err');
+      addLine('Type "help" for available commands.', 'err');
+    }
+
+    scrollToBottom();
+  }
+
+  // ---- Keyboard input ----
+  function updateDisplay() {
+    typedInput.textContent = currentInput;
+  }
+
+  body.addEventListener('click', () => body.focus());
+  body.setAttribute('tabindex', '0');
+
+  body.addEventListener('keydown', async function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const cmd = currentInput;
+      currentInput = '';
+      updateDisplay();
+      await execute(cmd);
+    } else if (e.key === 'Backspace') {
+      e.preventDefault();
+      currentInput = currentInput.slice(0, -1);
+      updateDisplay();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (history.length > 0 && historyIdx > 0) {
+        historyIdx--;
+        currentInput = history[historyIdx];
+        updateDisplay();
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIdx < history.length - 1) {
+        historyIdx++;
+        currentInput = history[historyIdx];
+      } else {
+        historyIdx = history.length;
+        currentInput = '';
+      }
+      updateDisplay();
+    } else if (e.key === 'l' && e.ctrlKey) {
+      e.preventDefault();
+      builtins.clear();
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      currentInput += e.key;
+      updateDisplay();
+    }
+  });
+
+  // Auto-focus the shell on load
+  setTimeout(() => body.focus(), 500);
+})();
+</script>
 
 <!-- ================================================================== -->
 <!-- QUICKSTART                                                         -->
@@ -904,7 +1636,7 @@ kernel: Out of memory: Killed process 2891 (celery-worker)
   <h2>&#x1FAB7; Quickstart</h2>
 
   <h3>Build and run</h3>
-  <pre><code>git clone https://github.com/user/tsh && cd tsh
+  <pre><code>git clone https://github.com/maceip/tsh && cd tsh
 cargo build --release
 
 <span class="comment"># Interactive shell (safety-filtered)</span>
@@ -1166,11 +1898,29 @@ xtask/                      <span class="comment"># CI — 42+ bash tests, 50+ W
 </section>
 
 <!-- ================================================================== -->
+<!-- REFERENCES                                                         -->
+<!-- ================================================================== -->
+<section id="references" style="max-width:900px;margin:0 auto;padding:3rem 2rem;">
+  <h2 style="font-family:var(--mono);font-size:1.2rem;color:#fff;margin-bottom:1.5rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);">References</h2>
+  <p style="color:var(--text-dim);font-size:0.82rem;margin-bottom:1.25rem;">The smart output limiter is informed by the following research on context compression for LLM agents.</p>
+  <ol style="list-style:none;padding:0;counter-reset:ref;font-size:0.8rem;color:var(--text);line-height:1.7;">
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[1]</span>&ensp;Jha, Erdogan, Kim, Keutzer, Gholami. "Characterizing Prompt Compression Methods for Long Context Inference." <em style="color:var(--text-dim);">ICML 2024.</em> Extractive compression achieves up to 10x compression with minimal accuracy loss.</li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[2]</span>&ensp;Lindenbauer &amp; Slinko. "Simple Observation Masking Is as Efficient as LLM Summarization for Agent Context Management." <em style="color:var(--text-dim);">NeurIPS DL4Code Workshop, Dec 2025.</em> Halves cost vs. LLM summarization. <a href="https://github.com/JetBrains-Research/the-complexity-trap" style="color:var(--accent);">Code</a></li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[3]</span>&ensp;Tree-sitter code skeletonization (Repomix / Aider, 2024–2025). Parse code, return signatures + imports, strip bodies. ~70% token reduction. <a href="https://github.com/yamadashy/repomix" style="color:var(--accent);">Code</a></li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[4]</span>&ensp;Zhang, Zhao et al. "cAST: AST-Based Code Chunking." <em style="color:var(--text-dim);">EMNLP 2025 Findings.</em> Recursively breaks large AST nodes into semantically coherent chunks. +4.3 Recall@5. <a href="https://github.com/yilinjz/astchunk" style="color:var(--accent);">Code</a></li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[5]</span>&ensp;Chirkova et al. "Provence: Context Pruning for RAG." <em style="color:var(--text-dim);">ICLR 2025.</em> Question-aware sentence pruning, plug-and-play for any LLM. <a href="https://github.com/hotchpotch/open_provence" style="color:var(--accent);">Code</a></li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[6]</span>&ensp;Jiang et al. "LLMLingua-2." <em style="color:var(--text-dim);">ACL 2024.</em> BERT-level encoder for token classification via data distillation. 3x–6x faster, up to 20x compression. <a href="https://github.com/microsoft/LLMLingua" style="color:var(--accent);">Code</a></li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[7]</span>&ensp;Li, Liu, Su, Collier. "Prompt Compression for LLMs: A Survey." <em style="color:var(--text-dim);">NAACL 2025 (Oral).</em> Comprehensive taxonomy of hard vs. soft prompt compression. <a href="https://github.com/ZongqianLi/Prompt-Compression-Survey" style="color:var(--accent);">Code</a></li>
+    <li style="margin-bottom:0.9rem;padding-left:2rem;text-indent:-2rem;"><span style="color:var(--accent);font-family:var(--mono);font-size:0.75rem;">[8]</span>&ensp;Kang et al. "ACON: Agent Context Optimization." <em style="color:var(--text-dim);">arXiv, Oct 2025.</em> Gradient-free compression guideline optimization. 26–54% memory reduction, 95%+ accuracy.</li>
+  </ol>
+</section>
+
+<!-- ================================================================== -->
 <!-- FOOTER                                                             -->
 <!-- ================================================================== -->
 <footer>
   <p>&#x1FAB7; tsh is MIT licensed. Built with Rust, Python, and a preference for pipes over protocols.</p>
-  <p><a href="https://github.com/user/tsh">Source</a> · Built by <a href="https://zunftmax.com">Zunftmax UG</a></p>
+  <p><a href="https://github.com/maceip/tsh">Source</a> · Built by <a href="https://zunftmax.com">Zunftmax UG</a></p>
   <p class="tribute">Background pattern after the structural motifs of Minoru Yamasaki</p>
 </footer>
 

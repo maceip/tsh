@@ -430,15 +430,230 @@ fn run_test_tsh_binary(sh: &Shell) -> Result<()> {
 // Usage
 // ============================================================================
 
+// ============================================================================
+// Jungle tests — needle-in-a-haystack with the smart limiter
+// ============================================================================
+
+/// Tests tsh's smart output limiter against the test jungle.
+/// Verifies that:
+/// 1. Large files are limited (not dumped raw)
+/// 2. Structural lines (def, class, ERROR, etc.) are preserved
+/// 3. Specific needles are surfaced
+fn run_test_jungle(sh: &Shell) -> Result<()> {
+    println!("--- test-jungle: Building tsh ---");
+    cmd!(sh, "cargo build -p tsh").run()?;
+
+    let tsh_bin = if cfg!(windows) {
+        sh.current_dir().join("target\\debug\\tsh.exe")
+    } else {
+        sh.current_dir().join("target/debug/tsh")
+    };
+    let tsh = tsh_bin.to_string_lossy().to_string();
+
+    let jungle_dir = sh.current_dir().join("tests").join("jungle");
+    if !jungle_dir.exists() {
+        anyhow::bail!("Jungle directory not found: {}", jungle_dir.display());
+    }
+
+    println!();
+    println!("--- Jungle files ---");
+
+    let mut total_tests = 0;
+    let mut passed = 0;
+
+    // Helper: run a file through tsh and check output
+    let test_file = |sh: &Shell, filename: &str, needles: &[&str], tsh: &str| -> Result<(bool, usize, usize)> {
+        let file_path = jungle_dir.join(filename);
+        if !file_path.exists() {
+            println!("  SKIP  {} (not found)", filename);
+            return Ok((true, 0, 0));
+        }
+
+        let file_path_str = file_path.to_string_lossy().to_string();
+
+        // Count raw lines
+        let raw = std::fs::read_to_string(&file_path)?;
+        let raw_lines = raw.lines().count();
+
+        // Run through tsh: cat <file> via tsh -c
+        let cat_cmd = format!("\"C:/Program Files/Git/usr/bin/cat.exe\" \"{}\"", file_path_str.replace('\\', "/"));
+        let output = cmd!(sh, "{tsh} -c {cat_cmd}").ignore_status().output()?;
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let output_lines = stdout.lines().count();
+
+        // Check limiting
+        let was_limited = output_lines < raw_lines;
+
+        // Check needles
+        let mut needles_found = 0;
+        for needle in needles {
+            if stdout.contains(needle) {
+                needles_found += 1;
+            }
+        }
+
+        let all_needles = needles_found == needles.len();
+        let ok = was_limited && all_needles;
+
+        if ok {
+            println!("  PASS  {} ({} → {} lines, {}/{} needles found)",
+                filename, raw_lines, output_lines, needles_found, needles.len());
+        } else {
+            println!("  FAIL  {} (limited: {}, raw: {} → {}, needles: {}/{})",
+                filename, was_limited, raw_lines, output_lines, needles_found, needles.len());
+            if !was_limited {
+                println!("        ↳ Output was NOT limited");
+            }
+            for needle in needles {
+                if !stdout.contains(needle) {
+                    println!("        ↳ Missing needle: {:?}", needle);
+                }
+            }
+        }
+
+        Ok((ok, raw_lines, output_lines))
+    };
+
+    println!();
+
+    // Test each jungle file
+    let files: Vec<(&str, Vec<&str>)> = vec![
+        ("large_python.py", vec!["class ", "def ", "import "]),
+        ("large_rust.rs", vec!["struct ", "fn ", "impl "]),
+        ("server_log.txt", vec!["ERROR", "FATAL"]),
+        ("config_dump.json", vec![]),  // JSON doesn't have structural prefixes
+        ("webpack_output.txt", vec!["ERROR", "WARNING"]),
+    ];
+
+    for (filename, needles) in &files {
+        match test_file(sh, filename, needles, &tsh) {
+            Ok((ok, _, _)) => {
+                total_tests += 1;
+                if ok { passed += 1; }
+            }
+            Err(e) => {
+                println!("  ERR   {} — {}", filename, e);
+                total_tests += 1;
+            }
+        }
+    }
+
+    println!();
+    println!("--- test-jungle: {}/{} passed ---", passed, total_tests);
+
+    if passed < total_tests {
+        anyhow::bail!("Some jungle tests failed");
+    }
+
+    Ok(())
+}
+
+/// Runs Codex against the jungle files through tsh to test the limiter
+/// with a real coding agent.
+fn run_test_codex(sh: &Shell) -> Result<()> {
+    println!("--- test-codex: Building tsh ---");
+    cmd!(sh, "cargo build -p tsh").run()?;
+
+    // Check for API key
+    if std::env::var("OPENAI_API_KEY").is_err() {
+        anyhow::bail!(
+            "OPENAI_API_KEY is not set. Set it and rerun:\n  \
+             export OPENAI_API_KEY=\"sk-...\"\n  \
+             cargo xtask test-codex"
+        );
+    }
+
+    // Check for codex CLI
+    if cmd!(sh, "codex --version").ignore_status().output().is_err() {
+        anyhow::bail!("codex CLI not found. Install: npm i -g @anthropic-ai/codex");
+    }
+
+    let tsh_bin = if cfg!(windows) {
+        sh.current_dir().join("target\\debug\\tsh.exe")
+    } else {
+        sh.current_dir().join("target/debug/tsh")
+    };
+    let tsh = tsh_bin.to_string_lossy().to_string();
+
+    let tasks: Vec<(&str, &str, &str)> = vec![
+        (
+            "Find API key in Python file",
+            "Read tests/jungle/large_python.py and find any hardcoded API keys or secrets. Report the exact line number and the key value.",
+            "OPENAI_API_KEY",
+        ),
+        (
+            "Find CRITICAL TODO in Python file",
+            "Read tests/jungle/large_python.py and find any TODO comments marked CRITICAL. What is the issue?",
+            "CRITICAL",
+        ),
+        (
+            "Find errors in server log",
+            "Read tests/jungle/server_log.txt and list all ERROR and FATAL events with their messages.",
+            "database connection pool",
+        ),
+        (
+            "Find secrets in config JSON",
+            "Read tests/jungle/config_dump.json and list all passwords, secrets, and API keys you find.",
+            "hunter2",
+        ),
+        (
+            "Find build errors in webpack output",
+            "Read tests/jungle/webpack_output.txt and report any errors or warnings.",
+            "circular dependency",
+        ),
+    ];
+
+    println!();
+    println!("--- Running {} Codex tasks through tsh ---", tasks.len());
+    println!();
+
+    let mut passed = 0;
+
+    for (name, prompt, expected_needle) in &tasks {
+        println!("  Task: {}", name);
+        println!("  Prompt: {}", &prompt[..prompt.len().min(80)]);
+
+        // Run Codex through tsh
+        let result = cmd!(sh, "{tsh} -c {prompt}")
+            .ignore_status()
+            .output();
+
+        match result {
+            Ok(output) => {
+                let stdout = String::from_utf8_lossy(&output.stdout);
+                let stderr = String::from_utf8_lossy(&output.stderr);
+                let combined = format!("{}{}", stdout, stderr);
+
+                if combined.contains(expected_needle) {
+                    println!("  PASS  (found needle: {:?})", expected_needle);
+                    passed += 1;
+                } else {
+                    println!("  FAIL  (needle {:?} not in output)", expected_needle);
+                    println!("  Output preview: {}...", &combined[..combined.len().min(200)]);
+                }
+            }
+            Err(e) => {
+                println!("  ERR   {}", e);
+            }
+        }
+        println!();
+    }
+
+    println!("--- test-codex: {}/{} passed ---", passed, tasks.len());
+    Ok(())
+}
+
 fn print_usage() {
     eprintln!("Usage: cargo run -p xtask -- <command>");
     eprintln!();
     eprintln!("Commands:");
     eprintln!("  run-host        Run the langextract-host binary directly");
     eprintln!("  run-tsh         Run the tsh (Token Shell) binary");
-    eprintln!("  ci              Run the full CI suite (unit tests + shell tests + clippy + fmt)");
+    eprintln!("  ci              Run the full CI suite");
     eprintln!("  test-shell      Run the bash pattern test suite (POSIX only)");
     eprintln!("  test-tsh        Build and exercise the tsh binary");
+    eprintln!("  test-jungle     Run needle-in-a-haystack tests against large files");
+    eprintln!("  test-codex      Run Codex agent against jungle (needs OPENAI_API_KEY)");
     eprintln!("  fetch-model     Download the default LLM model to the cache");
     eprintln!("  list-models     List cached model files");
     eprintln!("  clean-models    Remove all cached model files");
@@ -483,6 +698,12 @@ fn main() -> Result<()> {
         }
         Some("test-tsh") => {
             run_test_tsh_binary(&sh)?;
+        }
+        Some("test-jungle") => {
+            run_test_jungle(&sh)?;
+        }
+        Some("test-codex") => {
+            run_test_codex(&sh)?;
         }
         Some("fetch-model") => {
             let model_name = env::args().nth(2).unwrap_or_else(|| "gemma3-1b-q4".to_string());

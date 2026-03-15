@@ -1,108 +1,249 @@
+<div align="center">
+
 # 🪷 tsh
 
 **A shell that manages your agent's context.**
 
+<br>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/rust-1.77+-7c6ef0?style=for-the-badge&logo=rust&logoColor=white">
+  <img alt="Rust" src="https://img.shields.io/badge/rust-1.77+-7c6ef0?style=for-the-badge&logo=rust&logoColor=white">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/python-3.10+-4ade80?style=for-the-badge&logo=python&logoColor=white">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.10+-4ade80?style=for-the-badge&logo=python&logoColor=white">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/license-MIT-fbbf24?style=for-the-badge">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-fbbf24?style=for-the-badge">
+</picture>
+
+<br><br>
+
+*Full POSIX shell &nbsp;·&nbsp; Smart output limiting &nbsp;·&nbsp; Structural extraction &nbsp;·&nbsp; Local LLM companion*
+
+</div>
+
+<br>
+
+> ```
+> $ tsh
+> tsh$ cat server.log | grep -i error
+> # 3 lines reach the agent. 48,288 don't.
+> ```
+
+<br>
+
+tsh is a POSIX-compatible shell built in Rust. It looks and feels like bash — pipes, heredocs, process substitution, job control, all of it. The difference: every byte of stdout flows through a **smart output limiter** that understands code structure. Large outputs are automatically reduced to their structural skeleton — function signatures, class definitions, imports, error lines — so the agent gets the shape of the content without drowning in noise.
+
+No configuration needed. No LLM call. Just pattern-based structural extraction at pipe speed.
+
+<table>
+<tr>
+<td width="50%">
+
+**🪷 &nbsp; tsh**
 ```
-$ tsh
-tsh$ cat server.log | grep -i error
-# 3 lines reach the agent. 48,288 don't.
+tsh$ cat large_module.py
+# first 100 lines shown...
+... [eliding output, showing structure] ...
+
+class DataProcessor:
+    def __init__(self, config):
+    def process_batch(self, items):
+    async def stream_results(self):
+class APIClient:
+    def authenticate(self):
+
+... [last 20 lines] ...
+
+[tsh: 1,142 lines, 38,491 bytes total.
+ Showed first 100 + 12 structural + last 20.
+ Elided 1,010 lines.]
 ```
+`~180 lines` in context
 
-tsh is a POSIX-compatible shell built in Rust. It looks and feels like bash — pipes, heredocs, process substitution, job control, all of it. The difference: every byte of stdout flows through a routing layer that filters, summarizes, and manages what actually reaches the agent's context window or memory. No more blowing your token budget on 50,000 lines of logs when you needed three.
+</td>
+<td width="50%">
 
-Powered by [brush-core](https://github.com/reubeno/brush). Filtered by a pluggable Python safety layer. Extractions powered by a local model via [LangExtract](crates/langextract-host/).
+**bash**
+```
+$ cat large_module.py
+#!/usr/bin/env python3
+"""Module docstring that goes on
+for many lines explaining what
+this module does..."""
+import os
+import sys
+import json
+from pathlib import Path
+from typing import Optional, List
+  ... 1,132 more lines dumped raw ...
+```
+`1,142 lines` in context
 
----
+</td>
+</tr>
+</table>
+
+<br>
 
 ## 🫧 How it works
 
 ```
-brush-core (fd 1) ──→ pipe ──→ stdout router ──→ safety filter ──→ agent / terminal
+brush-core (fd 1) ──→ pipe ──→ stdout router ──→ smart limiter ──→ agent / terminal
 brush-core (fd 2) ──→ pipe ──→ stderr router ──→ terminal (direct)
 internal pipes (cmd1|cmd2) ──→ untouched, OS speed
 ```
 
-1. Commands run inside brush-core (a Rust implementation of bash)
-2. Their stdout is captured via injected file descriptors — not the terminal
-3. A Tokio async router reads the pipe and forwards text to a long-running Python safety process
-4. The safety layer filters output — managing what reaches the agent's context or memory
-5. Clean output reaches the terminal / agent
-6. Binary data is detected (null bytes) and bypasses the filter automatically
-7. stderr always goes directly to terminal — no filtering
-8. Internal pipes between commands (`grep foo | sort`) run at OS speed, untouched by the router
+The smart limiter (`python/safety_filter.py`) uses **structural pattern matching** — no LLM, no tree-sitter dependency, just fast prefix checks:
+
+<details>
+<summary><b>What it keeps vs. what it elides</b></summary>
+<br>
+
+**Always shown** — first 100 lines (configurable via `TSH_HEAD_LINES`) and last 20 lines (`TSH_TAIL_LINES`)
+
+**Extracted from the middle** — structurally important lines:
+
+| Language | Patterns kept |
+|---|---|
+| Python | `def`, `class`, `async def`, `import`, `from` |
+| Rust | `pub fn`, `pub struct`, `pub enum`, `impl`, `trait`, `mod`, `use` |
+| JavaScript/TS | `function`, `export`, `export default`, `module`, `interface` |
+| Java/C# | `public class`, `public static`, `private`, `protected`, `abstract class` |
+| C/C++ | `#include`, `#define`, `typedef`, `namespace` |
+| Logs | `ERROR`, `WARN`, `FATAL`, `Exception`, `Traceback`, `PANIC` |
+| Text | Markdown headings (`#`, `##`, `###`), separators (`===`, `---`) |
+
+**Elided** — everything else in the middle section (access logs, boilerplate, generated code, etc.)
+
+</details>
+
+<details>
+<summary><b>Environment variables</b></summary>
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `TSH_HEAD_LINES` | `100` | Lines to show from the start |
+| `TSH_TAIL_LINES` | `20` | Lines to show from the end |
+| `TSH_MAX_LINES` | `500` | Hard cap on total output lines |
+| `TSH_NO_LIMIT` | `0` | Set to `1` for full pass-through |
+
+</details>
+
+> [!NOTE]
+> Internal pipes (`cmd1 | cmd2 | cmd3`) run at OS speed — the limiter only touches the **final stdout** that reaches the terminal/agent.
+
+<br>
 
 ## 🪻 Three modes
 
-**Interactive** — drop in like bash.
-```
-$ tsh
-tsh$ ls -la
-tsh$ cat server.log | grep -i error   # only relevant lines reach the agent
-tsh$ exit
-```
+<table>
+<tr><th>Mode</th><th>How</th><th>What happens</th></tr>
+<tr>
+<td><b>🪷&nbsp;Interactive</b></td>
+<td>
 
-**Command string** — run and exit, like `bash -c`.
+```bash
+tsh
+```
+</td>
+<td>REPL with <code>tsh$</code> prompt. Full POSIX. All stdout smart-limited.</td>
+</tr>
+<tr>
+<td><b>🫧&nbsp;Command</b></td>
+<td>
+
 ```bash
 tsh -c 'find . -name "*.py" | head -20'
 ```
+</td>
+<td>Runs through brush-core, limits output, exits with status.</td>
+</tr>
+<tr>
+<td><b>🪻&nbsp;Script</b></td>
+<td>
 
-**Piped script** — pipe a script in via stdin.
 ```bash
 echo 'whoami && df -h' | tsh
 ```
+</td>
+<td>Reads stdin, handles encoding (UTF-16LE on Windows), runs, limits, exits.</td>
+</tr>
+</table>
 
-Disable the safety layer for debugging:
-```bash
-tsh --no-safety -c 'echo "raw, unfiltered output"'
-```
+> [!TIP]
+> Disable the limiter for debugging: `tsh --no-safety -c 'cat big_file.txt'`
+
+<br>
 
 ## 🪷 Get running
 
 ```bash
-git clone https://github.com/user/tsh && cd tsh
+git clone https://github.com/maceip/tsh && cd tsh
 cargo build --release
 
-# Use it
+# Interactive
 ./target/release/tsh
+
+# One-shot
 ./target/release/tsh -c 'echo "hello from tsh"'
 ```
 
-## 🫧 CLI reference
+<details>
+<summary><b>Docker</b></summary>
+
+```bash
+docker compose up -d
+docker compose run --rm tsh
+```
+</details>
+
+<br>
+
+## 🫧 CLI
 
 ```
 tsh [OPTIONS]
 
 Options:
   -c, --command <STRING>    Execute command string and exit
-      --no-safety           Disable safety filter (pass-through mode)
+      --no-safety           Disable smart limiter (pass-through mode)
   -h, --help                Print help
   -V, --version             Print version
 ```
 
-| Condition | Mode | Behavior |
-|---|---|---|
-| `-c "cmd"` provided | Command | Runs string through brush-core, stdout filtered, exits |
-| stdin is a pipe | Script | Reads stdin as script, runs through brush-core, exits |
-| stdin is a terminal | Interactive | REPL with `tsh$` prompt, stdout filtered live |
+<br>
 
-## 🪻 LangExtract — companion extraction library
+## 🪻 LangExtract — companion extraction engine
 
-tsh ships with [langextract-host](crates/langextract-host/), a zero-copy chunked extraction engine that routes documents through a **local LLM** via LangExtract.
+tsh ships with [langextract-host](crates/langextract-host/), a zero-copy chunked extraction engine that routes documents through a **local LLM**.
 
-**What it does:**
-- Splits documents into ~24KB chunks (~6,000 tokens) with 1KB overlap
-- Streams each chunk as a JSON line to a Python subprocess
-- The Python shim (`python/shim.py`) routes to a local model (Ollama, vLLM, any OpenAI-compatible endpoint)
-- Input mutations happen before the model sees the text
-- Output mutations happen before results return
-- Returns structured `AnnotatedDocument` JSON with character-level alignment
+<details>
+<summary><b>How it works</b></summary>
+<br>
 
-**Run it directly:**
-```bash
-cargo run -p langextract-host
+```
+┌──────────┐     ┌───────────────┐     ┌──────────────┐     ┌────────────────────┐
+│ Document │ ──▸ │  chunk_text() │ ──▸ │ python/shim  │ ──▸ │ AnnotatedDocument  │
+│          │     │ 24KB · 1KB    │     │ local model  │     │ class · interval · │
+│          │     │ overlap · 0cp │     │ via Ollama   │     │ attributes · align │
+└──────────┘     └───────────────┘     └──────────────┘     └────────────────────┘
 ```
 
-**Environment variables:**
+- Splits documents into ~24KB chunks (~6,000 tokens) with 1KB overlap
+- Zero-copy chunker operates on `&str` slices — no heap allocations
+- Streams each chunk as a JSON line to a long-running Python subprocess
+- The Python shim routes to a local model (Ollama, vLLM, any OpenAI-compatible endpoint)
+- Input mutations happen before the model sees the text
+- Returns structured JSON with character-level alignment intervals
+
+</details>
+
+<details>
+<summary><b>Environment variables</b></summary>
 
 | Variable | Default | Purpose |
 |---|---|---|
@@ -111,18 +252,28 @@ cargo run -p langextract-host
 | `LLM_MODEL_ID` | `llama3` | Model to use |
 | `TSH_MODEL_DIR` | platform cache dir | Model download location |
 
+</details>
+
+> ```bash
+> cargo run -p langextract-host
+> ```
+
+<br>
+
 ## 🪷 Architecture
 
 ```
 crates/
-  tsh/                    Shell binary — pipe routing, safety layer, brush-core
+  tsh/                    Shell binary — pipe routing, smart limiter, brush-core
   langextract-host/       Extraction engine — zero-copy chunker, async streaming
   tsh-model-manager/      Model download, cache, SHA-256 verification
 python/
+  safety_filter.py        Smart output limiter — structural extraction, head/tail
   shim.py                 LangExtract shim — local model routing, mutations
-  safety_filter.py        Output safety filter (pluggable)
 xtask/                    CI orchestration, 42+ bash pattern tests
 ```
+
+<br>
 
 ## 🫧 Tests
 
@@ -130,10 +281,52 @@ xtask/                    CI orchestration, 42+ bash pattern tests
 cargo run -p xtask -- ci
 ```
 
-42 bash pattern tests (pipelines, heredocs, process substitution, signal handling, WSL/SSH), 50+ Windows compatibility tests, and integration tests. Windows CI skips POSIX-only tests automatically.
+<blockquote>
+
+42 bash pattern tests &nbsp;·&nbsp; 50+ Windows compat tests &nbsp;·&nbsp; integration tests against compiled binary
+
+Pipelines &nbsp;·&nbsp; heredocs &nbsp;·&nbsp; process substitution &nbsp;·&nbsp; signal handling &nbsp;·&nbsp; WSL/SSH &nbsp;·&nbsp; JSON/API
+
+Test jungle included: `tests/jungle/` contains large Python, Rust, log, webpack, and JSON files for verifying smart limiting behavior.
+
+</blockquote>
+
+<br>
+
+## 🪻 References
+
+The smart output limiter is informed by recent research on context compression for LLM agents. Full bibliography with open-source links in [`tests/jungle/README.md`](tests/jungle/README.md).
+
+<details>
+<summary><b>Key papers</b></summary>
+<br>
+
+1. Jha, Erdogan, Kim, Keutzer, Gholami. "Characterizing Prompt Compression Methods for Long Context Inference." *ICML 2024.* Extractive compression achieves up to 10x compression with minimal accuracy loss.
+
+2. Lindenbauer & Slinko. "Simple Observation Masking Is as Efficient as LLM Summarization for Agent Context Management." *NeurIPS DL4Code Workshop, Dec 2025.* Halves cost vs. LLM summarization. [Code](https://github.com/JetBrains-Research/the-complexity-trap)
+
+3. Tree-sitter code skeletonization (Repomix / Aider, 2024–2025). Parse code, return signatures + imports, strip bodies. ~70% token reduction. [Repomix](https://github.com/yamadashy/repomix) · [Aider](https://github.com/Aider-AI/aider)
+
+4. Zhang, Zhao et al. "cAST: AST-Based Code Chunking." *EMNLP 2025 Findings.* [Code](https://github.com/yilinjz/astchunk)
+
+5. Li, Liu, Su, Collier. "Prompt Compression for LLMs: A Survey." *NAACL 2025 (Oral).* [Code](https://github.com/ZongqianLi/Prompt-Compression-Survey)
+
+6. Kang et al. "ACON: Agent Context Optimization." *arXiv, Oct 2025.* 26–54% memory reduction, 95%+ accuracy.
+
+</details>
+
+<br>
+
+<div align="center">
 
 ## License
 
 MIT
 
 *Built by [Zunftmax UG](https://zunftmax.com)*
+
+<br>
+
+🪷 🫧 🪻
+
+</div>

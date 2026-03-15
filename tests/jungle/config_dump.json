@@ -1,0 +1,438 @@
+{
+  "application": {
+    "name": "acme-platform",
+    "version": "4.7.2",
+    "environment": "production",
+    "region": "us-east-1",
+    "instance_id": "i-0a1b2c3d4e5f67890",
+    "build": {
+      "commit": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "branch": "release/4.7.2",
+      "timestamp": "2025-11-15T08:32:14Z",
+      "ci_pipeline_id": "pipeline-28471"
+    }
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8443,
+    "tls": {
+      "enabled": true,
+      "cert_path": "/etc/ssl/certs/acme-platform.pem",
+      "key_path": "/etc/ssl/private/acme-platform.key",
+      "min_version": "TLSv1.2",
+      "ciphers": [
+        "TLS_AES_256_GCM_SHA384",
+        "TLS_CHACHA20_POLY1305_SHA256",
+        "TLS_AES_128_GCM_SHA256"
+      ]
+    },
+    "http2": {
+      "enabled": true,
+      "max_concurrent_streams": 250,
+      "initial_window_size": 65535
+    },
+    "timeouts": {
+      "read_timeout_ms": 30000,
+      "write_timeout_ms": 30000,
+      "idle_timeout_ms": 120000,
+      "shutdown_grace_period_ms": 30000
+    },
+    "limits": {
+      "max_request_body_size_mb": 50,
+      "max_header_size_kb": 64,
+      "max_connections": 10000,
+      "max_requests_per_connection": 1000
+    }
+  },
+  "database": {
+    "primary": {
+      "host": "db-primary.internal.acme.com",
+      "port": 5432,
+      "name": "acme_production",
+      "username": "acme_app",
+      "database_password": "hunter2_production_secret",
+      "ssl_mode": "verify-full",
+      "ssl_ca_path": "/etc/ssl/certs/rds-ca-2019-root.pem",
+      "pool": {
+        "min_connections": 10,
+        "max_connections": 100,
+        "idle_timeout_ms": 600000,
+        "max_lifetime_ms": 3600000,
+        "acquire_timeout_ms": 5000
+      },
+      "statement_cache_size": 500
+    },
+    "read_replicas": [
+      {
+        "host": "db-replica-1.internal.acme.com",
+        "port": 5432,
+        "name": "acme_production",
+        "username": "acme_readonly",
+        "password": "readonly_replica_pass_2025",
+        "ssl_mode": "verify-full",
+        "weight": 50,
+        "pool": {
+          "min_connections": 5,
+          "max_connections": 50,
+          "idle_timeout_ms": 300000
+        }
+      },
+      {
+        "host": "db-replica-2.internal.acme.com",
+        "port": 5432,
+        "name": "acme_production",
+        "username": "acme_readonly",
+        "password": "readonly_replica_pass_2025",
+        "ssl_mode": "verify-full",
+        "weight": 50,
+        "pool": {
+          "min_connections": 5,
+          "max_connections": 50,
+          "idle_timeout_ms": 300000
+        }
+      }
+    ],
+    "migrations": {
+      "directory": "/app/migrations",
+      "auto_migrate": false,
+      "baseline_version": "20250101000000"
+    }
+  },
+  "cache": {
+    "redis": {
+      "primary": {
+        "host": "redis-primary.internal.acme.com",
+        "port": 6379,
+        "password": "redis_cluster_auth_token_x7k9m2",
+        "database": 0,
+        "tls_enabled": true,
+        "pool_size": 20,
+        "connect_timeout_ms": 3000,
+        "read_timeout_ms": 1000,
+        "write_timeout_ms": 1000
+      },
+      "sentinel": {
+        "enabled": true,
+        "master_name": "acme-master",
+        "nodes": [
+          "sentinel-1.internal.acme.com:26379",
+          "sentinel-2.internal.acme.com:26379",
+          "sentinel-3.internal.acme.com:26379"
+        ]
+      }
+    },
+    "local": {
+      "enabled": true,
+      "max_entries": 50000,
+      "ttl_seconds": 300,
+      "eviction_policy": "lru"
+    }
+  },
+  "messaging": {
+    "kafka": {
+      "brokers": [
+        "kafka-1.internal.acme.com:9092",
+        "kafka-2.internal.acme.com:9092",
+        "kafka-3.internal.acme.com:9092"
+      ],
+      "consumer_group": "acme-platform-production",
+      "topics": {
+        "events": "acme.events.production",
+        "commands": "acme.commands.production",
+        "dead_letter": "acme.dlq.production"
+      },
+      "producer": {
+        "acks": "all",
+        "retries": 5,
+        "batch_size": 16384,
+        "linger_ms": 5,
+        "compression_type": "lz4",
+        "max_request_size": 1048576
+      },
+      "consumer": {
+        "auto_offset_reset": "latest",
+        "enable_auto_commit": false,
+        "max_poll_records": 500,
+        "session_timeout_ms": 30000,
+        "heartbeat_interval_ms": 10000
+      },
+      "sasl": {
+        "mechanism": "SCRAM-SHA-512",
+        "username": "acme-platform",
+        "password": "kafka_sasl_password_prod_2025"
+      }
+    },
+    "sqs": {
+      "region": "us-east-1",
+      "queues": {
+        "notifications": "acme-notifications-prod",
+        "emails": "acme-emails-prod",
+        "webhooks": "acme-webhooks-prod"
+      },
+      "visibility_timeout_seconds": 300,
+      "max_receive_count": 5,
+      "long_poll_wait_seconds": 20
+    }
+  },
+  "auth": {
+    "jwt": {
+      "issuer": "https://auth.acme.com",
+      "audience": "https://api.acme.com",
+      "algorithms": ["RS256"],
+      "public_key_path": "/etc/ssl/certs/jwt-signing-public.pem",
+      "token_expiry_seconds": 3600,
+      "refresh_token_expiry_seconds": 2592000
+    },
+    "oauth2": {
+      "providers": {
+        "google": {
+          "client_id": "123456789-abcdefghijklmnop.apps.googleusercontent.com",
+          "client_secret": "GOCSPX-AbCdEfGhIjKlMnOpQrStUvWx",
+          "redirect_uri": "https://api.acme.com/auth/google/callback",
+          "scopes": ["openid", "email", "profile"]
+        },
+        "github": {
+          "client_id": "Iv1.abcdef1234567890",
+          "client_secret": "gh_secret_0123456789abcdef0123456789abcdef01234567",
+          "redirect_uri": "https://api.acme.com/auth/github/callback",
+          "scopes": ["user:email"]
+        }
+      }
+    },
+    "api_keys": {
+      "hash_algorithm": "argon2id",
+      "prefix": "acme_",
+      "max_keys_per_user": 10
+    }
+  },
+  "payments": {
+    "provider": "stripe",
+    "stripe_secret_key": "sk_live_abc123def456ghi789jkl012mno345pqr678stu901vwx",
+    "stripe_publishable_key": "pk_live_abc123def456ghi789jkl012mno345pqr678stu901vwx",
+    "stripe_webhook_secret": "whsec_abc123def456ghi789jkl012mno345pqr678stu901",
+    "currency": "usd",
+    "tax_rates": {
+      "us_default": 0.0,
+      "eu_vat": 0.20,
+      "uk_vat": 0.20,
+      "au_gst": 0.10,
+      "ca_gst": 0.05
+    },
+    "plans": {
+      "starter": {
+        "stripe_price_id": "price_1ABC2DEF3GHI4JKL",
+        "amount_cents": 2900,
+        "interval": "month"
+      },
+      "professional": {
+        "stripe_price_id": "price_5MNO6PQR7STU8VWX",
+        "amount_cents": 9900,
+        "interval": "month"
+      },
+      "enterprise": {
+        "stripe_price_id": "price_9YZA0BCD1EFG2HIJ",
+        "amount_cents": 49900,
+        "interval": "month"
+      }
+    }
+  },
+  "storage": {
+    "s3": {
+      "region": "us-east-1",
+      "buckets": {
+        "uploads": "acme-uploads-production",
+        "exports": "acme-exports-production",
+        "backups": "acme-backups-production",
+        "static_assets": "acme-static-production"
+      },
+      "presigned_url_expiry_seconds": 3600,
+      "multipart_threshold_mb": 100,
+      "max_upload_size_mb": 5120
+    },
+    "cdn": {
+      "enabled": true,
+      "distribution_id": "E1A2B3C4D5E6F7",
+      "domain": "cdn.acme.com",
+      "cache_ttl_seconds": 86400
+    }
+  },
+  "observability": {
+    "logging": {
+      "level": "info",
+      "format": "json",
+      "output": "stdout",
+      "sampling_rate": 1.0,
+      "fields": {
+        "service": "acme-platform",
+        "environment": "production",
+        "version": "4.7.2"
+      }
+    },
+    "metrics": {
+      "enabled": true,
+      "provider": "datadog",
+      "host": "datadog-agent.internal.acme.com",
+      "port": 8125,
+      "prefix": "acme.platform",
+      "tags": {
+        "env": "production",
+        "service": "acme-platform",
+        "region": "us-east-1"
+      },
+      "flush_interval_seconds": 10
+    },
+    "tracing": {
+      "enabled": true,
+      "provider": "datadog",
+      "sample_rate": 0.1,
+      "agent_host": "datadog-agent.internal.acme.com",
+      "agent_port": 8126,
+      "service_name": "acme-platform",
+      "propagation_style": ["datadog", "tracecontext"]
+    },
+    "health_check": {
+      "enabled": true,
+      "path": "/health",
+      "include_details": false,
+      "checks": {
+        "database": true,
+        "redis": true,
+        "kafka": true,
+        "s3": false
+      }
+    },
+    "alerts": {
+      "pagerduty": {
+        "enabled": true,
+        "integration_key": "pd_integration_key_abc123",
+        "escalation_policy": "Platform Team"
+      },
+      "slack": {
+        "enabled": true,
+        "webhook_url": "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+        "channel": "#platform-alerts",
+        "mention_on_critical": "@oncall-platform"
+      }
+    }
+  },
+  "feature_flags": {
+    "provider": "launchdarkly",
+    "sdk_key": "sdk-abc123-def456-prod",
+    "defaults": {
+      "new_billing_engine": false,
+      "async_exports": true,
+      "v2_api": false,
+      "enhanced_search": true,
+      "rate_limit_v2": false,
+      "websocket_notifications": true,
+      "batch_processing_v3": false,
+      "ai_recommendations": false
+    },
+    "polling_interval_seconds": 30,
+    "streaming_enabled": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "provider": "redis",
+    "default_limits": {
+      "requests_per_minute": 600,
+      "requests_per_hour": 10000,
+      "burst_size": 50
+    },
+    "tier_overrides": {
+      "free": {
+        "requests_per_minute": 60,
+        "requests_per_hour": 1000,
+        "burst_size": 10
+      },
+      "starter": {
+        "requests_per_minute": 300,
+        "requests_per_hour": 5000,
+        "burst_size": 30
+      },
+      "professional": {
+        "requests_per_minute": 600,
+        "requests_per_hour": 10000,
+        "burst_size": 50
+      },
+      "enterprise": {
+        "requests_per_minute": 3000,
+        "requests_per_hour": 100000,
+        "burst_size": 200
+      }
+    },
+    "endpoints": {
+      "/api/v1/search": {
+        "requests_per_minute": 30,
+        "burst_size": 5
+      },
+      "/api/v1/export": {
+        "requests_per_minute": 10,
+        "burst_size": 2
+      },
+      "/api/v1/bulk": {
+        "requests_per_minute": 5,
+        "burst_size": 1
+      }
+    }
+  },
+  "scheduled_jobs": {
+    "cleanup_expired_sessions": {
+      "cron": "0 */6 * * *",
+      "timeout_seconds": 300,
+      "enabled": true
+    },
+    "generate_daily_reports": {
+      "cron": "0 2 * * *",
+      "timeout_seconds": 1800,
+      "enabled": true
+    },
+    "sync_external_data": {
+      "cron": "*/15 * * * *",
+      "timeout_seconds": 600,
+      "enabled": true
+    },
+    "rotate_api_keys": {
+      "cron": "0 0 1 * *",
+      "timeout_seconds": 120,
+      "enabled": false
+    },
+    "backup_database": {
+      "cron": "0 3 * * *",
+      "timeout_seconds": 7200,
+      "enabled": true
+    }
+  },
+  "cors": {
+    "allowed_origins": [
+      "https://app.acme.com",
+      "https://admin.acme.com",
+      "https://docs.acme.com"
+    ],
+    "allowed_methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    "allowed_headers": ["Authorization", "Content-Type", "X-Request-ID", "X-Tenant-ID"],
+    "expose_headers": ["X-Request-ID", "X-Rate-Limit-Remaining"],
+    "max_age_seconds": 86400,
+    "allow_credentials": true
+  },
+  "security": {
+    "content_security_policy": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.acme.com; style-src 'self' 'unsafe-inline'",
+    "hsts_max_age_seconds": 31536000,
+    "frame_options": "DENY",
+    "xss_protection": true,
+    "content_type_nosniff": true,
+    "referrer_policy": "strict-origin-when-cross-origin",
+    "encryption": {
+      "at_rest": {
+        "enabled": true,
+        "algorithm": "AES-256-GCM",
+        "key_provider": "aws-kms",
+        "key_id": "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+      },
+      "in_transit": {
+        "min_tls_version": "1.2",
+        "perfect_forward_secrecy": true
+      }
+    }
+  }
+}
