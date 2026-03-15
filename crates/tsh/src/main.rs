@@ -1,112 +1,465 @@
+//! # tsh — Token Shell
+//!
+//! A POSIX-compatible shell (brush-core) where every byte of final output
+//! flows through a Rust router before reaching the terminal.
+//!
+//! ## Architecture
+//!
+//! ```text
+//! brush-core (fd 1) ──→ pipe ──→ stdout router ──→ safety filter ──→ terminal
+//! brush-core (fd 2) ──→ pipe ──→ stderr router ──→ terminal (direct)
+//! internal pipes (cmd1|cmd2) ──→ untouched, OS speed
+//! ```
+
 use anyhow::{Context, Result};
+use brush_core::openfiles::OpenFile;
 use clap::Parser;
-use langextract_host::AnnotatedDocument;
-use rustyline::error::ReadlineError;
-use rustyline::DefaultEditor;
-use std::io::{self, IsTerminal, Read};
-use tokio::process::Command;
+use std::collections::HashMap;
+use std::io::{self, IsTerminal, Read, Write};
+use std::process::Stdio;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::process::{Child, Command};
 
-/// Token Shell (tsh) - LangExtract Compliance Pipeline
-#[derive(Parser, Debug)]
-#[command(author, version, about = "Token Shell for LangExtract Compliance Pipeline")]
-struct Args {
-    /// The specific prompt description for the model
-    #[arg(short, long)]
-    prompt: Option<String>,
+const MAX_DISPLAY_BYTES: usize = 1024 * 1024; // 1 MB
 
-    /// Optional: Path to a JSON file containing few-shot ExampleData
-    #[arg(short, long)]
-    examples: Option<String>,
+// ---------------------------------------------------------------------------
+// Platform: PipeReader → tokio async file
+// ---------------------------------------------------------------------------
 
-    /// Output the results as a unified JSON array for piping into jq, etc.
-    #[arg(long, default_value_t = false)]
-    json: bool,
+#[cfg(unix)]
+fn pipe_reader_to_async(reader: std::io::PipeReader) -> tokio::fs::File {
+    use std::os::unix::io::{FromRawFd, IntoRawFd};
+    let raw = reader.into_raw_fd();
+    let std_file = unsafe { std::fs::File::from_raw_fd(raw) };
+    tokio::fs::File::from_std(std_file)
+}
+
+#[cfg(windows)]
+fn pipe_reader_to_async(reader: std::io::PipeReader) -> tokio::fs::File {
+    use std::os::windows::io::{FromRawHandle, IntoRawHandle};
+    let raw = reader.into_raw_handle();
+    let std_file = unsafe { std::fs::File::from_raw_handle(raw) };
+    tokio::fs::File::from_std(std_file)
 }
 
 // ---------------------------------------------------------------------------
-// PowerShell / encoding middleware
+// CLI
 // ---------------------------------------------------------------------------
 
-/// Decodes raw stdin bytes into a UTF-8 String, handling the PowerShell 5.1
-/// UTF-16LE encoding hazard on Windows.
+/// Token Shell (tsh) — a compliance-instrumented POSIX shell.
 ///
-/// Detection order:
-/// 1. UTF-16LE BOM (`FF FE`) → transcode via `encoding_rs`
-/// 2. UTF-8 BOM (`EF BB BF`) → strip BOM, validate UTF-8
-/// 3. Valid UTF-8 → use directly
-/// 4. (Windows only) Fallback → attempt UTF-16LE without BOM
+/// Every command's output flows through a routing layer that can
+/// inspect, filter, and redact data before it reaches the terminal.
+#[derive(Parser, Debug, Clone)]
+#[command(author, version, about)]
+struct Args {
+    /// Execute a command string and exit (like bash -c)
+    #[arg(short = 'c', long = "command")]
+    command: Option<String>,
+
+    /// Disable the safety filter (pass-through mode for debugging)
+    #[arg(long)]
+    no_safety: bool,
+}
+
+// ---------------------------------------------------------------------------
+// Safety filter subprocess lifecycle
+// ---------------------------------------------------------------------------
+
+struct SafetyProcess {
+    child: Child,
+    stdin: tokio::process::ChildStdin,
+    stdout: tokio::process::ChildStdout,
+}
+
+/// Spawns the Python safety filter as a long-running subprocess.
+/// Returns None if the safety filter is disabled or the script can't be found.
+fn spawn_safety_filter() -> Option<SafetyProcess> {
+    // Resolve the filter script. Same logic as langextract-host's resolve_shim_command:
+    // check adjacent to executable first, then fall back to python/ in workspace.
+    let filter_path = resolve_safety_filter_path()?;
+
+    let python = resolve_python();
+    let mut child = Command::new(&python)
+        .arg(&filter_path)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::inherit()) // safety filter diagnostics go straight to terminal
+        .kill_on_drop(true)
+        .spawn()
+        .ok()?;
+
+    let stdin = child.stdin.take()?;
+    let stdout = child.stdout.take()?;
+
+    Some(SafetyProcess {
+        child,
+        stdin,
+        stdout,
+    })
+}
+
+/// Finds the safety filter script. Checks:
+/// 1. Adjacent to the tsh executable (production install)
+/// 2. python/safety_filter.py relative to CWD (development)
+fn resolve_safety_filter_path() -> Option<String> {
+    if let Ok(mut exe_path) = std::env::current_exe() {
+        exe_path.pop();
+        let adjacent = exe_path.join("safety_filter.py");
+        if adjacent.exists() {
+            return Some(adjacent.to_string_lossy().to_string());
+        }
+    }
+
+    let dev_path = std::path::Path::new("python/safety_filter.py");
+    if dev_path.exists() {
+        return Some(dev_path.to_string_lossy().to_string());
+    }
+
+    None
+}
+
+/// Resolves the Python interpreter. Prefers the uv venv if it exists.
+fn resolve_python() -> String {
+    // Check for uv venv in workspace
+    let venv_python = if cfg!(windows) {
+        ".venv/Scripts/python.exe"
+    } else {
+        ".venv/bin/python3"
+    };
+    if std::path::Path::new(venv_python).exists() {
+        return venv_python.to_string();
+    }
+    // Fallback to system python
+    "python3".to_string()
+}
+
+// ---------------------------------------------------------------------------
+// Stdout router (with safety filter)
+// ---------------------------------------------------------------------------
+
+/// Routes stdout through the safety filter.
+/// Binary data and stderr bypass the safety filter and go directly to terminal.
+async fn run_stdout_router_with_safety(
+    mut pipe_reader: tokio::fs::File,
+    mut safety_stdin: tokio::process::ChildStdin,
+    mut safety_stdout: tokio::process::ChildStdout,
+) {
+    let mut buf = [0u8; 8192];
+    let mut total_written: usize = 0;
+    let mut truncation_warned = false;
+    let mut first_chunk = true;
+    let mut is_binary = false;
+
+    // Task: read sanitized output from safety filter and write to terminal
+    let consumer = tokio::spawn(async move {
+        let mut out_buf = [0u8; 8192];
+        let mut stdout = tokio::io::stdout();
+        loop {
+            match safety_stdout.read(&mut out_buf).await {
+                Ok(0) => break,
+                Ok(n) => {
+                    let _ = stdout.write_all(&out_buf[..n]).await;
+                    let _ = stdout.flush().await;
+                }
+                Err(_) => break,
+            }
+        }
+    });
+
+    // Main loop: read from shell pipe, route to safety filter or terminal
+    loop {
+        match pipe_reader.read(&mut buf).await {
+            Ok(0) => break,
+            Ok(n) => {
+                let chunk = &buf[..n];
+
+                if first_chunk {
+                    if chunk.contains(&0u8) {
+                        is_binary = true;
+                    }
+                    first_chunk = false;
+                }
+
+                if total_written >= MAX_DISPLAY_BYTES {
+                    continue; // drain silently
+                }
+
+                let remaining = MAX_DISPLAY_BYTES - total_written;
+                let bytes_to_write = n.min(remaining);
+                let write_chunk = &chunk[..bytes_to_write];
+
+                if is_binary {
+                    // Binary bypass: skip safety filter, write directly to terminal
+                    let _ = tokio::io::stdout().write_all(write_chunk).await;
+                    let _ = tokio::io::stdout().flush().await;
+                } else {
+                    // Route text through safety filter
+                    let _ = safety_stdin.write_all(write_chunk).await;
+                    let _ = safety_stdin.flush().await;
+                }
+
+                total_written += bytes_to_write;
+
+                if total_written >= MAX_DISPLAY_BYTES && !truncation_warned {
+                    let _ = tokio::io::stdout()
+                        .write_all(b"\n[STDOUT TRUNCATED at 1MB]\n")
+                        .await;
+                    truncation_warned = true;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+
+    // Close safety filter stdin so the Python process sees EOF and flushes
+    drop(safety_stdin);
+    // Wait for the consumer to finish reading safety filter output
+    let _ = consumer.await;
+}
+
+/// Routes output directly to terminal (no safety filter). Used for stderr,
+/// or when --no-safety is set for stdout too.
+async fn run_passthrough_router(
+    mut pipe_reader: tokio::fs::File,
+    mut terminal_writer: impl AsyncWriteExt + Unpin,
+    label: &'static str,
+) {
+    let mut buf = [0u8; 8192];
+    let mut total_written: usize = 0;
+    let mut truncation_warned = false;
+
+    loop {
+        match pipe_reader.read(&mut buf).await {
+            Ok(0) => break,
+            Ok(n) => {
+                if total_written >= MAX_DISPLAY_BYTES {
+                    continue;
+                }
+
+                let remaining = MAX_DISPLAY_BYTES - total_written;
+                let bytes_to_write = n.min(remaining);
+
+                let _ = terminal_writer.write_all(&buf[..bytes_to_write]).await;
+                let _ = terminal_writer.flush().await;
+                total_written += bytes_to_write;
+
+                if total_written >= MAX_DISPLAY_BYTES && !truncation_warned {
+                    let _ = terminal_writer
+                        .write_all(format!("\n[{label} TRUNCATED at 1MB]\n").as_bytes())
+                        .await;
+                    truncation_warned = true;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Shell creation with fd injection
+// ---------------------------------------------------------------------------
+
+async fn create_instrumented_shell(
+    interactive: bool,
+    stdout_writer: std::io::PipeWriter,
+    stderr_writer: std::io::PipeWriter,
+) -> Result<brush_core::Shell> {
+    let builtins = brush_builtins::default_builtins(brush_builtins::BuiltinSet::BashMode);
+
+    let mut fds = HashMap::new();
+    fds.insert(1, OpenFile::PipeWriter(stdout_writer));
+    fds.insert(2, OpenFile::PipeWriter(stderr_writer));
+
+    let create_options = brush_core::CreateOptions {
+        interactive,
+        shell_name: Some("tsh".to_string()),
+        shell_product_display_str: Some(format!("tsh {}", env!("CARGO_PKG_VERSION"))),
+        shell_version: Some(env!("CARGO_PKG_VERSION").to_string()),
+        read_commands_from_stdin: interactive,
+        builtins,
+        fds: Some(fds),
+        ..Default::default()
+    };
+
+    let shell = brush_core::Shell::new(create_options)
+        .await
+        .context("Failed to create shell")?;
+
+    Ok(shell)
+}
+
+// ---------------------------------------------------------------------------
+// Execution modes
+// ---------------------------------------------------------------------------
+
+/// Sets up pipes, routers, and optionally the safety filter subprocess, then runs a closure.
+async fn run_with_routing<F, Fut>(no_safety: bool, run_shell: F) -> Result<u8>
+where
+    F: FnOnce(brush_core::Shell) -> Fut,
+    Fut: std::future::Future<Output = Result<(brush_core::Shell, u8)>>,
+{
+    let (stdout_reader, stdout_writer) = std::io::pipe()?;
+    let (stderr_reader, stderr_writer) = std::io::pipe()?;
+
+    let shell = create_instrumented_shell(false, stdout_writer, stderr_writer).await?;
+
+    let async_stdout = pipe_reader_to_async(stdout_reader);
+    let async_stderr = pipe_reader_to_async(stderr_reader);
+
+    // Stderr always goes directly to terminal (no safety filter)
+    let stderr_router = tokio::spawn(run_passthrough_router(
+        async_stderr,
+        tokio::io::stderr(),
+        "STDERR",
+    ));
+
+    // Stdout: route through safety filter if available and not disabled
+    let safety = if no_safety { None } else { spawn_safety_filter() };
+
+    let stdout_router = if let Some(safety_proc) = safety {
+        tokio::spawn(async move {
+            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout).await;
+            // Keep child alive until router is done — kill_on_drop fires here
+            let mut child = safety_proc.child;
+            let _ = child.wait().await;
+        })
+    } else {
+        if !no_safety {
+            eprintln!("[tsh] safety filter not found (python/safety_filter.py). Running in pass-through mode.");
+        }
+        tokio::spawn(run_passthrough_router(
+            async_stdout,
+            tokio::io::stdout(),
+            "STDOUT",
+        ))
+    };
+
+    // Run the shell
+    let (shell, exit_code) = run_shell(shell).await?;
+
+    // Close pipes
+    drop(shell);
+
+    let _ = stdout_router.await;
+    let _ = stderr_router.await;
+
+    Ok(exit_code)
+}
+
+/// -c mode
+async fn run_command_mode(command: &str, no_safety: bool) -> Result<u8> {
+    run_with_routing(no_safety, |mut shell| async move {
+        let params = shell.default_exec_params();
+        let result = shell.run_string(command, &params).await
+            .context("Command execution failed")?;
+        let code = result.exit_code.into();
+        Ok((shell, code))
+    }).await
+}
+
+/// Interactive REPL mode
+async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
+    let (stdout_reader, stdout_writer) = std::io::pipe()?;
+    let (stderr_reader, stderr_writer) = std::io::pipe()?;
+
+    let mut shell = create_instrumented_shell(true, stdout_writer, stderr_writer).await?;
+
+    let async_stdout = pipe_reader_to_async(stdout_reader);
+    let async_stderr = pipe_reader_to_async(stderr_reader);
+
+    let stderr_router = tokio::spawn(run_passthrough_router(
+        async_stderr,
+        tokio::io::stderr(),
+        "STDERR",
+    ));
+
+    let safety = if no_safety { None } else { spawn_safety_filter() };
+
+    let stdout_router = if let Some(safety_proc) = safety {
+        tokio::spawn(async move {
+            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout).await;
+            let _ = safety_proc.child;
+        })
+    } else {
+        if !no_safety {
+            eprintln!("[tsh] safety filter not found. Pass-through mode.");
+        }
+        tokio::spawn(run_passthrough_router(
+            async_stdout,
+            tokio::io::stdout(),
+            "STDOUT",
+        ))
+    };
+
+    // REPL: prompt goes to real terminal, command output goes through pipes
+    let mut line_buf = String::new();
+    loop {
+        eprint!("tsh$ ");
+        let _ = io::stderr().flush();
+
+        line_buf.clear();
+        match io::stdin().read_line(&mut line_buf) {
+            Ok(0) => break,
+            Ok(_) => {
+                let input = line_buf.trim();
+                if input.is_empty() { continue; }
+                if input == "exit" || input == "quit" { break; }
+
+                let params = shell.default_exec_params();
+                if let Err(e) = shell.run_string(input, &params).await {
+                    eprintln!("tsh: error: {}", e);
+                }
+            }
+            Err(_) => break,
+        }
+    }
+
+    let exit_code = shell.last_result();
+    drop(shell);
+
+    let _ = stdout_router.await;
+    let _ = stderr_router.await;
+
+    Ok(exit_code)
+}
+
+/// Piped stdin mode
+async fn run_piped_mode(no_safety: bool) -> Result<u8> {
+    let mut raw = Vec::new();
+    io::stdin().read_to_end(&mut raw)?;
+    if raw.is_empty() { anyhow::bail!("No input via stdin."); }
+    let script = decode_stdin_bytes(raw)?;
+    if script.trim().is_empty() { anyhow::bail!("No input via stdin."); }
+    run_command_mode(&script, no_safety).await
+}
+
+// ---------------------------------------------------------------------------
+// PowerShell encoding
+// ---------------------------------------------------------------------------
+
 #[cfg(windows)]
 fn decode_stdin_bytes(raw: Vec<u8>) -> Result<String> {
-    // UTF-16LE BOM
     if raw.len() >= 2 && raw[0] == 0xFF && raw[1] == 0xFE {
-        let (decoded, _encoding, had_errors) = encoding_rs::UTF_16LE.decode(&raw[2..]);
-        if had_errors {
-            anyhow::bail!(
-                "Failed to decode UTF-16LE input from PowerShell. \
-                 Ensure $OutputEncoding is set to UTF-8."
-            );
-        }
-        return Ok(decoded.into_owned());
+        let (d, _, e) = encoding_rs::UTF_16LE.decode(&raw[2..]);
+        if e { anyhow::bail!("Failed to decode UTF-16LE from PowerShell."); }
+        return Ok(d.into_owned());
     }
-
-    // UTF-8 BOM
     if raw.len() >= 3 && raw[0] == 0xEF && raw[1] == 0xBB && raw[2] == 0xBF {
-        return String::from_utf8(raw[3..].to_vec())
-            .context("Input contains invalid UTF-8 after BOM");
+        return String::from_utf8(raw[3..].to_vec()).context("Invalid UTF-8 after BOM");
     }
-
-    // Try UTF-8 first
-    if let Ok(s) = String::from_utf8(raw.clone()) {
-        return Ok(s);
-    }
-
-    // Fallback: try UTF-16LE without BOM (PowerShell 5.1 sometimes omits it)
-    let (decoded, _encoding, had_errors) = encoding_rs::UTF_16LE.decode(&raw);
-    if had_errors {
-        anyhow::bail!(
-            "Stdin is not valid UTF-8 or UTF-16LE. \
-             Run: $OutputEncoding = [System.Text.Encoding]::UTF8"
-        );
-    }
-    Ok(decoded.into_owned())
+    if let Ok(s) = String::from_utf8(raw.clone()) { return Ok(s); }
+    let (d, _, e) = encoding_rs::UTF_16LE.decode(&raw);
+    if e { anyhow::bail!("Not valid UTF-8 or UTF-16LE."); }
+    Ok(d.into_owned())
 }
 
 #[cfg(not(windows))]
 fn decode_stdin_bytes(raw: Vec<u8>) -> Result<String> {
-    // Strip UTF-8 BOM if present
     if raw.len() >= 3 && raw[0] == 0xEF && raw[1] == 0xBB && raw[2] == 0xBF {
-        return String::from_utf8(raw[3..].to_vec())
-            .context("Input contains invalid UTF-8 after BOM");
+        return String::from_utf8(raw[3..].to_vec()).context("Invalid UTF-8 after BOM");
     }
-    String::from_utf8(raw).context("Stdin input is not valid UTF-8")
-}
-
-// ---------------------------------------------------------------------------
-// Output formatting
-// ---------------------------------------------------------------------------
-
-/// Routes the output to stdout based on the requested format.
-fn handle_output(documents: &[AnnotatedDocument], output_json: bool) {
-    if output_json {
-        match serde_json::to_string_pretty(&documents) {
-            Ok(json_str) => println!("{}", json_str),
-            Err(e) => eprintln!("Failed to serialize documents to JSON: {}", e),
-        }
-    } else {
-        println!(
-            "Extraction successful. Received {} document(s).",
-            documents.len()
-        );
-        for doc in documents {
-            println!("Document ID: {}", doc.document_id);
-            for ext in &doc.extractions {
-                println!(
-                    "  [{}] {}: '{}'",
-                    ext.alignment_status, ext.extraction_class, ext.extraction_text
-                );
-            }
-        }
-    }
+    String::from_utf8(raw).context("Not valid UTF-8")
 }
 
 // ---------------------------------------------------------------------------
@@ -115,121 +468,15 @@ fn handle_output(documents: &[AnnotatedDocument], output_json: bool) {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Mode 1: Standard Unix / PowerShell Utility (Piped Input)
-    if !io::stdin().is_terminal() {
-        let mut raw_bytes = Vec::new();
-        io::stdin()
-            .read_to_end(&mut raw_bytes)
-            .context("Failed to read raw bytes from stdin")?;
+    let args = Args::parse();
 
-        let buffer = decode_stdin_bytes(raw_bytes)?;
+    let exit_code = if let Some(ref command) = args.command {
+        run_command_mode(command, args.no_safety).await?
+    } else if !io::stdin().is_terminal() {
+        run_piped_mode(args.no_safety).await?
+    } else {
+        run_interactive_mode(args.no_safety).await?
+    };
 
-        if buffer.trim().is_empty() {
-            anyhow::bail!("No input provided via stdin.");
-        }
-
-        let args = Args::parse();
-        let prompt = args
-            .prompt
-            .unwrap_or_else(|| "Extract all relevant entities.".to_string());
-
-        let mut parsed_examples = Vec::new();
-        if let Some(examples_path) = &args.examples {
-            let examples_raw = tokio::fs::read_to_string(examples_path)
-                .await
-                .with_context(|| format!("Failed to read examples file: {}", examples_path))?;
-            parsed_examples = serde_json::from_str(&examples_raw)
-                .context("Failed to parse examples JSON")?;
-        }
-
-        println!(
-            "Executing piped extraction. Target size: {} bytes",
-            buffer.len()
-        );
-
-        match langextract_host::execute_pipeline(&buffer, &prompt, parsed_examples).await {
-            Ok(documents) => handle_output(&documents, args.json),
-            Err(e) => {
-                eprintln!("Pipeline execution failed: {:?}", e);
-                std::process::exit(1);
-            }
-        }
-
-        return Ok(());
-    }
-
-    // Mode 2: Interactive Token Shell
-    let mut rl = DefaultEditor::new()?;
-    println!("Token Shell (tsh) initialized. Type 'help' for commands, 'exit' to quit.");
-
-    loop {
-        let readline = rl.readline("tsh$ ");
-        match readline {
-            Ok(line) => {
-                let line = line.trim();
-                if line.is_empty() {
-                    continue;
-                }
-
-                let _ = rl.add_history_entry(line);
-
-                let args = match shell_words::split(line) {
-                    Ok(a) => a,
-                    Err(e) => {
-                        eprintln!("Parse error: {}", e);
-                        continue;
-                    }
-                };
-                if args.is_empty() {
-                    continue;
-                }
-
-                match args[0].as_str() {
-                    "exit" | "quit" => break,
-                    "help" => {
-                        println!("Token Shell (tsh) built-in commands:");
-                        println!("  extract <prompt> <text>         - Run extraction pipeline");
-                        println!("  extract-json <prompt> <text>    - Extract and output JSON");
-                        println!("  help                            - Show this help");
-                        println!("  exit / quit                     - Exit the shell");
-                        println!("  <any other command>             - Passed to system shell");
-                    }
-                    "extract" | "extract-json" => {
-                        if args.len() < 3 {
-                            eprintln!("Usage: extract <prompt> <target_text>");
-                            continue;
-                        }
-                        let prompt = &args[1];
-                        let target_text = &args[2];
-                        let as_json = args[0] == "extract-json";
-
-                        println!("Executing extraction...");
-                        match langextract_host::execute_pipeline(target_text, prompt, vec![]).await
-                        {
-                            Ok(documents) => handle_output(&documents, as_json),
-                            Err(e) => eprintln!("Extraction failed: {}", e),
-                        }
-                    }
-                    cmd => {
-                        let child = Command::new(cmd).args(&args[1..]).spawn();
-                        match child {
-                            Ok(mut process) => {
-                                let _ = process.wait().await;
-                            }
-                            Err(e) => {
-                                eprintln!("{}: command not found or error: {}", cmd, e);
-                            }
-                        }
-                    }
-                }
-            }
-            Err(ReadlineError::Interrupted) | Err(ReadlineError::Eof) => break,
-            Err(err) => {
-                eprintln!("Error: {:?}", err);
-                break;
-            }
-        }
-    }
-
-    Ok(())
+    std::process::exit(i32::from(exit_code));
 }

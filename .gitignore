@@ -1,6 +1,5 @@
 # Rust
 target/
-Cargo.lock
 
 # Python
 __pycache__/
@@ -8,6 +7,17 @@ __pycache__/
 *$py.class
 .venv/
 .env
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
 
 # POC Testing Sandbox
 test_sandbox/

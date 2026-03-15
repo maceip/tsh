@@ -4,14 +4,31 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-clap = { version = "4.5", features = ["derive"] }
-tokio.workspace = true
 anyhow.workspace = true
-rustyline = "14.0"
-shell-words = "1.1"
-serde_json.workspace = true
+brush-builtins.workspace = true
+brush-core.workspace = true
+brush-interactive.workspace = true
+clap = { version = "4.5", features = ["derive"] }
 encoding_rs = "0.8"
 langextract-host = { path = "../langextract-host" }
+serde_json.workspace = true
+tokio.workspace = true
+
+[package.metadata.packager]
+product-name = "Token Shell"
+identifier = "com.zunftmax.tsh"
+version = "0.1.0"
+authors = ["Zunftmax UG"]
+formats = ["deb", "msi", "dmg"]
+resources = [
+    "../../dist/shim"
+]
+
+[package.metadata.packager.msi]
+wix-toolset-path = "C:\\wix"
+
+[package.metadata.packager.deb]
+depends = ["libc6", "libssl-dev"]
 
 [dev-dependencies]
 xshell.workspace = true

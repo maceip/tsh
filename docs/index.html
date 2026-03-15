@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tsh — Token Shell</title>
+<meta name="description" content="A POSIX shell for LLM agents. Manages context and memory with output safety filtering, token-aware routing, and local-model extraction via LangExtract.">
+
+<!-- Agent-optimized structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "tsh",
+  "alternateName": "Token Shell",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": ["Linux", "Windows", "macOS"],
+  "description": "A POSIX-compatible shell built in Rust (powered by brush-core) with safety-filtered output. Every command's stdout flows through a routing layer that can inspect, filter, and redact sensitive data before reaching the terminal. Companion langextract library provides chunked LLM extraction.",
+  "programmingLanguage": ["Rust", "Python"],
+  "license": "MIT",
+  "offers": { "@type": "Offer", "price": "0" },
+  "softwareRequirements": ["Rust 1.77+", "Python 3.12+ (for extraction mode)", "Ollama or any OpenAI-compatible LLM endpoint (for extraction mode)"],
+  "featureList": [
+    "Full POSIX shell via brush-core (bash builtins, pipes, heredocs, process substitution)",
+    "safety-filtered stdout: every byte of output routed through pluggable Python filter",
+    "Binary data auto-detection and safety bypass",
+    "1MB stdout truncation to prevent context window flooding",
+    "bash -c equivalent via tsh -c for scripted command execution",
+    "Internal pipes between commands run at OS speed (untouched by router)",
+    "Windows UTF-16LE auto-detection (PowerShell 5.1 compatible)",
+    "Companion langextract library for zero-copy chunked LLM extraction"
+  ]
+}
+</script>
+
+<style>
+/* ======================================================================
+   Registered custom properties for smooth interpolation
+   ====================================================================== */
+@property --glow-radius {
+  syntax: '<length>';
+  initial-value: 0px;
+  inherits: false;
+}
+
+@property --glow-opacity {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+/* ======================================================================
+   Cascade layers
+   ====================================================================== */
+@layer base, tokens, backdrop, layout, glass, components, interactions, motion;
+
+/* ---- Tokens ---- */
+@layer tokens {
+  :root {
+    --bg: #0a0a0f;
+    --bg-glass: oklch(0.12 0.01 280 / 0.55);
+    --bg-glass-hover: oklch(0.14 0.015 280 / 0.6);
+    --surface: oklch(0.13 0.01 280 / 0.7);
+    --border: oklch(0.22 0.02 280 / 0.35);
+    --border-hover: oklch(0.35 0.06 280 / 0.4);
+    --text: #c9c9d6;
+    --text-dim: #6e6e82;
+    --accent: #7c6ef0;
+    --accent-soft: oklch(0.6 0.12 280 / 0.12);
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-fast: 0.2s var(--ease-out-expo);
+    --transition-mid: 0.35s var(--ease-out-expo);
+    --transition-slow: 0.5s var(--ease-out-expo);
+  }
+}
+
+/* ---- Base reset ---- */
+@layer base {
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: oklch(0.45 0.15 280 / 0.4);
+    color: #fff;
+  }
+}
+
+/* ======================================================================
+   Gothic archway background
+   After Minoru Yamasaki's pointed-arch facades (Pacific Science Center,
+   WTC lobby columns, One Woodward Avenue).
+
+   The tile draws a solid rectangle with a single vesica-piscis (pointed
+   eye/leaf) cutout using fill-rule: evenodd. The cutout is formed by
+   four cubic bezier segments — proper ogival curves with outward swell
+   — creating the pointed arch shape in the negative space.
+
+   When tiled:
+     Horizontally — half-columns at tile edges merge into full columns.
+     Vertically   — the pointed tips of adjacent eyes nearly touch,
+                    forming small diamond-shaped connecting nodes.
+                    No abrupt seam; the pattern flows continuously.
+
+   Tile: 56×300 viewBox, rendered at 84px wide.
+   Eye opening: x 9–47, peaks at y 10 and y 290.
+   Columns: 9px each side → 18px merged.
+   ====================================================================== */
+@layer backdrop {
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='1000' viewBox='0 0 100 1000'%3E%3Cg fill='%237c6ef0'%3E%3Crect x='0' y='0' width='6' height='1000' opacity='.09'/%3E%3Crect x='94' y='0' width='6' height='1000' opacity='.09'/%3E%3Crect x='45' y='0' width='10' height='1000' opacity='.06'/%3E%3Cpath d='M6,400 L6,120 Q6,35 50,8 Q94,35 94,120 L94,400 L88,400 L88,130 Q88,50 50,26 Q12,50 12,130 L12,400Z' opacity='.09'/%3E%3Cpath d='M12,400 L12,140 Q12,65 50,40 Q88,65 88,140 L88,400 L82,400 L82,150 Q82,78 50,55 Q18,78 18,150 L18,400Z' opacity='.065'/%3E%3Cpath d='M18,400 L18,160 Q18,95 50,72 Q82,95 82,160 L82,400 L76,400 L76,168 Q76,108 50,88 Q24,108 24,168 L24,400Z' opacity='.045'/%3E%3Crect x='0' y='240' width='100' height='4' opacity='.06'/%3E%3Crect x='0' y='320' width='100' height='4' opacity='.06'/%3E%3Crect x='0' y='396' width='100' height='4' opacity='.07'/%3E%3C/g%3E%3Cg stroke='%237c6ef0' fill='none' stroke-linecap='round'%3E%3Cpath d='M50,8 Q6,35 6,120' stroke-width='1' opacity='.06'/%3E%3Cpath d='M50,8 Q94,35 94,120' stroke-width='1' opacity='.06'/%3E%3Cpath d='M50,40 Q12,65 12,140' stroke-width='.8' opacity='.04'/%3E%3Cpath d='M50,40 Q88,65 88,140' stroke-width='.8' opacity='.04'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 140px auto;
+    filter: blur(1.5px);
+    opacity: 0.55;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 1%,
+      black 35%,
+      transparent 88%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 1%,
+      black 35%,
+      transparent 88%
+    );
+  }
+
+  /* Vignette — pulled back to let the pattern breathe */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 650px 500px at 50% 16%, oklch(0.45 0.15 280 / 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse at 50% 50%, transparent 55%, oklch(0.05 0 0 / 0.4) 100%);
+  }
+
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ======================================================================
+   Frosted glass
+   ====================================================================== */
+@layer glass {
+  .glass,
+  .hero-code,
+  .pipeline-step,
+  .card,
+  .agent-ref,
+  pre,
+  .schema-block {
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    border: 1px solid var(--border);
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.03),
+      0 0 0 0 transparent;
+    transition:
+      background var(--transition-mid),
+      border-color var(--transition-mid),
+      box-shadow var(--transition-mid),
+      transform var(--transition-mid);
+  }
+}
+
+/* ======================================================================
+   Layout
+   ====================================================================== */
+@layer layout {
+
+  /* ---- Hero ---- */
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(3.2rem, 9vw, 6.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #fff;
+    text-wrap: balance;
+    --glow-radius: 0px;
+    --glow-opacity: 0;
+    text-shadow: 0 0 var(--glow-radius) oklch(0.65 0.2 280 / var(--glow-opacity));
+    animation: heroGlow 5s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroGlow {
+    0%   { --glow-radius: 0px;  --glow-opacity: 0; }
+    100% { --glow-radius: 40px; --glow-opacity: 0.35; }
+  }
+
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero .tagline {
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    color: var(--text-dim);
+    max-width: 560px;
+    margin: 1.5rem auto 2.5rem;
+    text-wrap: balance;
+    line-height: 1.7;
+  }
+
+  .hero-code {
+    border-radius: 14px;
+    padding: 1.25rem 2rem;
+    font-family: var(--mono);
+    font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+    color: var(--green);
+    max-width: 600px;
+    width: 100%;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .hero-code .prompt { color: var(--accent); }
+  .hero-code .pipe   { color: var(--amber); }
+  .hero-code .flag   { color: var(--text-dim); }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ---- Pipeline ---- */
+  .pipeline {
+    padding: 5rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .pipeline h2 {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .pipeline-flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .pipeline-step {
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .pipeline-step .step-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .pipeline-step h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .pipeline-step p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  /* ---- Sections ---- */
+  section {
+    padding: 4rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  section h2 {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    text-wrap: balance;
+  }
+
+  section h3 {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin: 2rem 0 0.75rem;
+  }
+
+  section p, section li {
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  section ul li::before {
+    content: '\25B8';
+    color: var(--accent);
+    margin-right: 0.5rem;
+  }
+
+  /* ---- Cards ---- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+    container-type: inline-size;
+  }
+
+  .card {
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .card h4 {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  @container (max-width: 320px) {
+    .card { padding: 1.1rem; }
+    .card h4 { font-size: 0.88rem; }
+  }
+
+  /* ---- Token comparison demo ---- */
+  .demo {
+    max-width: 960px;
+    margin: 3.5rem auto 0;
+    padding: 0 2rem;
+    width: 100%;
+  }
+
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .demo-pane {
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-pane-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .demo-pane-header .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .demo-pane--tsh .demo-pane-header { color: var(--green); }
+  .demo-pane--tsh .dot { background: var(--green); }
+  .demo-pane--bash .demo-pane-header { color: var(--amber); }
+  .demo-pane--bash .dot { background: var(--amber); }
+
+  .demo-terminal {
+    flex: 1;
+    padding: 1rem 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+    min-height: 220px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .demo-terminal .cmd {
+    color: var(--text);
+  }
+
+  .demo-terminal .out {
+    color: var(--text-dim);
+    opacity: 0.7;
+  }
+
+  .demo-terminal .out-flood {
+    color: var(--text-dim);
+    opacity: 0.35;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  .demo-terminal .prompt-tsh { color: var(--green); }
+  .demo-terminal .prompt-bash { color: var(--amber); }
+
+  .demo-terminal .cursor {
+    display: inline-block;
+    width: 7px;
+    height: 14px;
+    background: var(--text);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Fade-out at bottom of flood pane */
+  .demo-terminal--flood::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--bg-glass));
+    pointer-events: none;
+  }
+
+  .demo-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.65rem 1.1rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
+
+  .demo-stats .label { color: var(--text-dim); }
+
+  .demo-pane--tsh .demo-stats .value { color: var(--green); font-weight: 700; }
+  .demo-pane--bash .demo-stats .value { color: var(--red); font-weight: 700; }
+
+  @media (max-width: 640px) {
+    .demo-grid { grid-template-columns: 1fr; }
+    .demo-terminal { min-height: 180px; }
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  footer a:hover { color: #fff; }
+
+  footer .tribute {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: oklch(0.45 0.02 280);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* ======================================================================
+   Components
+   ====================================================================== */
+@layer components {
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      transform var(--transition-fast),
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-mid),
+      filter var(--transition-fast);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid transparent;
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px oklch(0.5 0.18 280 / 0.25);
+  }
+
+  .btn-secondary {
+    background: var(--bg-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-hover);
+    color: #fff;
+    background: var(--bg-glass-hover);
+    transform: translateY(-2px);
+  }
+
+  pre {
+    border-radius: 10px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin: 1rem 0;
+    color: var(--text);
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--bg-glass);
+    padding: 0.15em 0.4em;
+    border-radius: 5px;
+  }
+
+  pre code { background: none; padding: 0; }
+
+  .comment  { color: var(--text-dim); }
+  .string   { color: var(--green); }
+  .keyword  { color: var(--accent); }
+  .flag-hl  { color: var(--amber); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  td {
+    padding: 0.75rem;
+    border-bottom: 1px solid oklch(0.2 0.01 280 / 0.25);
+    color: var(--text);
+    transition: background var(--transition-fast);
+  }
+
+  tr:hover td { background: oklch(0.15 0.01 280 / 0.3); }
+  td code { color: var(--green); }
+
+  .agent-ref {
+    border-radius: 14px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+  }
+
+  .agent-ref h3 { margin-top: 0; color: var(--accent); }
+
+  .schema-block {
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--text);
+    background: oklch(0.1 0.008 280 / 0.6);
+  }
+}
+
+/* ======================================================================
+   Interactions
+   ====================================================================== */
+@layer interactions {
+
+  .pipeline-step:hover,
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    background: var(--bg-glass-hover);
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.04),
+      0 8px 28px oklch(0.4 0.15 280 / 0.08);
+  }
+
+  .agent-ref:hover {
+    border-color: color-mix(in oklch, var(--accent) 35%, transparent);
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.03),
+      0 4px 20px oklch(0.4 0.15 280 / 0.06);
+  }
+
+  pre:hover { border-color: var(--border-hover); }
+
+  .btn:focus-visible, a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  footer a {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: color var(--transition-fast), text-decoration-color var(--transition-mid);
+  }
+  footer a:hover { text-decoration-color: var(--accent); }
+}
+
+/* ======================================================================
+   Scroll-driven animations
+   ====================================================================== */
+@layer motion {
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(20px); filter: blur(3px); }
+    to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+  }
+
+  @keyframes revealScale {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); filter: blur(2px); }
+    to   { opacity: 1; transform: translateY(0) scale(1);       filter: blur(0); }
+  }
+
+  @supports (animation-timeline: view()) {
+    .pipeline-step {
+      animation: revealScale linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+    .card {
+      animation: revealScale linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+    .agent-ref {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 25%;
+    }
+    section h2, .pipeline > h2 {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ======================================================================
+   Responsive
+   ====================================================================== */
+@media (max-width: 640px) {
+  .pipeline-flow { grid-template-columns: 1fr 1fr; }
+  .hero-code { font-size: 0.78rem; padding: 1rem 1.25rem; }
+  .agent-ref { padding: 1.25rem; }
+  section { padding: 3rem 1.25rem; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 420px) {
+  .pipeline-flow { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================================================================== -->
+<!-- HERO                                                               -->
+<!-- ================================================================== -->
+<div class="hero">
+  <h1>&#x1FAB7; <span class="accent">tsh</span></h1>
+  <p class="tagline">
+    A shell that manages your agent's context.
+    Full POSIX. Output safety. Token-aware. Built for LLM agents.
+  </p>
+  <div class="hero-code"><span class="prompt">$</span> tsh
+<span class="prompt">tsh$</span> cat server.log <span class="pipe">|</span> grep -i error
+<span class="comment"># 3 lines reach the agent. 48,288 don't.</span>
+<span class="prompt">tsh$</span> find . -name <span class="string">"*.py"</span> <span class="pipe">|</span> head -20</div>
+  <div class="hero-actions">
+    <a href="#quickstart" class="btn btn-primary">Get started</a>
+    <a href="#agent-reference" class="btn btn-secondary">Agent reference</a>
+    <a href="https://github.com/user/tsh" class="btn btn-secondary">GitHub</a>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- CONTEXT MANAGEMENT DEMO                                            -->
+<!-- ================================================================== -->
+<div class="demo">
+  <div class="demo-grid">
+
+    <!-- tsh pane (managed) -->
+    <div class="demo-pane demo-pane--tsh glass">
+      <div class="demo-pane-header"><span class="dot"></span> tsh</div>
+      <div class="demo-terminal">
+<span class="prompt-tsh">tsh$</span> <span class="cmd">cat server.log | grep -i error</span>
+<span class="out">[03:13:22] proxy:error connection refused :5432
+[03:15:48] mpm_prefork reached MaxRequestWorkers
+[03:17:02] OOM killed pid 2891 (celery-worker)</span>
+<span class="prompt-tsh">tsh$</span> <span class="cmd">wc -l server.log</span>
+<span class="out">48,291 server.log</span>
+<span class="prompt-tsh">tsh$</span> <span class="cursor"></span>
+      </div>
+      <div class="demo-stats">
+        <span><span class="label">Context used </span><span class="value">84 tokens</span></span>
+        <span><span class="label">Filtered </span><span class="value">48,288 lines</span></span>
+        <span><span class="label">Time </span><span class="value">0.3s</span></span>
+      </div>
+    </div>
+
+    <!-- bash pane (context flood) -->
+    <div class="demo-pane demo-pane--bash glass">
+      <div class="demo-pane-header"><span class="dot"></span> bash (raw to agent)</div>
+      <div class="demo-terminal demo-terminal--flood">
+<span class="prompt-bash">$</span> <span class="cmd">cat server.log</span>
+<span class="out-flood">[Sun Mar 08 01:12:33.079022 2026] [mpm_prefork:notice] [pid 1842] AH00163: Apache/2.4.58 (Ubuntu) configured -- resuming normal operations
+[Sun Mar 08 01:12:33.079348 2026] [core:notice] [pid 1842] AH00094: Command line: '/usr/sbin/apache2'
+10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET / HTTP/1.1" 200 11237 "-" "Mozilla/5.0"
+10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /icons/ubuntu-logo.png HTTP/1.1" 200 3623
+10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /favicon.ico HTTP/1.1" 404 487
+10.0.2.1 - - [08/Mar/2026:01:13:02 +0000] "GET /server-status HTTP/1.1" 403 487
+10.0.2.1 - - [08/Mar/2026:01:13:15 +0000] "POST /api/health HTTP/1.1" 200 15
+[Sun Mar 08 01:13:22.411823 2026] [proxy:error] [pid 1844] (111)Connection refused: AH00957
+10.0.2.1 - - [08/Mar/2026:01:13:22 +0000] "GET /api/data HTTP/1.1" 502 341
+10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Googlebot/2.1"
+10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET /robots.txt HTTP/1.1" 200 128
+[Sun Mar 08 01:15:48.002194 2026] [mpm_prefork:error] [pid 1842] AH00161: server reached
+10.0.2.1 - - [08/Mar/2026:01:16:33 +0000] "GET /api/health HTTP/1.1" 200 15
+kernel: Out of memory: Killed process 2891 (celery-worker)
+10.0.2.1 - - [08/Mar/2026:01:17:44 +0000] "GET / HTTP/1.1" 200 11237</span>
+      </div>
+      <div class="demo-stats">
+        <span><span class="label">Context used </span><span class="value">~96,000 tokens</span></span>
+        <span><span class="label">Filtered </span><span class="value">0 lines</span></span>
+        <span><span class="label">Useful </span><span class="value">3 lines</span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- THREE MODES                                                        -->
+<!-- ================================================================== -->
+<div class="pipeline">
+  <h2>&#x1FAE7; Three modes, one binary</h2>
+  <div class="pipeline-flow">
+    <div class="pipeline-step">
+      <div class="step-num">SHELL</div>
+      <h3>Interactive</h3>
+      <p>Run <code>tsh</code> bare. Full POSIX shell with all bash builtins, powered by brush-core. Every command's stdout is safety-filtered.</p>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-num">-c</div>
+      <h3>Command</h3>
+      <p>Run <code>tsh -c 'cmd'</code>. Executes through the shell engine, filters output, exits with the command's status.</p>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-num">PIPE</div>
+      <h3>Script</h3>
+      <p>Pipe a script via stdin. tsh handles encoding (UTF-16LE on Windows), runs it through brush-core, filters output.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- WHY TSH                                                            -->
+<!-- ================================================================== -->
+<section id="why">
+  <h2>&#x1FABB; Why an agent should use tsh</h2>
+  <p>An LLM agent running shell commands needs a shell. Most reach for bash. But bash dumps everything into the agent's context window — 48,000 lines of logs, raw binary, credentials. tsh manages what actually reaches the agent's memory.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>&#x1FAB7; It's a real shell</h4>
+      <p>Pipes, redirects, heredocs, command substitution, process substitution, loops, traps, job control. Powered by brush-core — a Rust implementation of bash.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FAE7; Protect the context window</h4>
+      <p>Every byte of stdout flows through an async routing layer. Output is filtered, summarized, and truncated before it reaches the agent's memory. No more flooding context with noise.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FABB; Internal pipes untouched</h4>
+      <p>When you run <code>grep foo | sort | uniq</code>, those internal pipes run at OS speed. Only the final output to the agent gets routed through the safety layer. Zero overhead on intermediate work.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FAB7; Pluggable safety layer</h4>
+      <p>The Python safety subprocess is long-running and pluggable. Add your own filtering logic — token minimization, output summarization, sensitive data handling — without touching the shell.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FAE7; Windows native</h4>
+      <p>Auto-detects PowerShell's UTF-16LE encoding — with BOM, without BOM, or plain UTF-8. Agents on Windows need zero special configuration.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FABB; 1MB context guard</h4>
+      <p>Stdout is capped at 1MB per command. Prevents runaway output from blowing the agent's context budget. Truncation is logged to stderr so nothing is silently lost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== -->
+<!-- QUICKSTART                                                         -->
+<!-- ================================================================== -->
+<section id="quickstart">
+  <h2>&#x1FAB7; Quickstart</h2>
+
+  <h3>Build and run</h3>
+  <pre><code>git clone https://github.com/user/tsh && cd tsh
+cargo build --release
+
+<span class="comment"># Interactive shell (safety-filtered)</span>
+./target/release/tsh
+
+<span class="comment"># Run a command</span>
+./target/release/tsh -c <span class="string">'cat /var/log/syslog | tail -50'</span>
+
+<span class="comment"># Disable safety for debugging</span>
+./target/release/tsh <span class="flag-hl">--no-safety</span> -c <span class="string">'echo "raw output"'</span></code></pre>
+
+  <h3>Pipe a script</h3>
+  <pre><code><span class="comment"># stdin is auto-detected as a script</span>
+echo <span class="string">'whoami && df -h'</span> | ./target/release/tsh</code></pre>
+
+  <h3>Docker</h3>
+  <pre><code>docker compose up -d
+docker compose run --rm tsh</code></pre>
+</section>
+
+<!-- ================================================================== -->
+<!-- AGENT REFERENCE                                                    -->
+<!-- ================================================================== -->
+<section id="agent-reference">
+  <h2>&#x1FAE7; Agent reference</h2>
+  <p>Structured for LLM agents and automation tools. Exact types, defaults, and behavior for every flag, mode, and output.</p>
+
+  <!-- MODE DETECTION -->
+  <div class="agent-ref">
+    <h3>Mode detection</h3>
+    <p>tsh selects its mode automatically. No mode flag exists.</p>
+    <table>
+      <tr><th>Condition</th><th>Mode</th><th>Behavior</th></tr>
+      <tr>
+        <td><code>-c "cmd"</code> provided</td>
+        <td>Command</td>
+        <td>Runs the string through brush-core. Stdout is safety-filtered. Exits with the command's status code.</td>
+      </tr>
+      <tr>
+        <td>stdin is a pipe (not a terminal)</td>
+        <td>Script</td>
+        <td>Reads all stdin bytes as a script (handles UTF-16LE on Windows). Runs through brush-core. Output filtered.</td>
+      </tr>
+      <tr>
+        <td>stdin is a terminal</td>
+        <td>Shell</td>
+        <td>REPL with <code>tsh$</code> prompt. Full POSIX interactive shell (brush-core with bash-mode builtins). All stdout safety-filtered.</td>
+      </tr>
+    </table>
+    <p><strong>Priority:</strong> <code>-c</code> is checked first. Then pipe detection. Shell is the fallback.</p>
+  </div>
+
+  <!-- CLI FLAGS -->
+  <div class="agent-ref">
+    <h3>CLI flags</h3>
+    <table>
+      <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+      <tr>
+        <td><code>-c</code> / <code>--command</code></td>
+        <td>String</td>
+        <td>None</td>
+        <td>Execute this command string and exit. Like <code>bash -c</code>.</td>
+      </tr>
+      <tr>
+        <td><code>--no-safety</code></td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>Disable the safety filter. Output passes through unfiltered. For debugging.</td>
+      </tr>
+    </table>
+
+    <p><strong>Agent invocation patterns:</strong></p>
+    <pre><code><span class="comment"># Run commands with safety filtering</span>
+tsh -c 'ls -la /tmp && df -h'
+tsh -c 'cat .env | head -10'
+tsh -c 'grep -rn "password" config/'
+
+<span class="comment"># Pipe a script</span>
+echo 'whoami && env' | tsh
+
+<span class="comment"># Debug mode (no filtering)</span>
+tsh --no-safety -c 'echo "raw output"'
+
+<span class="comment"># Interactive</span>
+tsh</code></pre>
+  </div>
+
+  <!-- OUTPUT ROUTING -->
+  <div class="agent-ref">
+    <h3>Output routing</h3>
+    <p>How tsh handles command output:</p>
+    <ul>
+      <li><strong>stdout (fd 1):</strong> Captured via injected pipe. Text routed through Python safety filter. Binary data (detected by null bytes) bypasses safety and goes directly to terminal.</li>
+      <li><strong>stderr (fd 2):</strong> Captured via pipe, forwarded directly to terminal. No safety filtering.</li>
+      <li><strong>Internal pipes:</strong> <code>cmd1 | cmd2</code> pipes run at OS speed between commands. Only the final stdout to the terminal is routed through safety.</li>
+      <li><strong>Truncation:</strong> Stdout capped at 1MB per command. Excess is drained silently. <code>[STDOUT TRUNCATED at 1MB]</code> is printed once.</li>
+    </ul>
+  </div>
+
+  <!-- SHELL CAPABILITIES -->
+  <div class="agent-ref">
+    <h3>Shell capabilities</h3>
+    <p>Full POSIX shell via <a href="https://github.com/reubeno/brush" style="color:var(--accent)">brush-core</a>:</p>
+    <ul>
+      <li>Pipelines: <code>cmd1 | cmd2 | cmd3</code></li>
+      <li>Redirection: <code>&gt;</code>, <code>&gt;&gt;</code>, <code>2&gt;&amp;1</code>, <code>&lt;(process substitution)</code></li>
+      <li>Command substitution: <code>$(command)</code></li>
+      <li>Heredocs: <code>cat &lt;&lt;'EOF'</code></li>
+      <li>Conditionals: <code>if</code>/<code>then</code>/<code>fi</code>, <code>&amp;&amp;</code>, <code>||</code></li>
+      <li>Loops: <code>for</code>, <code>while</code>, <code>until</code></li>
+      <li>Signal handling: <code>trap</code></li>
+      <li>All bash-mode builtins: <code>echo</code>, <code>printf</code>, <code>test</code>, <code>read</code>, <code>export</code>, <code>mapfile</code>, etc.</li>
+    </ul>
+  </div>
+
+  <!-- ERROR HANDLING -->
+  <div class="agent-ref">
+    <h3>Error handling</h3>
+    <p>Errors go to stderr (unfiltered). Exit code <code>1</code> on failure.</p>
+    <table>
+      <tr><th>Condition</th><th>stderr message</th><th>Resolution</th></tr>
+      <tr>
+        <td>Empty stdin in pipe mode</td>
+        <td><code>No input via stdin.</code></td>
+        <td>Ensure data is piped.</td>
+      </tr>
+      <tr>
+        <td>Invalid encoding (Windows)</td>
+        <td><code>Not valid UTF-8 or UTF-16LE.</code></td>
+        <td>PowerShell: <code>$OutputEncoding = [System.Text.Encoding]::UTF8</code></td>
+      </tr>
+      <tr>
+        <td>safety filter not found</td>
+        <td><code>[tsh] safety filter not found. Pass-through mode.</code></td>
+        <td>Ensure <code>python/safety_filter.py</code> exists and Python 3 is on PATH.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- PIPELINE PATTERNS -->
+  <div class="agent-ref">
+    <h3>Pipeline patterns</h3>
+    <pre><code><span class="comment"># Safe command execution — output is filtered</span>
+tsh -c 'find . -name "*.py" -exec grep -l "import os" {} +'
+tsh -c 'cat /var/log/auth.log | grep "Failed password" | tail -20'
+
+<span class="comment"># Chain commands — internal pipes at OS speed, only final output filtered</span>
+tsh -c 'ps aux | grep python | awk "{print \$2, \$11}" | sort'
+
+<span class="comment"># Script via stdin</span>
+echo 'for f in *.log; do wc -l "$f"; done | sort -rn' | tsh
+
+<span class="comment"># Debug — bypass safety</span>
+tsh --no-safety -c 'env | sort'</code></pre>
+  </div>
+</section>
+
+<!-- ================================================================== -->
+<!-- PERFORMANCE                                                        -->
+<!-- ================================================================== -->
+<section id="performance">
+  <h2>&#x1FAB7; Performance</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h4>&#x1FAE7; Routing overhead</h4>
+      <p>Pipe routing adds single-digit milliseconds. Internal pipes between commands are pure OS speed — untouched by the router.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FABB; Async I/O</h4>
+      <p>Tokio async runtime. Non-blocking pipe reads. safety subprocess spawns once and stays warm for the entire session.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FAB7; Binary bypass</h4>
+      <p>First chunk scanned for null bytes. Binary output skips safety entirely — straight to terminal. No serialization overhead.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1FAE7; Startup</h4>
+      <p>Native Rust binary. Sub-millisecond to shell ready. Python safety process spawns in parallel with first command.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== -->
+<!-- LANGEXTRACT                                                        -->
+<!-- ================================================================== -->
+<section id="langextract">
+  <h2>&#x1FAE7; LangExtract — companion extraction engine</h2>
+  <p>tsh ships with <strong>langextract-host</strong>, a zero-copy chunked extraction library for routing documents through local LLMs. Run it independently via <code>cargo run -p langextract-host</code>.</p>
+
+  <div style="margin:2rem 0;display:flex;flex-direction:column;gap:0.6rem;font-family:var(--mono);font-size:0.78rem;">
+    <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+      <div class="glass" style="padding:0.6rem 1rem;border-radius:8px;color:var(--text);white-space:nowrap;">&#x1F4C4; Document</div>
+      <div style="color:var(--accent);">&#x25B8;</div>
+      <div class="glass" style="padding:0.6rem 1rem;border-radius:8px;color:var(--green);border-color:color-mix(in oklch, var(--green) 25%, transparent);flex:1;min-width:200px;text-align:center;">
+        <div style="font-weight:700;">chunk_text()</div>
+        <div style="font-size:0.7rem;color:var(--text-dim);">24KB slices &#x00B7; 1KB overlap &#x00B7; zero-copy &#x00B7; whitespace-safe</div>
+      </div>
+    </div>
+    <div style="padding-left:100px;color:var(--accent);line-height:1.2;">&#x25BE;</div>
+    <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+      <div style="width:90px;text-align:right;color:var(--text-dim);font-size:0.7rem;">JSON lines</div>
+      <div style="color:var(--accent);">&#x25B8;</div>
+      <div class="glass" style="padding:0.6rem 1rem;border-radius:8px;color:var(--amber);border-color:color-mix(in oklch, var(--amber) 25%, transparent);flex:1;min-width:200px;text-align:center;">
+        <div style="font-weight:700;">python/shim.py</div>
+        <div style="font-size:0.7rem;color:var(--text-dim);">redact inputs &#x25B8; call LLM &#x25B8; tag outputs &#x25B8; JSON back</div>
+      </div>
+      <div style="color:var(--accent);">&#x25B8;</div>
+      <div class="glass" style="padding:0.5rem 0.8rem;border-radius:8px;color:var(--accent);font-size:0.72rem;white-space:nowrap;">Ollama / vLLM</div>
+    </div>
+    <div style="padding-left:100px;color:var(--accent);line-height:1.2;">&#x25BE;</div>
+    <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+      <div style="width:90px;text-align:right;color:var(--text-dim);font-size:0.7rem;">aggregated</div>
+      <div style="color:var(--accent);">&#x25B8;</div>
+      <div class="glass" style="padding:0.6rem 1rem;border-radius:8px;color:var(--green);flex:1;min-width:200px;text-align:center;">
+        <div style="font-weight:700;">AnnotatedDocument[]</div>
+        <div style="font-size:0.7rem;color:var(--text-dim);">extraction_class &#x00B7; char_interval &#x00B7; attributes &#x00B7; alignment</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="agent-ref">
+    <h3>Chunking</h3>
+    <ul>
+      <li><strong>Max chunk:</strong> 24,000 bytes (~6,000 tokens)</li>
+      <li><strong>Overlap:</strong> 1,000 bytes between chunks</li>
+      <li><strong>Boundaries:</strong> Snaps to whitespace. Never splits mid-word or mid-codepoint.</li>
+      <li><strong>Zero-allocation:</strong> Operates on borrowed <code>&amp;str</code> slices.</li>
+    </ul>
+  </div>
+
+  <div class="agent-ref">
+    <h3>Environment variables (LangExtract)</h3>
+    <table>
+      <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+      <tr><td><code>OPENAI_API_BASE</code></td><td><code>http://localhost:11434/v1</code></td><td>LLM endpoint.</td></tr>
+      <tr><td><code>OPENAI_API_KEY</code></td><td><code>local-poc-key</code></td><td>API key.</td></tr>
+      <tr><td><code>LLM_MODEL_ID</code></td><td><code>llama3</code></td><td>Model identifier.</td></tr>
+      <tr><td><code>TSH_MODEL_DIR</code></td><td>platform cache dir</td><td>Model download location.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ================================================================== -->
+<!-- ARCHITECTURE                                                       -->
+<!-- ================================================================== -->
+<section id="architecture">
+  <h2>&#x1FABB; Architecture</h2>
+  <pre><code>crates/
+  tsh/                      <span class="comment"># Shell binary — pipe routing, safety integration, brush-core</span>
+  langextract-host/         <span class="comment"># Extraction engine — zero-copy chunker, async streaming</span>
+  tsh-model-manager/        <span class="comment"># Model lifecycle — download, cache, SHA-256 verify</span>
+python/
+  safety_filter.py             <span class="comment"># safety output filter — redaction, PII masking (pluggable)</span>
+  shim.py                   <span class="comment"># LangExtract shim — input mutations, LLM routing, output tagging</span>
+xtask/                      <span class="comment"># CI — 42+ bash tests, 50+ Windows tests, platform-aware</span></code></pre>
+
+  <p><strong>Shell engine:</strong> <a href="https://github.com/reubeno/brush" style="color:var(--accent)">brush-core</a> — a Rust implementation of bash. tsh injects custom file descriptors so stdout/stderr flow through OS pipes into the async routing layer.</p>
+  <p><strong>safety boundary:</strong> The Python safety filter is a long-running subprocess. tsh writes text to its stdin and reads sanitized output from its stdout. Binary data bypasses entirely. The filter is kill-on-drop.</p>
+</section>
+
+<!-- ================================================================== -->
+<!-- FOOTER                                                             -->
+<!-- ================================================================== -->
+<footer>
+  <p>&#x1FAB7; tsh is MIT licensed. Built with Rust, Python, and a preference for pipes over protocols.</p>
+  <p><a href="https://github.com/user/tsh">Source</a> · Built by <a href="https://zunftmax.com">Zunftmax UG</a></p>
+  <p class="tribute">Background pattern after the structural motifs of Minoru Yamasaki</p>
+</footer>
+
+</body>
+</html>

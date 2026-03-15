@@ -1,0 +1,13 @@
+[project]
+name = "tsh-python"
+version = "0.1.0"
+description = "Python safety and extraction components for tsh (Token Shell)"
+requires-python = ">=3.10"
+dependencies = [
+    "langextract",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
