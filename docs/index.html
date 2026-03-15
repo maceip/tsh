@@ -991,13 +991,12 @@
 <div class="hero">
   <h1>&#x1FAB7; <span class="accent">tsh</span></h1>
   <p class="tagline">
-    A shell that manages your agent's context.
-    Full POSIX. Smart output limiting. Structural extraction. No LLM needed.
+    The shell for long-running agents.
+    Smart output limiting. Loop memory recovery. 99% context savings on repeat reads.
   </p>
-  <div class="hero-code"><span class="prompt">$</span> tsh
-<span class="prompt">tsh$</span> cat server.log <span class="pipe">|</span> grep -i error
-<span class="comment"># 3 lines reach the agent. 48,288 don't.</span>
-<span class="prompt">tsh$</span> find . -name <span class="string">"*.py"</span> <span class="pipe">|</span> head -20</div>
+  <div class="hero-code"><span class="prompt">tsh$</span> cat large_module.py      <span class="comment"># loop 1: 1,142 lines → 180 (85% saved)</span>
+<span class="prompt">tsh$</span> cat large_module.py      <span class="comment"># loop 2: structure only → 50 (99% saved)</span>
+<span class="prompt">tsh$</span> cat large_module.py      <span class="comment"># loop 3: structure only → 50 (99% saved)</span></div>
   <div class="hero-actions">
     <a href="#quickstart" class="btn btn-primary">Get started</a>
     <a href="#agent-reference" class="btn btn-secondary">Agent reference</a>
@@ -1006,30 +1005,28 @@
 </div>
 
 <!-- ================================================================== -->
-<!-- ANIMATED SHELL COMPARISON                                          -->
+<!-- ANIMATED AGENT LOOP DEMO                                           -->
 <!-- ================================================================== -->
 <div class="demo" id="demo-comparison">
   <div class="demo-grid">
 
-    <!-- tsh pane (animated) -->
+    <!-- tsh pane -->
     <div class="demo-pane demo-pane--tsh glass">
-      <div class="demo-pane-header"><span class="dot"></span> tsh</div>
-      <div class="demo-terminal" id="demo-tsh"></div>
-      <div class="demo-stats" id="demo-tsh-stats" style="opacity:0;transition:opacity 0.4s ease;">
-        <span><span class="label">Context used </span><span class="value">84 tokens</span></span>
-        <span><span class="label">Filtered </span><span class="value">48,288 lines</span></span>
-        <span><span class="label">Time </span><span class="value">0.3s</span></span>
+      <div class="demo-pane-header"><span class="dot"></span> claude + tsh</div>
+      <div class="demo-terminal" id="demo-tsh" style="overflow:hidden;"></div>
+      <div class="demo-stats" id="demo-tsh-stats" style="opacity:0;transition:opacity 0.5s ease;">
+        <span><span class="label">Total context </span><span class="value">~280 tokens</span></span>
+        <span><span class="label">Saved </span><span class="value">99%</span></span>
       </div>
     </div>
 
-    <!-- bash pane (animated) -->
+    <!-- bash pane -->
     <div class="demo-pane demo-pane--bash glass">
-      <div class="demo-pane-header"><span class="dot"></span> bash (raw to agent)</div>
+      <div class="demo-pane-header"><span class="dot"></span> claude + bash</div>
       <div class="demo-terminal" id="demo-bash" style="overflow:hidden;"></div>
-      <div class="demo-stats" id="demo-bash-stats" style="opacity:0;transition:opacity 0.4s ease;">
-        <span><span class="label">Context used </span><span class="value">~96,000 tokens</span></span>
-        <span><span class="label">Filtered </span><span class="value">0 lines</span></span>
-        <span><span class="label">Useful </span><span class="value">3 lines</span></span>
+      <div class="demo-stats" id="demo-bash-stats" style="opacity:0;transition:opacity 0.5s ease;">
+        <span><span class="label">Total context </span><span class="value">~28,500 tokens</span></span>
+        <span><span class="label">Saved </span><span class="value">0%</span></span>
       </div>
     </div>
 
@@ -1038,31 +1035,24 @@
 
 <script>
 (function() {
-  // ---- Typewriter engine ----
   function createShellPlayer(container, script, opts) {
-    const o = Object.assign({ charDelay: 35, lineDelay: 80, cmdPause: 400 }, opts);
-    let idx = 0;
+    const o = Object.assign({ charDelay: 28, lineDelay: 60, cmdPause: 350 }, opts);
 
     function addLine(text, cls) {
       const div = document.createElement('div');
-      div.style.whiteSpace = 'pre-wrap';
-      div.style.wordBreak = 'break-all';
-      div.style.lineHeight = '1.55';
-      div.style.minHeight = '1.1em';
+      div.style.cssText = 'white-space:pre-wrap;word-break:break-all;line-height:1.5;min-height:1.1em;';
       const span = document.createElement('span');
       span.className = cls || 'out';
       span.textContent = text;
       div.appendChild(span);
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
-      return div;
     }
 
     function typeCmd(prompt, text, promptCls) {
       return new Promise(resolve => {
         const div = document.createElement('div');
-        div.style.whiteSpace = 'pre-wrap';
-        div.style.lineHeight = '1.55';
+        div.style.cssText = 'white-space:pre-wrap;line-height:1.5;';
         const ps = document.createElement('span');
         ps.className = promptCls || 'prompt-tsh';
         ps.textContent = prompt;
@@ -1071,7 +1061,6 @@
         div.appendChild(ps);
         div.appendChild(cmd);
         container.appendChild(div);
-
         let i = 0;
         const tick = setInterval(() => {
           cmd.textContent = text.slice(0, ++i);
@@ -1092,18 +1081,27 @@
       });
     }
 
+    function addThinking(text) {
+      const div = document.createElement('div');
+      div.style.cssText = 'white-space:pre-wrap;line-height:1.5;font-style:italic;';
+      const span = document.createElement('span');
+      span.style.color = 'var(--accent)';
+      span.style.opacity = '0.7';
+      span.textContent = text;
+      div.appendChild(span);
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
     async function play() {
       for (const step of script) {
-        if (step.type === 'cmd') {
-          await typeCmd(step.prompt || 'tsh$ ', step.text, step.promptCls);
-        } else if (step.type === 'output') {
-          await outputLines(step.lines, step.cls || 'out', step.delay);
-        } else if (step.type === 'pause') {
-          await new Promise(r => setTimeout(r, step.ms || 500));
-        } else if (step.type === 'cursor') {
+        if (step.type === 'cmd') await typeCmd(step.prompt || 'tsh$ ', step.text, step.promptCls);
+        else if (step.type === 'output') await outputLines(step.lines, step.cls || 'out', step.delay);
+        else if (step.type === 'pause') await new Promise(r => setTimeout(r, step.ms || 500));
+        else if (step.type === 'thinking') { addThinking(step.text); await new Promise(r => setTimeout(r, step.ms || 400)); }
+        else if (step.type === 'cursor') {
           const div = document.createElement('div');
-          div.style.whiteSpace = 'pre-wrap';
-          div.style.lineHeight = '1.55';
+          div.style.cssText = 'white-space:pre-wrap;line-height:1.5;';
           const ps = document.createElement('span');
           ps.className = step.promptCls || 'prompt-tsh';
           ps.textContent = step.prompt || 'tsh$ ';
@@ -1115,96 +1113,116 @@
         }
       }
     }
-
     return { play };
   }
 
-  // ---- Scripts ----
+  // ---- tsh script: agent loop with repeat-read recovery ----
   const tshScript = [
-    { type: 'cmd', prompt: 'tsh$ ', text: 'cat server.log | grep -i error', promptCls: 'prompt-tsh' },
-    { type: 'pause', ms: 300 },
+    { type: 'thinking', text: 'reading codebase to understand the module...', ms: 500 },
+    { type: 'cmd', prompt: 'tsh$ ', text: 'cat src/processor.py', promptCls: 'prompt-tsh' },
     { type: 'output', lines: [
-      '[03:13:22] proxy:error connection refused :5432',
-      '[03:15:48] mpm_prefork reached MaxRequestWorkers',
-      '[03:17:02] OOM killed pid 2891 (celery-worker)',
-    ], cls: 'out', delay: 120 },
-    { type: 'pause', ms: 600 },
-    { type: 'cmd', prompt: 'tsh$ ', text: 'wc -l server.log', promptCls: 'prompt-tsh' },
-    { type: 'pause', ms: 200 },
-    { type: 'output', lines: ['48,291 server.log'], cls: 'out', delay: 80 },
+      '#!/usr/bin/env python3',
+      'import asyncio',
+      'from dataclasses import dataclass',
+      '',
+      '... [eliding output, showing structure] ...',
+      '',
+      'class DataProcessor:',
+      '    def __init__(self, config):',
+      '    def process_batch(self, items):',
+      '    async def stream_results(self):',
+      'class APIClient:',
+      '    def authenticate(self):',
+      '    def fetch_records(self, query):',
+      '',
+      '... [last 20 lines] ...',
+      '',
+      '[tsh: 1,142 lines → 130 shown. Elided 1,012.]',
+    ], cls: 'out', delay: 55 },
+    { type: 'thinking', text: 'editing process_batch()...', ms: 600 },
+    { type: 'cmd', prompt: 'tsh$ ', text: 'python -m pytest tests/', promptCls: 'prompt-tsh' },
+    { type: 'output', lines: ['PASSED (14 tests, 0.8s)'], cls: 'out', delay: 80 },
     { type: 'pause', ms: 400 },
+    { type: 'thinking', text: 'context compacted — re-reading to continue...', ms: 500 },
+    { type: 'output', lines: ['', '  ~ context compacted ~', ''], cls: 'err', delay: 100 },
+    { type: 'cmd', prompt: 'tsh$ ', text: 'cat src/processor.py', promptCls: 'prompt-tsh' },
+    { type: 'output', lines: [
+      '[tsh: repeat read #2 of src/processor.py — structure only]',
+      'class DataProcessor:',
+      '    def __init__(self, config):',
+      '    def process_batch(self, items):',
+      '    async def stream_results(self):',
+      'class APIClient:',
+      '    def authenticate(self):',
+      '    def fetch_records(self, query):',
+      '[tsh: repeat read #2 — 1,142 lines, 8 structural. Elided 1,134.]',
+    ], cls: 'out', delay: 55 },
+    { type: 'thinking', text: 'got the structure. continuing work...', ms: 400 },
     { type: 'cursor', prompt: 'tsh$ ', promptCls: 'prompt-tsh' },
   ];
 
-  // Generate a big flood of Apache log lines for bash
-  const bashFloodLines = [
-    '[Sun Mar 08 01:12:33.079022 2026] [mpm_prefork:notice] [pid 1842] AH00163: Apache/2.4.58 configured -- resuming',
-    '[Sun Mar 08 01:12:33.079348 2026] [core:notice] [pid 1842] AH00094: Command line: \'/usr/sbin/apache2\'',
-    '10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET / HTTP/1.1" 200 11237 "-" "Mozilla/5.0"',
-    '10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /icons/ubuntu-logo.png HTTP/1.1" 200 3623',
-    '10.0.2.1 - - [08/Mar/2026:01:12:44 +0000] "GET /favicon.ico HTTP/1.1" 404 487',
-    '10.0.2.1 - - [08/Mar/2026:01:13:02 +0000] "GET /server-status HTTP/1.1" 403 487',
-    '10.0.2.1 - - [08/Mar/2026:01:13:15 +0000] "POST /api/health HTTP/1.1" 200 15',
-    '[Sun Mar 08 01:13:22.411823 2026] [proxy:error] [pid 1844] (111)Connection refused: AH00957',
-    '10.0.2.1 - - [08/Mar/2026:01:13:22 +0000] "GET /api/data HTTP/1.1" 502 341',
-    '10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Googlebot/2.1"',
-    '10.0.2.1 - - [08/Mar/2026:01:14:01 +0000] "GET /robots.txt HTTP/1.1" 200 128',
-    '[Sun Mar 08 01:15:48.002194 2026] [mpm_prefork:error] [pid 1842] AH00161: server reached MaxRequestWorkers',
-    '10.0.2.1 - - [08/Mar/2026:01:15:50 +0000] "GET /api/health HTTP/1.1" 200 15',
-    '10.0.2.1 - - [08/Mar/2026:01:15:51 +0000] "GET /assets/main.css HTTP/1.1" 200 8923',
-    '10.0.2.1 - - [08/Mar/2026:01:15:52 +0000] "GET /assets/app.js HTTP/1.1" 200 142338',
-    '10.0.2.1 - - [08/Mar/2026:01:15:53 +0000] "POST /api/track HTTP/1.1" 204 0',
-    'kernel: Out of memory: Killed process 2891 (celery-worker)',
-    '10.0.2.1 - - [08/Mar/2026:01:17:44 +0000] "GET / HTTP/1.1" 200 11237',
-    '10.0.2.1 - - [08/Mar/2026:01:17:45 +0000] "GET /icons/ubuntu-logo.png HTTP/1.1" 304 0',
-    '10.0.2.1 - - [08/Mar/2026:01:17:46 +0000] "GET /api/users HTTP/1.1" 200 4521',
-    '10.0.2.1 - - [08/Mar/2026:01:17:47 +0000] "GET /api/users/42 HTTP/1.1" 200 283',
-    '10.0.2.1 - - [08/Mar/2026:01:17:48 +0000] "PUT /api/users/42 HTTP/1.1" 200 283',
-    '10.0.2.1 - - [08/Mar/2026:01:18:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Bingbot/2.0"',
-    '10.0.2.1 - - [08/Mar/2026:01:18:02 +0000] "GET /sitemap.xml HTTP/1.1" 200 1847',
-    '10.0.2.1 - - [08/Mar/2026:01:18:15 +0000] "POST /api/health HTTP/1.1" 200 15',
-    '10.0.2.1 - - [08/Mar/2026:01:18:33 +0000] "GET /api/metrics HTTP/1.1" 200 9284',
-    '10.0.2.1 - - [08/Mar/2026:01:19:01 +0000] "GET / HTTP/1.1" 200 11237 "-" "Mozilla/5.0"',
-    '10.0.2.1 - - [08/Mar/2026:01:19:02 +0000] "GET /assets/main.css HTTP/1.1" 304 0',
-    '10.0.2.1 - - [08/Mar/2026:01:19:03 +0000] "GET /assets/app.js HTTP/1.1" 304 0',
-    '10.0.2.1 - - [08/Mar/2026:01:19:15 +0000] "POST /api/health HTTP/1.1" 200 15',
-    '...',
-    '[STDOUT TRUNCATED at 1MB]',
-  ];
+  // ---- bash script: agent loop without recovery ----
+  const pyFlood = [];
+  for (let i = 1; i <= 28; i++) {
+    if (i === 1) pyFlood.push('#!/usr/bin/env python3');
+    else if (i === 2) pyFlood.push('"""Data processing pipeline for batch ETL jobs.');
+    else if (i === 3) pyFlood.push('This module handles..."""');
+    else if (i === 4) pyFlood.push('import asyncio');
+    else if (i === 5) pyFlood.push('import json');
+    else if (i === 6) pyFlood.push('from pathlib import Path');
+    else if (i === 7) pyFlood.push('from typing import Optional, List, Dict');
+    else if (i === 8) pyFlood.push('from dataclasses import dataclass, field');
+    else if (i === 9) pyFlood.push('');
+    else if (i === 10) pyFlood.push('BATCH_SIZE = 1000');
+    else if (i === 11) pyFlood.push('MAX_RETRIES = 3');
+    else if (i === 12) pyFlood.push('TIMEOUT_SECONDS = 30');
+    else if (i === 13) pyFlood.push('');
+    else if (i === 14) pyFlood.push('@dataclass');
+    else if (i === 15) pyFlood.push('class ProcessorConfig:');
+    else if (i === 16) pyFlood.push('    """Configuration for the data processor."""');
+    else if (i === 17) pyFlood.push('    batch_size: int = BATCH_SIZE');
+    else if (i === 18) pyFlood.push('    max_retries: int = MAX_RETRIES');
+    else if (i === 19) pyFlood.push('    timeout: float = TIMEOUT_SECONDS');
+    else if (i === 20) pyFlood.push('    output_dir: Path = Path("./output")');
+    else if (i === 21) pyFlood.push('    verbose: bool = False');
+    else if (i === 22) pyFlood.push('');
+    else if (i === 23) pyFlood.push('    def validate(self) -> None:');
+    else if (i === 24) pyFlood.push('        """Validate configuration parameters."""');
+    else if (i === 25) pyFlood.push('        if self.batch_size <= 0:');
+    else if (i === 26) pyFlood.push('            raise ValueError("batch_size must be > 0")');
+    else pyFlood.push('        # ... ' + (1100 + i) + ' more lines of code ...');
+  }
 
   const bashScript = [
-    { type: 'cmd', prompt: '$ ', text: 'cat server.log', promptCls: 'prompt-bash' },
-    { type: 'pause', ms: 200 },
-    { type: 'output', lines: bashFloodLines, cls: 'out-flood', delay: 45 },
+    { type: 'thinking', text: 'reading codebase to understand the module...', ms: 500 },
+    { type: 'cmd', prompt: '$ ', text: 'cat src/processor.py', promptCls: 'prompt-bash' },
+    { type: 'output', lines: pyFlood, cls: 'out-flood', delay: 40 },
+    { type: 'thinking', text: 'editing process_batch()...', ms: 600 },
+    { type: 'cmd', prompt: '$ ', text: 'python -m pytest tests/', promptCls: 'prompt-bash' },
+    { type: 'output', lines: ['PASSED (14 tests, 0.8s)'], cls: 'out-flood', delay: 80 },
+    { type: 'pause', ms: 400 },
+    { type: 'thinking', text: 'context compacted — re-reading to continue...', ms: 500 },
+    { type: 'output', lines: ['', '  ~ context compacted ~', ''], cls: 'err', delay: 100 },
+    { type: 'cmd', prompt: '$ ', text: 'cat src/processor.py', promptCls: 'prompt-bash' },
+    { type: 'output', lines: pyFlood, cls: 'out-flood', delay: 30 },
+    { type: 'thinking', text: 'reading again... all 1,142 lines...', ms: 300 },
   ];
 
-  // ---- Intersection Observer — play once when visible ----
+  // ---- Observer ----
   let hasPlayed = false;
-  const demoSection = document.getElementById('demo-comparison');
-
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (entry.isIntersecting && !hasPlayed) {
         hasPlayed = true;
         observer.disconnect();
-
-        const tshEl = document.getElementById('demo-tsh');
-        const bashEl = document.getElementById('demo-bash');
-        const tshPlayer = createShellPlayer(tshEl, tshScript, { charDelay: 30, cmdPause: 350 });
-        const bashPlayer = createShellPlayer(bashEl, bashScript, { charDelay: 20, cmdPause: 200 });
-
-        // Both start at the same time
-        const tshDone = tshPlayer.play().then(() => {
-          document.getElementById('demo-tsh-stats').style.opacity = '1';
-        });
-        const bashDone = bashPlayer.play().then(() => {
-          document.getElementById('demo-bash-stats').style.opacity = '1';
-        });
+        const tshP = createShellPlayer(document.getElementById('demo-tsh'), tshScript, { charDelay: 25, cmdPause: 300 });
+        const bashP = createShellPlayer(document.getElementById('demo-bash'), bashScript, { charDelay: 20, cmdPause: 250 });
+        tshP.play().then(() => { document.getElementById('demo-tsh-stats').style.opacity = '1'; });
+        bashP.play().then(() => { document.getElementById('demo-bash-stats').style.opacity = '1'; });
       }
     }
-  }, { threshold: 0.3 });
-
-  observer.observe(demoSection);
+  }, { threshold: 0.25 });
+  observer.observe(document.getElementById('demo-comparison'));
 })();
 </script>
 
@@ -1231,6 +1249,69 @@
     </div>
   </div>
 </div>
+
+<!-- ================================================================== -->
+<!-- LOOP MEMORY RECOVERY                                               -->
+<!-- ================================================================== -->
+<section id="loop-recovery">
+  <h2>&#x1FAB7; Loop memory recovery</h2>
+  <p>The biggest context waste isn't the first read — it's the second, third, and fourth. After compaction, the agent re-reads the same file and dumps the whole thing again. tsh tracks this and stops it.</p>
+
+  <table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.85rem;">
+    <tr>
+      <th style="text-align:left;font-family:var(--mono);font-size:0.78rem;color:var(--accent);padding:0.75rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">Read #</th>
+      <th style="text-align:left;font-family:var(--mono);font-size:0.78rem;color:var(--accent);padding:0.75rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">What the agent sees</th>
+      <th style="text-align:left;font-family:var(--mono);font-size:0.78rem;color:var(--accent);padding:0.75rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">Savings</th>
+    </tr>
+    <tr>
+      <td style="padding:0.75rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--text);">1st read</td>
+      <td style="padding:0.75rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--text);">Head 100 lines + structural skeleton + tail 20 + footer</td>
+      <td style="padding:0.75rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--green);font-weight:700;font-family:var(--mono);">~70–90%</td>
+    </tr>
+    <tr>
+      <td style="padding:0.75rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--text);">2nd read (same file)</td>
+      <td style="padding:0.75rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--text);">Structure only — <code>def</code>/<code>class</code>/<code>ERROR</code>/<code>WARN</code> lines + footer</td>
+      <td style="padding:0.75rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--green);font-weight:700;font-family:var(--mono);">~99%</td>
+    </tr>
+    <tr>
+      <td style="padding:0.75rem;color:var(--text);">N-th read</td>
+      <td style="padding:0.75rem;color:var(--text);">Same as 2nd — structural only + count indicator</td>
+      <td style="padding:0.75rem;color:var(--green);font-weight:700;font-family:var(--mono);">~99%</td>
+    </tr>
+  </table>
+
+  <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:2rem;">Powered by <strong style="color:var(--text);">SessionTracker</strong> — an <code>ExecutionObserver</code> on brush-core that watches every file-reading command (<code>cat</code>, <code>head</code>, <code>tail</code>, <code>less</code>, <code>bat</code>) and counts reads per file path across the session. No configuration needed. Fully automatic.</p>
+
+  <div class="glass" style="border-radius:14px;padding:1.5rem 2rem;border-color:color-mix(in oklch, var(--green) 20%, transparent);">
+    <p style="font-family:var(--mono);font-size:0.82rem;color:#fff;margin-bottom:1rem;font-weight:700;">Real benchmark: two reads of server_log.txt (2,000 lines)</p>
+    <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+      <tr>
+        <th style="text-align:left;font-family:var(--mono);font-size:0.72rem;color:var(--accent);padding:0.6rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">Metric</th>
+        <th style="text-align:center;font-family:var(--mono);font-size:0.72rem;color:var(--amber);padding:0.6rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">Without tsh</th>
+        <th style="text-align:center;font-family:var(--mono);font-size:0.72rem;color:var(--green);padding:0.6rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">With tsh</th>
+        <th style="text-align:center;font-family:var(--mono);font-size:0.72rem;color:var(--accent);padding:0.6rem;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;">Savings</th>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--text);">Tokens sent to agent</td>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--amber);text-align:center;font-family:var(--mono);">53,623</td>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--green);text-align:center;font-family:var(--mono);font-weight:700;">~3,369</td>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--green);text-align:center;font-family:var(--mono);font-weight:700;">94%</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--text);">Lines sent to agent</td>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--amber);text-align:center;font-family:var(--mono);">~4,000</td>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--green);text-align:center;font-family:var(--mono);font-weight:700;">158</td>
+        <td style="padding:0.6rem;border-bottom:1px solid oklch(0.2 0.01 280 / 0.25);color:var(--green);text-align:center;font-family:var(--mono);font-weight:700;">96%</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem;color:var(--text);">Found both needles (ERROR + FATAL)</td>
+        <td style="padding:0.6rem;color:var(--text);text-align:center;">Yes</td>
+        <td style="padding:0.6rem;color:var(--green);text-align:center;font-weight:700;">Yes</td>
+        <td style="padding:0.6rem;color:var(--text-dim);text-align:center;font-family:var(--mono);">No loss</td>
+      </tr>
+    </table>
+  </div>
+</section>
 
 <!-- ================================================================== -->
 <!-- WHY TSH                                                            -->

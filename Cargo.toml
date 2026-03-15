@@ -6,6 +6,7 @@ members = [
     "crates/tsh-model-manager",
     "xtask",
 ]
+exclude = ["vendor"]
 
 [workspace.package]
 version = "0.1.0"
@@ -21,3 +22,8 @@ brush-builtins = "0.1"
 brush-core = "0.4"
 brush-interactive = { version = "0.3", features = ["minimal"] }
 xshell = "0.2"
+
+# Use our fork of brush-core with execution observer support
+[patch.crates-io]
+brush-core = { path = "vendor/brush/brush-core" }
+brush-parser = { path = "vendor/brush/brush-parser" }

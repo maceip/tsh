@@ -141,11 +141,79 @@ def main() -> None:
     in_elision = False      # are we currently eliding?
     tail_buffer = []        # ring buffer for tail lines
     elision_announced = False
+    repeat_read = False     # is this a repeat read of the same file?
+    repeat_path = ""        # path of the file being re-read
+    repeat_count = 0        # how many times it's been read
 
     try:
         for line in sys.stdin:
+            # Command boundary reset — flush state for new command
+            if line.startswith("[tsh:new-command]"):
+                # Emit footer for previous command if we were eliding
+                if repeat_read:
+                    sys.stdout.write(
+                        f"\n[tsh: repeat read #{repeat_count} — {total_lines} lines, "
+                        f"{structural_lines} structural shown, "
+                        f"{elided_lines} elided.]\n"
+                    )
+                    sys.stdout.flush()
+                elif in_elision:
+                    sys.stdout.write(f"\n... [last {len(tail_buffer)} lines] ...\n\n")
+                    for tl in tail_buffer:
+                        sys.stdout.write(tl)
+                    sys.stdout.write(
+                        f"\n[tsh: {total_lines} lines, {total_bytes:,} bytes total. "
+                        f"Showed first {HEAD_LINES} + {structural_lines} structural + "
+                        f"last {len(tail_buffer)}. "
+                        f"Elided {elided_lines} lines.]\n"
+                    )
+                    sys.stdout.flush()
+
+                # Reset all state for next command
+                output_lines = 0
+                total_lines = 0
+                total_bytes = 0
+                elided_lines = 0
+                structural_lines = 0
+                in_elision = False
+                tail_buffer = []
+                elision_announced = False
+                repeat_read = False
+                repeat_path = ""
+                repeat_count = 0
+                continue
+
+            # Check for tsh repeat-read metadata header
+            if total_lines == 0 and line.startswith("[tsh:repeat-read"):
+                # Parse: [tsh:repeat-read path=/foo/bar count=3]
+                repeat_read = True
+                for part in line.strip().strip("[]").split():
+                    if part.startswith("path="):
+                        repeat_path = part[5:]
+                    elif part.startswith("count="):
+                        repeat_count = int(part[6:])
+                # On repeat reads, show ONLY structural lines + a note
+                sys.stdout.write(
+                    f"[tsh: repeat read #{repeat_count} of {repeat_path} — "
+                    f"showing structure only]\n\n"
+                )
+                sys.stdout.flush()
+                output_lines += 2
+                continue
+
             total_lines += 1
             total_bytes += len(line.encode("utf-8", errors="replace"))
+
+            # Repeat reads: structural-only mode from the start
+            if repeat_read:
+                if is_structural(line):
+                    sys.stdout.write(line)
+                    sys.stdout.flush()
+                    output_lines += 1
+                    structural_lines += 1
+                else:
+                    elided_lines += 1
+                continue
 
             # Phase 1: pass through the first HEAD_LINES unchanged
             if total_lines <= HEAD_LINES:
@@ -181,15 +249,23 @@ def main() -> None:
         pass
 
     # Phase 3: footer
-    if in_elision:
+    if repeat_read:
         try:
-            # Show tail
+            sys.stdout.write(
+                f"\n[tsh: repeat read #{repeat_count} — {total_lines} lines, "
+                f"{structural_lines} structural shown, "
+                f"{elided_lines} elided.]\n"
+            )
+            sys.stdout.flush()
+        except BrokenPipeError:
+            pass
+    elif in_elision:
+        try:
             sys.stdout.write(f"\n... [last {len(tail_buffer)} lines] ...\n\n")
             for tl in tail_buffer:
                 sys.stdout.write(tl)
             sys.stdout.flush()
 
-            # Summary footer
             sys.stdout.write(
                 f"\n[tsh: {total_lines} lines, {total_bytes:,} bytes total. "
                 f"Showed first {HEAD_LINES} + {structural_lines} structural + "

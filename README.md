@@ -138,6 +138,30 @@ The smart limiter (`python/safety_filter.py`) uses **structural pattern matching
 
 <br>
 
+## 🪷 Loop memory recovery
+
+The biggest context waste in agent sessions isn't the first read — it's the second, third, and fourth. An agent reads a file, its context compresses, then it re-reads the same file and dumps the entire thing again. tsh tracks this and stops it.
+
+**SessionTracker** (an `ExecutionObserver` on brush-core) watches every file-reading command (`cat`, `head`, `tail`, `less`, `bat`, etc.) and counts reads per file path across the session.
+
+| Read # | What the agent sees | Context cost |
+|---|---|---|
+| **1st** | Full smart-limited output (head + structure + tail) | ~180 lines |
+| **2nd** | `[tsh: repeat read #2 of large_module.py — showing structure only]` + structural lines only | ~50 lines |
+| **3rd** | `[tsh: repeat read #3 ...]` + structural lines only | ~50 lines |
+| **N-th** | Same pattern, counter increments | ~50 lines |
+
+```
+tsh$ cat large_module.py          # loop 1: full smart output (~180 lines)
+tsh$ cat large_module.py          # loop 2: structure only (~50 lines)
+tsh$ cat large_module.py          # loop 3: structure only (~50 lines)
+```
+
+> [!IMPORTANT]
+> This happens automatically. No flags, no configuration. The agent doesn't need to know — tsh just stops it from re-consuming context it's already seen.
+
+<br>
+
 ## 🪻 Three modes
 
 <table>

@@ -11,12 +11,15 @@
 //! internal pipes (cmd1|cmd2) ──→ untouched, OS speed
 //! ```
 
+mod session_tracker;
+
 use anyhow::{Context, Result};
 use brush_core::openfiles::OpenFile;
 use clap::Parser;
 use std::collections::HashMap;
 use std::io::{self, IsTerminal, Read, Write};
 use std::process::Stdio;
+use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::process::{Child, Command};
 
@@ -140,10 +143,12 @@ fn resolve_python() -> String {
 
 /// Routes stdout through the safety filter.
 /// Binary data and stderr bypass the safety filter and go directly to terminal.
+/// The tracker is checked before each command's output to inject read metadata.
 async fn run_stdout_router_with_safety(
     mut pipe_reader: tokio::fs::File,
     mut safety_stdin: tokio::process::ChildStdin,
     mut safety_stdout: tokio::process::ChildStdout,
+    tracker: Arc<session_tracker::SessionTracker>,
 ) {
     let mut buf = [0u8; 8192];
     let mut total_written: usize = 0;
@@ -167,6 +172,9 @@ async fn run_stdout_router_with_safety(
         }
     });
 
+    // Track the last observer turn we've seen, so we detect command boundaries
+    let mut last_seen_turn: u32 = 0;
+
     // Main loop: read from shell pipe, route to safety filter or terminal
     loop {
         match pipe_reader.read(&mut buf).await {
@@ -179,6 +187,28 @@ async fn run_stdout_router_with_safety(
                         is_binary = true;
                     }
                     first_chunk = false;
+                }
+
+                // Check if a new command has started (the observer incremented the turn)
+                // If so, send a reset sentinel + any repeat-read metadata to the filter
+                if !is_binary {
+                    if let Some(current_read) = tracker.current_read() {
+                        if current_read.read_count as u32 != last_seen_turn {
+                            last_seen_turn = current_read.read_count as u32;
+
+                            // Send command boundary reset
+                            let _ = safety_stdin.write_all(b"[tsh:new-command]\n").await;
+
+                            if current_read.is_repeat {
+                                let header = format!(
+                                    "[tsh:repeat-read path={} count={}]\n",
+                                    current_read.path.display(),
+                                    current_read.read_count
+                                );
+                                let _ = safety_stdin.write_all(header.as_bytes()).await;
+                            }
+                        }
+                    }
                 }
 
                 if total_written >= MAX_DISPLAY_BYTES {
@@ -264,6 +294,7 @@ async fn create_instrumented_shell(
     interactive: bool,
     stdout_writer: std::io::PipeWriter,
     stderr_writer: std::io::PipeWriter,
+    observer: Arc<session_tracker::SessionTracker>,
 ) -> Result<brush_core::Shell> {
     let builtins = brush_builtins::default_builtins(brush_builtins::BuiltinSet::BashMode);
 
@@ -279,6 +310,7 @@ async fn create_instrumented_shell(
         read_commands_from_stdin: interactive,
         builtins,
         fds: Some(fds),
+        execution_observer: Some(observer),
         ..Default::default()
     };
 
@@ -302,25 +334,24 @@ where
     let (stdout_reader, stdout_writer) = std::io::pipe()?;
     let (stderr_reader, stderr_writer) = std::io::pipe()?;
 
-    let shell = create_instrumented_shell(false, stdout_writer, stderr_writer).await?;
+    let tracker = Arc::new(session_tracker::SessionTracker::new());
+    let shell = create_instrumented_shell(false, stdout_writer, stderr_writer, tracker.clone()).await?;
 
     let async_stdout = pipe_reader_to_async(stdout_reader);
     let async_stderr = pipe_reader_to_async(stderr_reader);
 
-    // Stderr always goes directly to terminal (no safety filter)
     let stderr_router = tokio::spawn(run_passthrough_router(
         async_stderr,
         tokio::io::stderr(),
         "STDERR",
     ));
 
-    // Stdout: route through safety filter if available and not disabled
     let safety = if no_safety { None } else { spawn_safety_filter() };
 
     let stdout_router = if let Some(safety_proc) = safety {
+        let t = tracker.clone();
         tokio::spawn(async move {
-            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout).await;
-            // Keep child alive until router is done — kill_on_drop fires here
+            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout, t).await;
             let mut child = safety_proc.child;
             let _ = child.wait().await;
         })
@@ -363,7 +394,8 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
     let (stdout_reader, stdout_writer) = std::io::pipe()?;
     let (stderr_reader, stderr_writer) = std::io::pipe()?;
 
-    let mut shell = create_instrumented_shell(true, stdout_writer, stderr_writer).await?;
+    let tracker = Arc::new(session_tracker::SessionTracker::new());
+    let mut shell = create_instrumented_shell(true, stdout_writer, stderr_writer, tracker.clone()).await?;
 
     let async_stdout = pipe_reader_to_async(stdout_reader);
     let async_stderr = pipe_reader_to_async(stderr_reader);
@@ -377,9 +409,11 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
     let safety = if no_safety { None } else { spawn_safety_filter() };
 
     let stdout_router = if let Some(safety_proc) = safety {
+        let t = tracker.clone();
         tokio::spawn(async move {
-            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout).await;
-            let _ = safety_proc.child;
+            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout, t).await;
+            let mut child = safety_proc.child;
+            let _ = child.wait().await;
         })
     } else {
         if !no_safety {
