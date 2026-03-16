@@ -76,10 +76,7 @@ fn builtin_pwd() {
 
 #[test]
 fn builtin_export_and_echo() {
-    assert_eq!(
-        tsh_ok("export MY_VAR=42 && echo $MY_VAR").trim(),
-        "42"
-    );
+    assert_eq!(tsh_ok("export MY_VAR=42 && echo $MY_VAR").trim(), "42");
 }
 
 #[test]
@@ -153,10 +150,7 @@ fn string_substring() {
 
 #[test]
 fn for_loop_basic() {
-    assert_eq!(
-        tsh_ok("for i in a b c; do echo $i; done").trim(),
-        "a\nb\nc"
-    );
+    assert_eq!(tsh_ok("for i in a b c; do echo $i; done").trim(), "a\nb\nc");
 }
 
 #[test]
@@ -187,9 +181,8 @@ fn case_esac_basic() {
 
 #[test]
 fn case_esac_continue() {
-    let out = tsh_ok(
-        "for n in a skip b skip2 c; do case $n in skip*) continue;; esac; echo $n; done",
-    );
+    let out =
+        tsh_ok("for n in a skip b skip2 c; do case $n in skip*) continue;; esac; echo $n; done");
     assert_eq!(out.trim(), "a\nb\nc");
 }
 
@@ -231,7 +224,8 @@ fn function_local_scope() {
 
 #[test]
 fn function_return_code() {
-    let out = tsh_ok("ok() { return 0; }; fail() { return 1; }; ok && echo ok; fail || echo caught");
+    let out =
+        tsh_ok("ok() { return 0; }; fail() { return 1; }; ok && echo ok; fail || echo caught");
     assert_eq!(out.trim(), "ok\ncaught");
 }
 
@@ -241,10 +235,7 @@ fn function_return_code() {
 
 #[test]
 fn array_indexed() {
-    assert_eq!(
-        tsh_ok("a=(one two three); echo ${a[1]}").trim(),
-        "two"
-    );
+    assert_eq!(tsh_ok("a=(one two three); echo ${a[1]}").trim(), "two");
 }
 
 #[test]
@@ -260,10 +251,7 @@ fn array_iterate() {
 
 #[test]
 fn array_slice() {
-    assert_eq!(
-        tsh_ok("a=(a b c d e); echo ${a[@]:1:3}").trim(),
-        "b c d"
-    );
+    assert_eq!(tsh_ok("a=(a b c d e); echo ${a[@]:1:3}").trim(), "b c d");
 }
 
 // =========================================================================
@@ -282,10 +270,7 @@ fn set_u() {
 
 #[test]
 fn set_euo_pipefail() {
-    assert_eq!(
-        tsh_ok("set -euo pipefail; echo strict").trim(),
-        "strict"
-    );
+    assert_eq!(tsh_ok("set -euo pipefail; echo strict").trim(), "strict");
 }
 
 // =========================================================================
@@ -375,7 +360,10 @@ fn cmd_exe_echo() {
 fn known_issue_path_lookup_fails() {
     // brush-core can't resolve commands via Windows PATH (spaces in dirs)
     let (_, stderr, code) = tsh_exec("grep --version").unwrap();
-    assert_eq!(code, 127, "When this passes, brush fixed Windows PATH lookup!");
+    assert_eq!(
+        code, 127,
+        "When this passes, brush fixed Windows PATH lookup!"
+    );
     assert!(stderr.contains("not found"));
 }
 
@@ -383,7 +371,10 @@ fn known_issue_path_lookup_fails() {
 fn known_issue_dev_null() {
     // /dev/null doesn't exist on Windows
     let (_, stderr, code) = tsh_exec("echo test > /dev/null").unwrap();
-    assert_ne!(code, 0, "When this passes, brush added /dev/null → NUL translation!");
+    assert_ne!(
+        code, 0,
+        "When this passes, brush added /dev/null → NUL translation!"
+    );
     assert!(stderr.contains("cannot find") || stderr.contains("failed to redirect"));
 }
 
@@ -392,10 +383,9 @@ fn known_issue_process_substitution() {
     // <() requires /dev/fd which doesn't exist on Windows.
     // brush-core may either error or silently degrade.
     // We test a meaningful use: diff <() <() which needs actual fd passing.
-    let (stdout, stderr, code) = tsh_exec(
-        "\"C:\\Windows\\System32\\cmd.exe\" /c echo a > NUL && echo <(echo test)",
-    )
-    .unwrap();
+    let (stdout, stderr, code) =
+        tsh_exec("\"C:\\Windows\\System32\\cmd.exe\" /c echo a > NUL && echo <(echo test)")
+            .unwrap();
     // If this produces a /dev/fd path or errors, process substitution isn't fully working.
     // Just document current behavior.
     let _ = (stdout, stderr, code);

@@ -45,10 +45,7 @@ fn first_read_large_file_is_limited() {
         out_lines < 200,
         "First read should be limited, got {out_lines} lines"
     );
-    assert!(
-        out.contains("[tsh:"),
-        "Should have tsh footer"
-    );
+    assert!(out.contains("[tsh:"), "Should have tsh footer");
 }
 
 #[test]
@@ -84,9 +81,7 @@ fn first_read_preserves_code_structure() {
 fn repeat_read_is_smaller_than_first() {
     let cat = cat_cmd();
     // Two reads in one session — split on the repeat-read announcement
-    let cmd = format!(
-        "{cat} tests/jungle/server_log.txt && {cat} tests/jungle/server_log.txt"
-    );
+    let cmd = format!("{cat} tests/jungle/server_log.txt && {cat} tests/jungle/server_log.txt");
     let (out, _) = tsh_run(&cmd);
 
     // The output should contain "repeat read #2" — split there
@@ -109,9 +104,7 @@ fn repeat_read_is_smaller_than_first() {
 #[test]
 fn repeat_read_announces_itself() {
     let cat = cat_cmd();
-    let cmd = format!(
-        "{cat} tests/jungle/server_log.txt && {cat} tests/jungle/server_log.txt"
-    );
+    let cmd = format!("{cat} tests/jungle/server_log.txt && {cat} tests/jungle/server_log.txt");
     let (out, _) = tsh_run(&cmd);
 
     assert!(
@@ -124,9 +117,7 @@ fn repeat_read_announces_itself() {
 #[test]
 fn repeat_read_still_shows_errors() {
     let cat = cat_cmd();
-    let cmd = format!(
-        "{cat} tests/jungle/server_log.txt && {cat} tests/jungle/server_log.txt"
-    );
+    let cmd = format!("{cat} tests/jungle/server_log.txt && {cat} tests/jungle/server_log.txt");
     let (out, _) = tsh_run(&cmd);
 
     // After "repeat read" marker, ERROR and FATAL should still be present
@@ -148,9 +139,7 @@ fn repeat_read_still_shows_errors() {
 #[test]
 fn repeat_read_code_preserves_structure() {
     let cat = cat_cmd();
-    let cmd = format!(
-        "{cat} tests/jungle/large_python.py && {cat} tests/jungle/large_python.py"
-    );
+    let cmd = format!("{cat} tests/jungle/large_python.py && {cat} tests/jungle/large_python.py");
     let (out, _) = tsh_run(&cmd);
 
     if let Some(repeat_pos) = out.find("repeat read #2") {

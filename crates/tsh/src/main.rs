@@ -335,7 +335,8 @@ where
     let (stderr_reader, stderr_writer) = std::io::pipe()?;
 
     let tracker = Arc::new(session_tracker::SessionTracker::new());
-    let shell = create_instrumented_shell(false, stdout_writer, stderr_writer, tracker.clone()).await?;
+    let shell =
+        create_instrumented_shell(false, stdout_writer, stderr_writer, tracker.clone()).await?;
 
     let async_stdout = pipe_reader_to_async(stdout_reader);
     let async_stderr = pipe_reader_to_async(stderr_reader);
@@ -346,12 +347,17 @@ where
         "STDERR",
     ));
 
-    let safety = if no_safety { None } else { spawn_safety_filter() };
+    let safety = if no_safety {
+        None
+    } else {
+        spawn_safety_filter()
+    };
 
     let stdout_router = if let Some(safety_proc) = safety {
         let t = tracker.clone();
         tokio::spawn(async move {
-            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout, t).await;
+            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout, t)
+                .await;
             let mut child = safety_proc.child;
             let _ = child.wait().await;
         })
@@ -382,11 +388,14 @@ where
 async fn run_command_mode(command: &str, no_safety: bool) -> Result<u8> {
     run_with_routing(no_safety, |mut shell| async move {
         let params = shell.default_exec_params();
-        let result = shell.run_string(command, &params).await
+        let result = shell
+            .run_string(command, &params)
+            .await
             .context("Command execution failed")?;
         let code = result.exit_code.into();
         Ok((shell, code))
-    }).await
+    })
+    .await
 }
 
 /// Interactive REPL mode
@@ -395,7 +404,8 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
     let (stderr_reader, stderr_writer) = std::io::pipe()?;
 
     let tracker = Arc::new(session_tracker::SessionTracker::new());
-    let mut shell = create_instrumented_shell(true, stdout_writer, stderr_writer, tracker.clone()).await?;
+    let mut shell =
+        create_instrumented_shell(true, stdout_writer, stderr_writer, tracker.clone()).await?;
 
     let async_stdout = pipe_reader_to_async(stdout_reader);
     let async_stderr = pipe_reader_to_async(stderr_reader);
@@ -406,12 +416,17 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
         "STDERR",
     ));
 
-    let safety = if no_safety { None } else { spawn_safety_filter() };
+    let safety = if no_safety {
+        None
+    } else {
+        spawn_safety_filter()
+    };
 
     let stdout_router = if let Some(safety_proc) = safety {
         let t = tracker.clone();
         tokio::spawn(async move {
-            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout, t).await;
+            run_stdout_router_with_safety(async_stdout, safety_proc.stdin, safety_proc.stdout, t)
+                .await;
             let mut child = safety_proc.child;
             let _ = child.wait().await;
         })
@@ -437,8 +452,12 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
             Ok(0) => break,
             Ok(_) => {
                 let input = line_buf.trim();
-                if input.is_empty() { continue; }
-                if input == "exit" || input == "quit" { break; }
+                if input.is_empty() {
+                    continue;
+                }
+                if input == "exit" || input == "quit" {
+                    break;
+                }
 
                 let params = shell.default_exec_params();
                 if let Err(e) = shell.run_string(input, &params).await {
@@ -462,9 +481,13 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
 async fn run_piped_mode(no_safety: bool) -> Result<u8> {
     let mut raw = Vec::new();
     io::stdin().read_to_end(&mut raw)?;
-    if raw.is_empty() { anyhow::bail!("No input via stdin."); }
+    if raw.is_empty() {
+        anyhow::bail!("No input via stdin.");
+    }
     let script = decode_stdin_bytes(raw)?;
-    if script.trim().is_empty() { anyhow::bail!("No input via stdin."); }
+    if script.trim().is_empty() {
+        anyhow::bail!("No input via stdin.");
+    }
     run_command_mode(&script, no_safety).await
 }
 
@@ -476,15 +499,21 @@ async fn run_piped_mode(no_safety: bool) -> Result<u8> {
 fn decode_stdin_bytes(raw: Vec<u8>) -> Result<String> {
     if raw.len() >= 2 && raw[0] == 0xFF && raw[1] == 0xFE {
         let (d, _, e) = encoding_rs::UTF_16LE.decode(&raw[2..]);
-        if e { anyhow::bail!("Failed to decode UTF-16LE from PowerShell."); }
+        if e {
+            anyhow::bail!("Failed to decode UTF-16LE from PowerShell.");
+        }
         return Ok(d.into_owned());
     }
     if raw.len() >= 3 && raw[0] == 0xEF && raw[1] == 0xBB && raw[2] == 0xBF {
         return String::from_utf8(raw[3..].to_vec()).context("Invalid UTF-8 after BOM");
     }
-    if let Ok(s) = String::from_utf8(raw.clone()) { return Ok(s); }
+    if let Ok(s) = String::from_utf8(raw.clone()) {
+        return Ok(s);
+    }
     let (d, _, e) = encoding_rs::UTF_16LE.decode(&raw);
-    if e { anyhow::bail!("Not valid UTF-8 or UTF-16LE."); }
+    if e {
+        anyhow::bail!("Not valid UTF-8 or UTF-16LE.");
+    }
     Ok(d.into_owned())
 }
 

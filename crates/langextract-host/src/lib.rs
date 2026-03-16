@@ -136,7 +136,11 @@ pub fn chunk_text(text: &str, max_bytes: usize, overlap_bytes: usize) -> Vec<&st
             }
             // Snap to whitespace so we don't start mid-word.
             while ns > start {
-                if text[ns..].chars().next().map_or(false, |c| c.is_whitespace()) {
+                if text[ns..]
+                    .chars()
+                    .next()
+                    .map_or(false, |c| c.is_whitespace())
+                {
                     break;
                 }
                 ns -= 1;
@@ -144,7 +148,11 @@ pub fn chunk_text(text: &str, max_bytes: usize, overlap_bytes: usize) -> Vec<&st
                     ns -= 1;
                 }
             }
-            if ns <= start { word_break } else { ns }
+            if ns <= start {
+                word_break
+            } else {
+                ns
+            }
         } else {
             word_break
         };

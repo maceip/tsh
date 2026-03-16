@@ -28,8 +28,7 @@ use std::sync::Mutex;
 
 /// Commands that are considered "file readers."
 const FILE_READ_COMMANDS: &[&str] = &[
-    "cat", "head", "tail", "less", "more", "bat", "batcat",
-    "tac", "nl", "pr", "fold", "fmt",
+    "cat", "head", "tail", "less", "more", "bat", "batcat", "tac", "nl", "pr", "fold", "fmt",
 ];
 
 /// Record of a file that has been read during this session.
@@ -126,11 +125,7 @@ impl ExecutionObserver for SessionTracker {
 
         // Extract file path(s) from arguments.
         // For cat/head/tail, the file is typically the last arg (or any non-flag arg).
-        let file_args: Vec<&String> = info
-            .args
-            .iter()
-            .filter(|a| !a.starts_with('-'))
-            .collect();
+        let file_args: Vec<&String> = info.args.iter().filter(|a| !a.starts_with('-')).collect();
 
         if file_args.is_empty() {
             state.current_read_file = None;
@@ -148,15 +143,16 @@ impl ExecutionObserver for SessionTracker {
             // Get file size (if accessible)
             let size = std::fs::metadata(&path).map(|m| m.len()).unwrap_or(0);
 
-            let record = state.files.entry(path.clone()).or_insert_with(|| {
-                FileReadRecord {
+            let record = state
+                .files
+                .entry(path.clone())
+                .or_insert_with(|| FileReadRecord {
                     path: path.clone(),
                     read_count: 0,
                     last_size: 0,
                     first_read_turn: turn,
                     last_read_turn: turn,
-                }
-            });
+                });
 
             record.read_count += 1;
             record.last_read_turn = turn;

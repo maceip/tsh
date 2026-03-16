@@ -18,7 +18,10 @@ COPY xtask/Cargo.toml xtask/Cargo.toml
 COPY vendor/ vendor/
 
 # Create stub source files to compile dependencies
-RUN mkdir -p crates/langextract-host/src crates/tsh/src crates/tsh-model-manager/src xtask/src && \
+# Remove Cargo.lock first — it may reference local patch paths that don't resolve
+# until vendor/ is fully populated. Cargo will regenerate it.
+RUN rm -f Cargo.lock && \
+    mkdir -p crates/langextract-host/src crates/tsh/src crates/tsh-model-manager/src xtask/src && \
     echo "pub fn chunk_text(_t: &str, _m: usize, _o: usize) -> Vec<&str> { vec![] }" > crates/langextract-host/src/lib.rs && \
     echo "fn main() {}" > crates/langextract-host/src/main.rs && \
     echo "fn main() {}" > crates/tsh/src/main.rs && \

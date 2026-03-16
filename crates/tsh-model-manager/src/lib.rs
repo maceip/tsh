@@ -72,9 +72,8 @@ pub fn model_cache_dir() -> Result<PathBuf> {
         return Ok(PathBuf::from(override_dir));
     }
 
-    let base = dirs::cache_dir().context(
-        "Could not determine cache directory. Set TSH_MODEL_DIR env var as a fallback.",
-    )?;
+    let base = dirs::cache_dir()
+        .context("Could not determine cache directory. Set TSH_MODEL_DIR env var as a fallback.")?;
 
     Ok(base.join("tsh").join("models"))
 }
@@ -94,10 +93,7 @@ pub fn model_path(entry: &ModelEntry) -> Result<PathBuf> {
 ///
 /// If `progress_callback` is provided, it is called with `(bytes_downloaded, total_bytes)`
 /// during the download. `total_bytes` may be 0 if the server doesn't send Content-Length.
-pub async fn ensure_model<F>(
-    entry: &ModelEntry,
-    progress_callback: Option<F>,
-) -> Result<PathBuf>
+pub async fn ensure_model<F>(entry: &ModelEntry, progress_callback: Option<F>) -> Result<PathBuf>
 where
     F: Fn(u64, u64),
 {
@@ -196,9 +192,13 @@ where
     drop(file);
 
     // Atomic rename (same filesystem).
-    tokio::fs::rename(&tmp_dest, dest)
-        .await
-        .with_context(|| format!("Failed to rename {} to {}", tmp_dest.display(), dest.display()))?;
+    tokio::fs::rename(&tmp_dest, dest).await.with_context(|| {
+        format!(
+            "Failed to rename {} to {}",
+            tmp_dest.display(),
+            dest.display()
+        )
+    })?;
 
     Ok(())
 }
