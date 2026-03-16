@@ -23,7 +23,9 @@ brush-core = "0.4"
 brush-interactive = { version = "0.3", features = ["minimal"] }
 xshell = "0.2"
 
-# Use our fork of brush-core with execution observer support
+# All 4 brush crates from our fork at brush-shell-v0.3.0 tag (internally consistent).
 [patch.crates-io]
 brush-core = { path = "vendor/brush/brush-core" }
 brush-parser = { path = "vendor/brush/brush-parser" }
+brush-builtins = { path = "vendor/brush/brush-builtins" }
+brush-interactive = { path = "vendor/brush/brush-interactive" }

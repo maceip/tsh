@@ -9,17 +9,20 @@ FROM rust:1.77-bookworm AS rust-builder
 
 WORKDIR /build
 
-# Copy manifests first to cache dependency compilation
+# Copy manifests and vendored deps first to cache dependency compilation
 COPY Cargo.toml Cargo.lock* ./
 COPY crates/langextract-host/Cargo.toml crates/langextract-host/Cargo.toml
 COPY crates/tsh/Cargo.toml crates/tsh/Cargo.toml
+COPY crates/tsh-model-manager/Cargo.toml crates/tsh-model-manager/Cargo.toml
 COPY xtask/Cargo.toml xtask/Cargo.toml
+COPY vendor/ vendor/
 
 # Create stub source files to compile dependencies
-RUN mkdir -p crates/langextract-host/src crates/tsh/src xtask/src && \
+RUN mkdir -p crates/langextract-host/src crates/tsh/src crates/tsh-model-manager/src xtask/src && \
     echo "pub fn chunk_text(_t: &str, _m: usize, _o: usize) -> Vec<&str> { vec![] }" > crates/langextract-host/src/lib.rs && \
     echo "fn main() {}" > crates/langextract-host/src/main.rs && \
     echo "fn main() {}" > crates/tsh/src/main.rs && \
+    echo "pub fn model_cache_dir() -> Result<std::path::PathBuf, anyhow::Error> { Ok(std::path::PathBuf::new()) }" > crates/tsh-model-manager/src/lib.rs && \
     echo "fn main() {}" > xtask/src/main.rs && \
     cargo build --release -p tsh -p langextract-host 2>/dev/null || true
 
