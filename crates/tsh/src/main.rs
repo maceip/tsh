@@ -193,8 +193,8 @@ async fn run_stdout_router_with_safety(
                 // If so, send a reset sentinel + any repeat-read metadata to the filter
                 if !is_binary {
                     if let Some(current_read) = tracker.current_read() {
-                        if current_read.read_count as u32 != last_seen_turn {
-                            last_seen_turn = current_read.read_count as u32;
+                        if current_read.read_count != last_seen_turn {
+                            last_seen_turn = current_read.read_count;
 
                             // Send command boundary reset
                             let _ = safety_stdin.write_all(b"[tsh:new-command]\n").await;
