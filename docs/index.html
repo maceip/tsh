@@ -1716,22 +1716,32 @@
 <section id="quickstart">
   <h2>&#x1FAB7; Quickstart</h2>
 
-  <h3>Build and run</h3>
-  <pre><code>git clone https://github.com/maceip/tsh && cd tsh
-cargo build --release
+  <h3>macOS / Linux / WSL</h3>
+  <pre><code>curl -fsSL https://raw.githubusercontent.com/maceip/tsh/main/install.sh | sh</code></pre>
 
-<span class="comment"># Interactive shell (safety-filtered)</span>
-./target/release/tsh
+  <h3>Windows (PowerShell)</h3>
+  <pre><code>irm https://raw.githubusercontent.com/maceip/tsh/main/install.ps1 | iex</code></pre>
+
+  <p>Then open a new terminal and run:</p>
+  <pre><code>tsh</code></pre>
+
+  <h3>Usage</h3>
+  <pre><code><span class="comment"># Interactive shell (safety-filtered)</span>
+tsh
 
 <span class="comment"># Run a command</span>
-./target/release/tsh -c <span class="string">'cat /var/log/syslog | tail -50'</span>
+tsh -c <span class="string">'cat /var/log/syslog | tail -50'</span>
 
 <span class="comment"># Disable safety for debugging</span>
-./target/release/tsh <span class="flag-hl">--no-safety</span> -c <span class="string">'echo "raw output"'</span></code></pre>
+tsh <span class="flag-hl">--no-safety</span> -c <span class="string">'echo "raw output"'</span>
 
-  <h3>Pipe a script</h3>
-  <pre><code><span class="comment"># stdin is auto-detected as a script</span>
-echo <span class="string">'whoami && df -h'</span> | ./target/release/tsh</code></pre>
+<span class="comment"># Pipe a script</span>
+echo <span class="string">'whoami && df -h'</span> | tsh</code></pre>
+
+  <h3>Build from source</h3>
+  <pre><code>git clone https://github.com/maceip/tsh && cd tsh
+cargo build --release
+./target/release/tsh</code></pre>
 
   <h3>Docker</h3>
   <pre><code>docker compose up -d

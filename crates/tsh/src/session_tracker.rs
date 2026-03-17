@@ -21,10 +21,25 @@
 //! - First read: show structural skeleton (head + structural lines + tail)
 //! - Repeat reads: show "[file previously read — N lines, skeleton unchanged]"
 
-use brush_core::observer::{CommandInfo, ExecutionObserver};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Mutex;
+
+/// Information about a command being executed.
+pub struct CommandInfo {
+    /// The command name (e.g., "cat", "/usr/bin/head").
+    pub command: String,
+    /// Command arguments.
+    pub args: Vec<String>,
+    /// Working directory when the command was invoked.
+    pub working_dir: PathBuf,
+}
+
+/// Trait for observing command execution in the shell.
+pub trait ExecutionObserver: Send + Sync {
+    /// Called when a command starts executing.
+    fn on_command_start(&self, info: &CommandInfo);
+}
 
 /// Commands that are considered "file readers."
 const FILE_READ_COMMANDS: &[&str] = &[

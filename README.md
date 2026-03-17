@@ -203,18 +203,35 @@ echo 'whoami && df -h' | tsh
 
 <br>
 
-## 🪷 Get running
+## 🪷 Quick start
+
+**macOS / Linux / WSL**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/maceip/tsh/main/install.sh | sh
+```
+
+**Windows (PowerShell)**
+
+```powershell
+irm https://raw.githubusercontent.com/maceip/tsh/main/install.ps1 | iex
+```
+
+Then open a new terminal and run:
+
+```bash
+tsh
+```
+
+<details>
+<summary><b>Build from source</b></summary>
 
 ```bash
 git clone https://github.com/maceip/tsh && cd tsh
 cargo build --release
-
-# Interactive
 ./target/release/tsh
-
-# One-shot
-./target/release/tsh -c 'echo "hello from tsh"'
 ```
+</details>
 
 <details>
 <summary><b>Docker</b></summary>

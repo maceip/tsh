@@ -294,7 +294,7 @@ async fn create_instrumented_shell(
     interactive: bool,
     stdout_writer: std::io::PipeWriter,
     stderr_writer: std::io::PipeWriter,
-    observer: Arc<session_tracker::SessionTracker>,
+    _observer: Arc<session_tracker::SessionTracker>,
 ) -> Result<brush_core::Shell> {
     let builtins = brush_builtins::default_builtins(brush_builtins::BuiltinSet::BashMode);
 
@@ -310,7 +310,6 @@ async fn create_instrumented_shell(
         read_commands_from_stdin: interactive,
         builtins,
         fds: Some(fds),
-        execution_observer: Some(observer),
         ..Default::default()
     };
 
