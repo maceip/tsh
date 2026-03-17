@@ -1,0 +1,94 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: Build ${{ matrix.artifact_os }}-${{ matrix.artifact_arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            artifact_os: linux
+            artifact_arch: x86_64
+            ext: tar.gz
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            artifact_os: linux
+            artifact_arch: aarch64
+            ext: tar.gz
+            cross: true
+          - target: x86_64-apple-darwin
+            os: macos-13
+            artifact_os: darwin
+            artifact_arch: x86_64
+            ext: tar.gz
+          - target: aarch64-apple-darwin
+            os: macos-14
+            artifact_os: darwin
+            artifact_arch: aarch64
+            ext: tar.gz
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            artifact_os: windows
+            artifact_arch: x86_64
+            ext: zip
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Install cross (Linux aarch64)
+        if: matrix.cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Build
+        run: ${{ matrix.cross && 'cross' || 'cargo' }} build --release --target ${{ matrix.target }} -p tsh
+
+      - name: Package (Unix)
+        if: matrix.artifact_os != 'windows'
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          STAGING="tsh-${TAG}-${{ matrix.artifact_os }}-${{ matrix.artifact_arch }}"
+          mkdir "$STAGING"
+          cp "target/${{ matrix.target }}/release/tsh" "$STAGING/"
+          cp "python/safety_filter.py" "$STAGING/"
+          tar czf "${STAGING}.tar.gz" "$STAGING"
+          echo "ASSET=${STAGING}.tar.gz" >> "$GITHUB_ENV"
+
+      - name: Package (Windows)
+        if: matrix.artifact_os == 'windows'
+        shell: pwsh
+        run: |
+          $Tag = $env:GITHUB_REF_NAME
+          $Staging = "tsh-${Tag}-${{ matrix.artifact_os }}-${{ matrix.artifact_arch }}"
+          New-Item -ItemType Directory -Path $Staging
+          Copy-Item "target/${{ matrix.target }}/release/tsh.exe" "$Staging/"
+          Copy-Item "python/safety_filter.py" "$Staging/"
+          Compress-Archive -Path "$Staging/*" -DestinationPath "${Staging}.zip"
+          "ASSET=${Staging}.zip" | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ASSET }}
