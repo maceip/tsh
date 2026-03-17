@@ -82,7 +82,7 @@ pub struct CharInterval {
 /// * `text`          - The source text to chunk (borrowed, zero-copy).
 /// * `max_bytes`     - Maximum byte length per chunk.
 /// * `overlap_bytes` - Number of bytes to overlap between consecutive chunks
-///   so that entity spans at chunk borders are not lost.
+///   so entity spans at chunk borders are not lost.
 pub fn chunk_text(text: &str, max_bytes: usize, overlap_bytes: usize) -> Vec<&str> {
     if text.is_empty() {
         return vec![];
