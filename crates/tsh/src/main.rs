@@ -172,7 +172,7 @@ async fn run_stdout_router_with_safety(
         }
     });
 
-    // Track the last observer turn we've seen, so we detect command boundaries
+    // Track the last command turn we've seen, so we detect command boundaries.
     let mut last_seen_turn: u32 = 0;
 
     // Main loop: read from shell pipe, route to safety filter or terminal
@@ -189,24 +189,21 @@ async fn run_stdout_router_with_safety(
                     first_chunk = false;
                 }
 
-                // Check if a new command has started (the observer incremented the turn)
-                // If so, send a reset sentinel + any repeat-read metadata to the filter
+                // Check if a new command has started.
                 if !is_binary {
-                    if let Some(current_read) = tracker.current_read() {
-                        if current_read.read_count != last_seen_turn {
-                            last_seen_turn = current_read.read_count;
+                    let snapshot = tracker.current_snapshot();
+                    if snapshot.turn != last_seen_turn {
+                        last_seen_turn = snapshot.turn;
 
-                            // Send command boundary reset
-                            let _ = safety_stdin.write_all(b"[tsh:new-command]\n").await;
+                        let _ = safety_stdin.write_all(b"[tsh:new-command]\n").await;
 
-                            if current_read.is_repeat {
-                                let header = format!(
-                                    "[tsh:repeat-read path={} count={}]\n",
-                                    current_read.path.display(),
-                                    current_read.read_count
-                                );
-                                let _ = safety_stdin.write_all(header.as_bytes()).await;
-                            }
+                        if let Some(current_read) = snapshot.current_read.filter(|r| r.is_repeat) {
+                            let header = format!(
+                                "[tsh:repeat-read path={} count={}]\n",
+                                current_read.path.display(),
+                                current_read.read_count
+                            );
+                            let _ = safety_stdin.write_all(header.as_bytes()).await;
                         }
                     }
                 }
@@ -327,7 +324,7 @@ async fn create_instrumented_shell(
 /// Sets up pipes, routers, and optionally the safety filter subprocess, then runs a closure.
 async fn run_with_routing<F, Fut>(no_safety: bool, run_shell: F) -> Result<u8>
 where
-    F: FnOnce(brush_core::Shell) -> Fut,
+    F: FnOnce(brush_core::Shell, Arc<session_tracker::SessionTracker>) -> Fut,
     Fut: std::future::Future<Output = Result<(brush_core::Shell, u8)>>,
 {
     let (stdout_reader, stdout_writer) = std::io::pipe()?;
@@ -361,9 +358,6 @@ where
             let _ = child.wait().await;
         })
     } else {
-        if !no_safety {
-            eprintln!("[tsh] safety filter not found (python/safety_filter.py). Running in pass-through mode.");
-        }
         tokio::spawn(run_passthrough_router(
             async_stdout,
             tokio::io::stdout(),
@@ -372,7 +366,7 @@ where
     };
 
     // Run the shell
-    let (shell, exit_code) = run_shell(shell).await?;
+    let (shell, exit_code) = run_shell(shell, tracker.clone()).await?;
 
     // Close pipes
     drop(shell);
@@ -385,13 +379,20 @@ where
 
 /// -c mode
 async fn run_command_mode(command: &str, no_safety: bool) -> Result<u8> {
-    run_with_routing(no_safety, |mut shell| async move {
-        let params = shell.default_exec_params();
-        let result = shell
-            .run_string(command, &params)
-            .await
-            .context("Command execution failed")?;
-        let code = result.exit_code.into();
+    run_with_routing(no_safety, |mut shell, tracker| async move {
+        let cwd = std::env::current_dir()?;
+        let code = if let Some(segments) = split_repeat_read_segments(command, &cwd) {
+            run_command_segments(&mut shell, &tracker, &segments).await?
+        } else {
+            tracker.on_command_start(command, &cwd);
+            let params = shell.default_exec_params();
+            shell
+                .run_string(command, &params)
+                .await
+                .context("Command execution failed")?
+                .exit_code
+                .into()
+        };
         Ok((shell, code))
     })
     .await
@@ -430,9 +431,6 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
             let _ = child.wait().await;
         })
     } else {
-        if !no_safety {
-            eprintln!("[tsh] safety filter not found. Pass-through mode.");
-        }
         tokio::spawn(run_passthrough_router(
             async_stdout,
             tokio::io::stdout(),
@@ -458,6 +456,7 @@ async fn run_interactive_mode(no_safety: bool) -> Result<u8> {
                     break;
                 }
 
+                tracker.on_command_start(input, &std::env::current_dir()?);
                 let params = shell.default_exec_params();
                 if let Err(e) = shell.run_string(input, &params).await {
                     eprintln!("tsh: error: {}", e);
@@ -522,6 +521,140 @@ fn decode_stdin_bytes(raw: Vec<u8>) -> Result<String> {
         return String::from_utf8(raw[3..].to_vec()).context("Invalid UTF-8 after BOM");
     }
     String::from_utf8(raw).context("Not valid UTF-8")
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum CommandOp {
+    AndIf,
+    OrIf,
+    Seq,
+}
+
+#[derive(Debug)]
+struct CommandSegment {
+    op_before: Option<CommandOp>,
+    command: String,
+}
+
+fn split_top_level_commands(command: &str) -> Option<Vec<CommandSegment>> {
+    let mut segments = Vec::new();
+    let mut current = String::new();
+    let mut chars = command.chars().peekable();
+    let mut single_quote = false;
+    let mut double_quote = false;
+    let mut pending_op = None;
+
+    while let Some(ch) = chars.next() {
+        match ch {
+            '\'' if !double_quote => {
+                single_quote = !single_quote;
+                current.push(ch);
+            }
+            '"' if !single_quote => {
+                double_quote = !double_quote;
+                current.push(ch);
+            }
+            '&' if !single_quote && !double_quote && chars.peek() == Some(&'&') => {
+                chars.next();
+                push_segment(&mut segments, &mut current, pending_op.take());
+                pending_op = Some(CommandOp::AndIf);
+            }
+            '|' if !single_quote && !double_quote && chars.peek() == Some(&'|') => {
+                chars.next();
+                push_segment(&mut segments, &mut current, pending_op.take());
+                pending_op = Some(CommandOp::OrIf);
+            }
+            ';' if !single_quote && !double_quote => {
+                push_segment(&mut segments, &mut current, pending_op.take());
+                pending_op = Some(CommandOp::Seq);
+            }
+            _ => current.push(ch),
+        }
+    }
+
+    if single_quote || double_quote {
+        return None;
+    }
+
+    let tail = current.trim();
+    if !tail.is_empty() {
+        segments.push(CommandSegment {
+            op_before: pending_op,
+            command: tail.to_string(),
+        });
+    }
+
+    if segments.len() <= 1 {
+        return None;
+    }
+
+    let mut normalized = Vec::with_capacity(segments.len());
+    let mut next_op = None;
+    for segment in segments {
+        normalized.push(CommandSegment {
+            op_before: next_op,
+            command: segment.command,
+        });
+        next_op = segment.op_before;
+    }
+
+    Some(normalized)
+}
+
+fn split_repeat_read_segments(command: &str, cwd: &std::path::Path) -> Option<Vec<CommandSegment>> {
+    let segments = split_top_level_commands(command)?;
+    let read_segments = segments
+        .iter()
+        .filter(|segment| session_tracker::command_reads_file(&segment.command, cwd))
+        .count();
+
+    (read_segments >= 2).then_some(segments)
+}
+
+fn push_segment(
+    segments: &mut Vec<CommandSegment>,
+    current: &mut String,
+    next_op: Option<CommandOp>,
+) {
+    let trimmed = current.trim();
+    if !trimmed.is_empty() {
+        segments.push(CommandSegment {
+            op_before: next_op,
+            command: trimmed.to_string(),
+        });
+    }
+    current.clear();
+}
+
+async fn run_command_segments(
+    shell: &mut brush_core::Shell,
+    tracker: &session_tracker::SessionTracker,
+    segments: &[CommandSegment],
+) -> Result<u8> {
+    let cwd = std::env::current_dir()?;
+    let mut last_exit_code = 0u8;
+
+    for segment in segments {
+        let should_run = match segment.op_before {
+            None | Some(CommandOp::Seq) => true,
+            Some(CommandOp::AndIf) => last_exit_code == 0,
+            Some(CommandOp::OrIf) => last_exit_code != 0,
+        };
+
+        if !should_run {
+            continue;
+        }
+
+        tracker.on_command_start(&segment.command, &cwd);
+        let params = shell.default_exec_params();
+        let result = shell
+            .run_string(&segment.command, &params)
+            .await
+            .with_context(|| format!("Command execution failed: {}", segment.command))?;
+        last_exit_code = result.exit_code.into();
+    }
+
+    Ok(last_exit_code)
 }
 
 // ---------------------------------------------------------------------------
