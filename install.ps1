@@ -1,10 +1,15 @@
-#Requires -Version 5.1
+# tsh installer — compatible with: irm 'https://raw.githubusercontent.com/maceip/tsh/main/install.ps1' | iex
+# No #Requires directive (breaks iex piping)
+
 $ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $Repo = "maceip/tsh"
 $InstallDir = if ($env:TSH_INSTALL_DIR) { $env:TSH_INSTALL_DIR } else { "$env:LOCALAPPDATA\tsh" }
 $BinDir = "$InstallDir\bin"
 $BaseUrl = "https://github.com/$Repo/releases"
+
+# --- Helpers ----------------------------------------------------------------
 
 function Write-Info($msg) { Write-Host $msg -ForegroundColor Green }
 function Write-Warn($msg) { Write-Host "warning: $msg" -ForegroundColor Yellow }
@@ -12,11 +17,8 @@ function Write-Warn($msg) { Write-Host "warning: $msg" -ForegroundColor Yellow }
 # --- Detect architecture ----------------------------------------------------
 
 function Get-Arch {
-    $arch = if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) {
-        [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
-    } else {
-        $env:PROCESSOR_ARCHITECTURE
-    }
+    $arch = $env:PROCESSOR_ARCHITECTURE
+    try { $arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() } catch {}
     switch ($arch) {
         "X64"   { return "x86_64" }
         "AMD64" { return "x86_64" }
@@ -30,21 +32,13 @@ function Get-Arch {
 
 function Get-LatestVersion {
     if ($env:TSH_VERSION) { return $env:TSH_VERSION }
-    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest" -UseBasicParsing
+    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest"
     return $release.tag_name
-}
-
-# --- Version comparison -----------------------------------------------------
-
-function Compare-SemVer($v1, $v2) {
-    $a = [version]($v1 -replace '^v', '')
-    $b = [version]($v2 -replace '^v', '')
-    return $a.CompareTo($b)
 }
 
 # --- Main -------------------------------------------------------------------
 
-function Install-Tsh {
+& {
     $Arch = Get-Arch
     Write-Info "Detected platform: windows-$Arch"
 
@@ -85,8 +79,8 @@ function Install-Tsh {
 
     # --- Generate tsh-update.ps1 --------------------------------------------
     $UpdateScript = @'
-#Requires -Version 5.1
 $ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $Repo = "maceip/tsh"
 $InstallDir = if ($env:TSH_INSTALL_DIR) { $env:TSH_INSTALL_DIR } else { "$env:LOCALAPPDATA\tsh" }
@@ -100,7 +94,7 @@ if (Test-Path $VersionFile) { $Current = (Get-Content $VersionFile).Trim() }
 Write-Host "Current version: $Current" -ForegroundColor Green
 Write-Host "Checking for updates..." -ForegroundColor Green
 
-$release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest" -UseBasicParsing
+$release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest"
 $LatestTag = $release.tag_name
 
 if (-not $LatestTag) { throw "Could not determine latest version" }
@@ -115,11 +109,9 @@ if ($LatestVer -le $CurrentVer) {
 
 Write-Host "Updating from $Current to $LatestTag" -ForegroundColor Green
 
-$arch = switch ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()) {
-    "X64"   { "x86_64" }
-    "Arm64" { "aarch64" }
-    default { throw "Unsupported architecture" }
-}
+$arch = $env:PROCESSOR_ARCHITECTURE
+try { $arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() } catch {}
+$arch = switch ($arch) { "X64" { "x86_64" } "AMD64" { "x86_64" } "Arm64" { "aarch64" } "ARM64" { "aarch64" } default { throw "Unsupported architecture" } }
 
 $ArchiveName = "tsh-${LatestTag}-windows-${arch}.zip"
 $DownloadUrl = "$BaseUrl/download/$LatestTag/$ArchiveName"
@@ -146,7 +138,6 @@ Write-Host "Updated to $LatestTag" -ForegroundColor Green
 
     # --- Generate tsh-uninstall.ps1 -----------------------------------------
     $UninstallScript = @'
-#Requires -Version 5.1
 $ErrorActionPreference = "Stop"
 
 $InstallDir = if ($env:TSH_INSTALL_DIR) { $env:TSH_INSTALL_DIR } else { "$env:LOCALAPPDATA\tsh" }
@@ -200,5 +191,3 @@ Write-Host "Open a new terminal for PATH changes to take effect."
     Write-Host "    tsh-uninstall.ps1   Remove tsh from your system"
     Write-Host ""
 }
-
-Install-Tsh
